@@ -371,14 +371,6 @@ class HomePage extends StatelessWidget{
         ),
         ),
         body: HomePageImage(),
-        // Stack(
-        //   children: [
-        //     Image.asset('lib/images/Parking-Lot-Occupancy.png',
-        //     fit: BoxFit.cover,
-        //     width:150,
-        //     height:150,),
-        //   ]
-        // ),
       );
   }
 }
