@@ -1,11 +1,19 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:upark/components/signIn_button.dart';
 import 'package:upark/components/signUp_button.dart';
 import 'package:upark/components/text_field.dart';
 import 'package:upark/components/custom_button.dart';
+import 'package:upark/firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+
   runApp(const MyApp());
 }
 
@@ -55,7 +63,7 @@ class LogInPage extends StatelessWidget {
 
         // logo
         Image.asset('lib/images/UPark_Logo.png', height: 100,),
-    
+
         const SizedBox(height: 50),
 
         // Sign In Text
@@ -77,21 +85,21 @@ class LogInPage extends StatelessWidget {
 
           const SizedBox(height: 10),
 
-            
+
           // Email Textfield
           text_field(
             controller: emailController,
-            hintText: 'Enter Your Email', 
+            hintText: 'Enter Your Email',
             obscureText: false,),
-        
+
           const SizedBox(height: 30),
 
           // Password Textfield
           text_field(
             controller: passwordController,
-            hintText: 'Enter Your Password', 
+            hintText: 'Enter Your Password',
             obscureText: true,),
-        
+
 
           const SizedBox(height: 20),
 
@@ -107,7 +115,7 @@ class LogInPage extends StatelessWidget {
               ],
             ),
           ),
-        
+
          const SizedBox(height: 20),
 
           // sign in button
@@ -118,7 +126,7 @@ class LogInPage extends StatelessWidget {
           // or continue with
           const Text("or use one of your social profiles: ",
           style: TextStyle(color: Colors.black87)),
-        
+
           const SizedBox(height: 30),
 
           // google and U buttons
@@ -136,9 +144,9 @@ class LogInPage extends StatelessWidget {
               const Text('Gmail', style:  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
             ],
           ),
-        
+
           const SizedBox(height: 40),
-        
+
           // not a member? sign up button
           Padding(
             padding: const EdgeInsets.symmetric(horizontal:25.0),
@@ -204,17 +212,17 @@ class SignUpPage extends StatelessWidget{
            // Email Textfield
           text_field(
             controller: newEmailController,
-            hintText: 'Enter Your Email', 
+            hintText: 'Enter Your Email',
             obscureText: false,),
-        
+
           const SizedBox(height: 30),
 
           // Password Textfield
           text_field(
             controller: newPasswordController,
-            hintText: 'Enter Your Password', 
+            hintText: 'Enter Your Password',
             obscureText: true,),
-        
+
 
           const SizedBox(height: 20),
 
@@ -275,7 +283,7 @@ class SignUpPage extends StatelessWidget{
         ],
       ),
 
-      
+
 
 
         ],)
