@@ -64,6 +64,7 @@ flutter:
     - lib/images/ULogo.png
     - lib/images/google_logo.png
     - lib/images/moqup_1.jpg
+    - lib/images/moqup_2.jpg
     - lib/images/Parking-Lot-Occupancy.png
   #   - images/a_dot_ham.jpeg
 

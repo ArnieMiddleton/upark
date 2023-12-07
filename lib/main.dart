@@ -320,8 +320,6 @@ class HomePage extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    double _xPosition = 0.0;
-    double _yPosition = 0.0;
 
     return Scaffold(
       appBar: AppBar(
@@ -604,8 +602,8 @@ class CustomSearchDelegate extends SearchDelegate {
   }
 }
 
-class moqup1Screen extends StatelessWidget {
-   const moqup1Screen({super.key});
+class moqup2Screen extends StatelessWidget {
+   const moqup2Screen({super.key});
 
    @override
    Widget build(BuildContext context){
@@ -614,6 +612,31 @@ class moqup1Screen extends StatelessWidget {
         onTap:() {
           Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SettingsScreen()));  
           // CHANGE const SettingsScreen to next moqup image screen !!!
+        },
+        child: Container(
+          alignment: Alignment.center ,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('lib/images/moqup_2.jpg'), 
+              fit: BoxFit.cover,
+              ),
+          ),
+          ),
+      )
+      
+    );
+   }
+}
+
+class moqup1Screen extends StatelessWidget {
+   const moqup1Screen({super.key});
+
+   @override
+   Widget build(BuildContext context){
+    return Scaffold(
+      body:  GestureDetector(
+        onTap:() {
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const moqup2Screen()));  
         },
         child: Container(
           alignment: Alignment.center ,
@@ -629,13 +652,6 @@ class moqup1Screen extends StatelessWidget {
     );
    }
 }
-
-
-
-
-
-
-
 
 
 
