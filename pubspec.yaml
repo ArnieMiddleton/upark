@@ -63,6 +63,9 @@ flutter:
     - lib/images/UPark_Logo.png
     - lib/images/ULogo.png
     - lib/images/google_logo.png
+    - lib/images/moqup_1.jpg
+    - lib/images/Parking-Lot-Occupancy.png
+    - lib/images/Parking-Lot-Occupancy_full
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
