@@ -297,7 +297,7 @@ class moqup2Screen extends StatelessWidget {
         body: GestureDetector(
       onTap: () {
         Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const SettingsScreen()));
+            MaterialPageRoute(builder: (context) => const googleMapsMoqupScreen()));
         // CHANGE const SettingsScreen to next moqup image screen !!!
       },
       child: Container(
@@ -329,6 +329,54 @@ class moqup1Screen extends StatelessWidget {
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('lib/images/moqup_1.jpg'),
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
+    ));
+  }
+}
+
+class googleMapsMoqupScreen extends StatelessWidget {
+  const googleMapsMoqupScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => const moqup3Screen()));
+      },
+      child: Container(
+        alignment: Alignment.center,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('lib/images/googlemaps.jpg'),
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
+    ));
+  }
+}
+
+class moqup3Screen extends StatelessWidget {
+  const moqup3Screen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: GestureDetector(
+      onTap: () {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => HomePage()));
+      },
+      child: Container(
+        alignment: Alignment.center,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('lib/images/moqup_3.jpg'),
             fit: BoxFit.cover,
           ),
         ),
