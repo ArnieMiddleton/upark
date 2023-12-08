@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
+    return MaterialApp(
       title: 'Settings Screen',
       home: LogInPage(),
     );
@@ -31,134 +31,151 @@ class LogInPage extends StatelessWidget {
 
   // action that will happen once the Sign In is clicked
   void signInClicked(BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) =>  HomePage()));
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => HomePage()));
   }
 
   // action that will happen once the Sign Up is clicked
   void signUpClicked(BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignUpPage()));
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => SignUpPage()));
   }
 
   // action that will happen once the Google button is clicked
   void googleClicked(BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => HomePage()));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    resizeToAvoidBottomInset: false,
-    body: SafeArea(
-      child: Center(
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        const SizedBox(height: 50),
-
-        // logo
-        Image.asset('lib/images/UPark_Logo.png', height: 100,),
-    
-        const SizedBox(height: 50),
-
-        // Sign In Text
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal:25.0),
-          child: Row(
-            children: [
-              Text(
-                'Sign In: ',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                  ),
-                ),
-            ],
-          ),
-        ),
-
-          const SizedBox(height: 10),
-
-            
-          // Email Textfield
-          text_field(
-            controller: emailController,
-            hintText: 'Enter Your Email', 
-            obscureText: false,),
-        
-          const SizedBox(height: 30),
-
-          // Password Textfield
-          text_field(
-            controller: passwordController,
-            hintText: 'Enter Your Password', 
-            obscureText: true,),
-        
-
-          const SizedBox(height: 20),
-
-          // forgot password?
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal:25.0),
-            child: Row(
-              children: [
-                Text(
-                  'Forgot Your Password?',
-                  style: TextStyle(color: Colors.grey[600]),
-                ),
-              ],
-            ),
-          ),
-        
-         const SizedBox(height: 20),
-
-          // sign in button
-          custom_button(onClick: ()=> signInClicked(context),),
-
-          const SizedBox(height: 20),
-
-          // or continue with
-          const Text("or use one of your social profiles: ",
-          style: TextStyle(color: Colors.black87)),
-        
-          const SizedBox(height: 30),
-
-          // google and U buttons
-          Row(
+      resizeToAvoidBottomInset: false,
+      body: SafeArea(
+        child: Center(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              GestureDetector(
-                onTap: () => googleClicked(context),
-                child: Center(
-                child: Image.asset('lib/images/google_logo.png', height: 50,)
-               ),
+              const SizedBox(height: 50),
+
+              // logo
+              Image.asset(
+                'lib/images/UPark_Logo.png',
+                height: 100,
               ),
 
-              const SizedBox(width: 20),
-              const Text('Gmail', style:  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
+              const SizedBox(height: 50),
+
+              // Sign In Text
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 25.0),
+                child: Row(
+                  children: [
+                    Text(
+                      'Sign In: ',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 10),
+
+              // Email Textfield
+              text_field(
+                controller: emailController,
+                hintText: 'Enter Your Email',
+                obscureText: false,
+              ),
+
+              const SizedBox(height: 30),
+
+              // Password Textfield
+              text_field(
+                controller: passwordController,
+                hintText: 'Enter Your Password',
+                obscureText: true,
+              ),
+
+              const SizedBox(height: 20),
+
+              // forgot password?
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: Row(
+                  children: [
+                    Text(
+                      'Forgot Your Password?',
+                      style: TextStyle(color: Colors.grey[600]),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              // sign in button
+              custom_button(
+                onClick: () => signInClicked(context),
+              ),
+
+              const SizedBox(height: 20),
+
+              // or continue with
+              const Text("or use one of your social profiles: ",
+                  style: TextStyle(color: Colors.black87)),
+
+              const SizedBox(height: 30),
+
+              // google and U buttons
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () => googleClicked(context),
+                    child: Center(
+                        child: Image.asset(
+                      'lib/images/google_logo.png',
+                      height: 50,
+                    )),
+                  ),
+                  const SizedBox(width: 20),
+                  const Text(
+                    'Gmail',
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: 40),
+
+              // not a member? sign up button
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    signUp_button(
+                      onClick: () => signUpClicked(context),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
-        
-          const SizedBox(height: 40),
-        
-          // not a member? sign up button
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal:25.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                signUp_button(onClick: () => signUpClicked(context),),
-              ],
-            ),
-          ),
-          ],
         ),
       ),
-    ),
     );
   }
 }
 
 // Sign Up Page
-class SignUpPage extends StatelessWidget{
+class SignUpPage extends StatelessWidget {
   SignUpPage({super.key});
 
   // text controllers are defined here:
@@ -167,24 +184,28 @@ class SignUpPage extends StatelessWidget{
 
   // action that will happen once the Continue is clicked
   void continueClicked(BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SettingsScreen()));
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const SettingsScreen()));
   }
 
   // action that will happen once the Continue is clicked
   void signInClicked(BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => LogInPage()));
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => LogInPage()));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(child: Center(
-        child: Column(children: [
-          const SizedBox(height: 50),
+        body: SafeArea(
+            child: Center(
+                child: Column(
+      children: [
+        const SizedBox(height: 50),
 
         // Sign Up Text:
         const Padding(
-          padding: EdgeInsets.symmetric(horizontal:25.0),
+          padding: EdgeInsets.symmetric(horizontal: 25.0),
           child: Row(
             children: [
               Text(
@@ -193,100 +214,107 @@ class SignUpPage extends StatelessWidget{
                   color: Colors.black,
                   fontSize: 25,
                   fontWeight: FontWeight.bold,
-                  ),
                 ),
+              ),
             ],
           ),
         ),
 
-        const SizedBox(height: 30,),
+        const SizedBox(
+          height: 30,
+        ),
 
-           // Email Textfield
-          text_field(
-            controller: newEmailController,
-            hintText: 'Enter Your Email', 
-            obscureText: false,),
-        
-          const SizedBox(height: 30),
+        // Email Textfield
+        text_field(
+          controller: newEmailController,
+          hintText: 'Enter Your Email',
+          obscureText: false,
+        ),
 
-          // Password Textfield
-          text_field(
-            controller: newPasswordController,
-            hintText: 'Enter Your Password', 
-            obscureText: true,),
-        
+        const SizedBox(height: 30),
 
-          const SizedBox(height: 20),
+        // Password Textfield
+        text_field(
+          controller: newPasswordController,
+          hintText: 'Enter Your Password',
+          obscureText: true,
+        ),
 
-          // Agreement for Privacy Policy and Terms of Services
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal:25.0),
-                child: checkBox(),
-              ),
+        const SizedBox(height: 20),
 
-              const Text("I agree to the ",
-                        style: TextStyle(color: Colors.black87, fontSize: 13),
-                        textAlign: TextAlign.start,),
+        // Agreement for Privacy Policy and Terms of Services
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 25.0),
+              child: checkBox(),
+            ),
+            const Text(
+              "I agree to the ",
+              style: TextStyle(color: Colors.black87, fontSize: 13),
+              textAlign: TextAlign.start,
+            ),
+            Text("Terms of Services ",
+                style: TextStyle(
+                    color: Colors.red[700],
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold)),
+            const Text("and ",
+                style: TextStyle(color: Colors.black87, fontSize: 13)),
+            Text("Privacy Policy ",
+                style: TextStyle(
+                    color: Colors.red[700],
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold)),
+          ],
+        ),
 
-              Text("Terms of Services ",
-                        style: TextStyle(color: Colors.red[700], fontSize: 12,fontWeight: FontWeight.bold)),
+        const SizedBox(height: 25),
 
-              const Text("and ",
-                        style: TextStyle(color: Colors.black87, fontSize: 13)),
-
-              Text("Privacy Policy ",
-                        style: TextStyle(color: Colors.red[700], fontSize: 12, fontWeight: FontWeight.bold)),
-            ],
-          ),
-
-          const SizedBox(height: 25),
-
-          // Continue Button
-          GestureDetector(
+        // Continue Button
+        GestureDetector(
             onTap: () => continueClicked(context),
             child: Container(
-            padding: const EdgeInsets.all(15),
-            margin: const EdgeInsets.symmetric(horizontal: 25),
-            decoration: BoxDecoration(color: Colors.red[700]),
-            child: const Center(
-              child: Text(
-                'Continue',
-            style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-           ),
-           ),
-    )
-    ),
+              padding: const EdgeInsets.all(15),
+              margin: const EdgeInsets.symmetric(horizontal: 25),
+              decoration: BoxDecoration(color: Colors.red[700]),
+              child: const Center(
+                child: Text(
+                  'Continue',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+            )),
 
+        const SizedBox(height: 30),
 
-    const SizedBox(height: 30),
-
-    // Have an Account? Sign in
-    Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text('Have an Account?', style:  TextStyle(color: Colors.grey[600], fontSize: 15, fontWeight: FontWeight.bold),),
-          const SizedBox(width: 100),
-
-          const SizedBox(width: 20),
-          signIn_button(onClick: () => signInClicked(context)),
-        ],
-      ),
-
-      
-
-
-        ],)
-      ))
-    );
-
+        // Have an Account? Sign in
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Have an Account?',
+              style: TextStyle(
+                  color: Colors.grey[600],
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(width: 100),
+            const SizedBox(width: 20),
+            signIn_button(onClick: () => signInClicked(context)),
+          ],
+        ),
+      ],
+    ))));
   }
 }
 
 // Checkbox for Terms of Services and Privacy Policy
-class checkBox extends StatefulWidget{
+class checkBox extends StatefulWidget {
   const checkBox({super.key});
 
   @override
@@ -314,13 +342,11 @@ class _checkBoxState extends State<checkBox> {
 }
 
 // Homepage
-class HomePage extends StatelessWidget{
+class HomePage extends StatelessWidget {
   HomePage({super.key});
-
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red[700],
@@ -328,92 +354,95 @@ class HomePage extends StatelessWidget{
           children: [
             IconButton(
               icon: Icon(Icons.settings),
-              color: Colors.white, onPressed: () {Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SettingsScreen())); },
+              color: Colors.white,
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const SettingsScreen()));
+              },
             ),
           ],
         ),
-        title:  InkWell(
+        title: InkWell(
           onTap: () {
-            showSearch(
-              context: context, 
-              delegate: CustomSearchDelegate());
+            showSearch(context: context, delegate: CustomSearchDelegate());
           },
           child: Container(
               height: 35,
               decoration: BoxDecoration(
                 border: Border.all(
-                  color: const Color.fromARGB(255, 255, 255, 255), 
-                  width:1.4,
-                  ),
-                  borderRadius: BorderRadius.circular(25),
-                  ),
-                  child: const Row(
+                  color: const Color.fromARGB(255, 255, 255, 255),
+                  width: 1.4,
+                ),
+                borderRadius: BorderRadius.circular(25),
+              ),
+              child: const Row(
+                children: [
+                  Row(
                     children: [
-                       Row(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal:10.0),
-                            child: Icon(Icons.search, 
-                            color:Colors.white,
-                            ),
-                          ),
-                          Text(
-                            'Search Buildings',
-                             style: TextStyle(color:Color.fromARGB(255, 255, 255, 255)),
-                             ),
-                        ],
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Icon(
+                          Icons.search,
+                          color: Colors.white,
                         ),
+                      ),
+                      Text(
+                        'Search Buildings',
+                        style: TextStyle(
+                            color: Color.fromARGB(255, 255, 255, 255)),
+                      ),
                     ],
-                  )
-            ),
+                  ),
+                ],
+              )),
         ),
-        ),
-        body: HomePageImage(),
-      );
+      ),
+      body: HomePageImage(),
+    );
   }
 }
 
-class HomePageImage extends StatefulWidget{
+class HomePageImage extends StatefulWidget {
   @override
   _HomePageImageState createState() => _HomePageImageState();
-
 }
 
 class _HomePageImageState extends State<HomePageImage> {
-  Offset _position = const Offset(0.0,0.0);
+  Offset _position = const Offset(0.0, 0.0);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onDoubleTap: () {
-         Navigator.of(context).push(MaterialPageRoute(builder: (context) => const moqup1Screen()));
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => const moqup1Screen()));
       },
       child: Stack(
-        children: <Widget>[Positioned(
-          left: _position.dx,
-          top: _position.dy,
-          child: Container(
-            alignment: Alignment.center,
-            
-            child: Draggable(
-              feedback: Image.asset('lib/images/Parking-Lot-Occupancy.png', fit:BoxFit.cover),
-              childWhenDragging: Container(),
-              onDraggableCanceled: (_, __) {
-                
-              },
-              onDragEnd: (details) {
-                setState(() {
-                  _position = details.offset;
-                });
-              },
-              child: Image.asset('lib/images/Parking-Lot-Occupancy.png',fit:BoxFit.cover),),
-          )
-        ),],
+        children: <Widget>[
+          Positioned(
+              left: _position.dx,
+              top: _position.dy,
+              child: Container(
+                alignment: Alignment.center,
+                child: Draggable(
+                  feedback: Image.asset('lib/images/Parking-Lot-Occupancy.png',
+                      fit: BoxFit.cover),
+                  childWhenDragging: Container(),
+                  onDraggableCanceled: (_, __) {},
+                  onDragEnd: (details) {
+                    setState(() {
+                      _position = details.offset;
+                    });
+                  },
+                  child: Image.asset('lib/images/Parking-Lot-Occupancy.png',
+                      fit: BoxFit.cover),
+                ),
+              )),
+        ],
       ),
     );
   }
 }
-
 
 class CustomSearchDelegate extends SearchDelegate {
   String lastQuery = '';
@@ -512,10 +541,10 @@ class CustomSearchDelegate extends SearchDelegate {
         icon: const Icon(Icons.clear),
         onPressed: () {
           if (query.isEmpty) {
-            close(context,null);
+            close(context, null);
           } else {
-          query = '';
-        }
+            query = '';
+          }
         },
       ),
     ];
@@ -528,12 +557,11 @@ class CustomSearchDelegate extends SearchDelegate {
       onPressed: () {
         close(context, null);
       },
-      );
+    );
   }
 
   @override
-  Widget buildResults(BuildContext context) 
-  {
+  Widget buildResults(BuildContext context) {
     Future.delayed(Duration.zero, () {
       Navigator.push(
         context,
@@ -548,9 +576,7 @@ class CustomSearchDelegate extends SearchDelegate {
       child: Text('Searching...'),
     );
   }
-  
-  
-  
+
   // => const Center(
   //   child: Text(
   //     "WELCOME TO HOMEPAGE",)
@@ -603,57 +629,101 @@ class CustomSearchDelegate extends SearchDelegate {
 }
 
 class moqup2Screen extends StatelessWidget {
-   const moqup2Screen({super.key});
+  const moqup2Screen({super.key});
 
-   @override
-   Widget build(BuildContext context){
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      body:  GestureDetector(
-        onTap:() {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SettingsScreen()));  
-          // CHANGE const SettingsScreen to next moqup image screen !!!
-        },
-        child: Container(
-          alignment: Alignment.center ,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('lib/images/moqup_2.jpg'), 
-              fit: BoxFit.cover,
-              ),
+        body: GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => const googleMapsMoqupScreen()));
+        // CHANGE const SettingsScreen to next moqup image screen !!!
+      },
+      child: Container(
+        alignment: Alignment.center,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('lib/images/moqup_2.jpg'),
+            fit: BoxFit.cover,
           ),
-          ),
-      )
-      
-    );
-   }
+        ),
+      ),
+    ));
+  }
 }
 
 class moqup1Screen extends StatelessWidget {
-   const moqup1Screen({super.key});
+  const moqup1Screen({super.key});
 
-   @override
-   Widget build(BuildContext context){
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      body:  GestureDetector(
-        onTap:() {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const moqup2Screen()));  
-        },
-        child: Container(
-          alignment: Alignment.center ,
-          decoration: const BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('lib/images/moqup_1.jpg'), 
-              fit: BoxFit.cover,
-              ),
+        body: GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => const moqup2Screen()));
+      },
+      child: Container(
+        alignment: Alignment.center,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('lib/images/moqup_1.jpg'),
+            fit: BoxFit.cover,
           ),
-          ),
-      )
-      
-    );
-   }
+        ),
+      ),
+    ));
+  }
 }
 
+class googleMapsMoqupScreen extends StatelessWidget {
+  const googleMapsMoqupScreen({super.key});
 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => const moqup3Screen()));
+      },
+      child: Container(
+        alignment: Alignment.center,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('lib/images/googlemaps.jpg'),
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
+    ));
+  }
+}
+
+class moqup3Screen extends StatelessWidget {
+  const moqup3Screen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: GestureDetector(
+      onTap: () {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => HomePage()));
+      },
+      child: Container(
+        alignment: Alignment.center,
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('lib/images/moqup_3.jpg'),
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
+    ));
+  }
+}
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
