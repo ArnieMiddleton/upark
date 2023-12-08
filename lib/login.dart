@@ -206,7 +206,4 @@ class LogInPage extends StatelessWidget {
       ),
     );
   }*/
-
-
-
 }

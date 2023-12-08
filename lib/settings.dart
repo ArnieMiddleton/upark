@@ -1,3 +1,6 @@
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'package:upark/login.dart';
+
 import 'settings_pages/notifications.dart';
 import 'settings_pages/permits.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +36,22 @@ class SettingsScreen extends StatelessWidget {
             trailing: const Icon(Icons.arrow_forward_ios_rounded),
             onTap: () {
               // Navigate to AccountScreen or handle the tap as needed
+              Navigator.push(
+                context,
+                MaterialPageRoute<ProfileScreen>(
+                  builder: (context) => ProfileScreen(
+                    actions: [
+                      SignedOutAction((context) {
+                        // Navigator.of(context).pop();
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(builder: (context) => LogInPage()),
+                          (Route<dynamic> route) => false,
+                        );
+                      })
+                    ],
+                  ),
+                ),
+              );
             },
           ),
           ListTile(
@@ -77,20 +96,20 @@ class SettingsScreen extends StatelessWidget {
               );
             },
           ),
-          ListTile(
-            leading: const Icon(
-              Icons.exit_to_app,
-              size: 30,
-            ),
-            iconColor: const Color.fromARGB(255, 255, 0, 0),
-            title: const Text(
-              'Logout',
-              style: TextStyle(fontSize: 22, fontFamily: 'Quicksand'),
-            ),
-            onTap: () {
-              // Handle logout
-            },
-          ),
+          // ListTile(
+          //   leading: const Icon(
+          //     Icons.exit_to_app,
+          //     size: 30,
+          //   ),
+          //   iconColor: const Color.fromARGB(255, 255, 0, 0),
+          //   title: const Text(
+          //     'Logout',
+          //     style: TextStyle(fontSize: 22, fontFamily: 'Quicksand'),
+          //   ),
+          //   onTap: () {
+          //     // Handle logout
+          //   },
+          // ),
         ],
       ),
     );
