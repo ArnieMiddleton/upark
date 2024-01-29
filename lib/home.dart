@@ -1,6 +1,7 @@
 import 'package:upark/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'survey.dart';
 
 // Homepage
 class HomePage extends StatelessWidget {
@@ -296,30 +297,44 @@ class moqup2Screen extends StatelessWidget {
     Uri googleMapUrl =
         Uri.parse("https://www.google.com/maps/search/?api=1&query=$lat,$long");
     if (await canLaunchUrl(googleMapUrl)) {
-      //checking if google map is installed in device
+      // Checking if google map is installed on the device
       await launchUrl(googleMapUrl);
+    } else {
+      // If Google Maps is not installed, you might want to show a dialog to the user or handle it otherwise
+      throw 'Could not open the map.';
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    // Capture the Navigator state before the async operation
+    final NavigatorState navigator = Navigator.of(context);
+
     return Scaffold(
-        body: GestureDetector(
-      onTap: () async {
-        openMap(40.76497, -111.84611);
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const moqup3Screen()));
-      },
-      child: Container(
-        alignment: Alignment.center,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('lib/images/moqup_2.jpg'),
-            fit: BoxFit.cover,
+      body: GestureDetector(
+        onTap: () async {
+          await openMap(40.76497, -111.84611); // Open Google Maps first
+          if (!navigator.mounted) {
+            return;
+          }
+          // Use the navigator after the async operation
+          navigator.push(
+            MaterialPageRoute(
+              builder: (context) => const ParkingLotSurveyScreen(),
+            ),
+          );
+        },
+        child: Container(
+          alignment: Alignment.center,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('lib/images/moqup_2.jpg'),
+              fit: BoxFit.cover,
+            ),
           ),
         ),
       ),
-    ));
+    );
   }
 }
 
@@ -339,30 +354,6 @@ class moqup1Screen extends StatelessWidget {
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('lib/images/moqup_1.jpg'),
-            fit: BoxFit.cover,
-          ),
-        ),
-      ),
-    ));
-  }
-}
-
-class moqup3Screen extends StatelessWidget {
-  const moqup3Screen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: GestureDetector(
-      onTap: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => HomePage()));
-      },
-      child: Container(
-        alignment: Alignment.center,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('lib/images/moqup_3.jpg'),
             fit: BoxFit.cover,
           ),
         ),
