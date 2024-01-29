@@ -1,5 +1,6 @@
 import 'package:upark/settings.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // Homepage
 class HomePage extends StatelessWidget {
@@ -291,14 +292,23 @@ class CustomSearchDelegate extends SearchDelegate {
 class moqup2Screen extends StatelessWidget {
   const moqup2Screen({super.key});
 
+  static Future<void> openMap(double lat, double long) async {
+    Uri googleMapUrl =
+        Uri.parse("https://www.google.com/maps/search/?api=1&query=$lat,$long");
+    if (await canLaunchUrl(googleMapUrl)) {
+      //checking if google map is installed in device
+      await launchUrl(googleMapUrl);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: GestureDetector(
-      onTap: () {
+      onTap: () async {
+        openMap(40.76497, -111.84611);
         Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const googleMapsMoqupScreen()));
-        // CHANGE const SettingsScreen to next moqup image screen !!!
+            MaterialPageRoute(builder: (context) => const moqup3Screen()));
       },
       child: Container(
         alignment: Alignment.center,
@@ -329,30 +339,6 @@ class moqup1Screen extends StatelessWidget {
         decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage('lib/images/moqup_1.jpg'),
-            fit: BoxFit.cover,
-          ),
-        ),
-      ),
-    ));
-  }
-}
-
-class googleMapsMoqupScreen extends StatelessWidget {
-  const googleMapsMoqupScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: GestureDetector(
-      onTap: () {
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const moqup3Screen()));
-      },
-      child: Container(
-        alignment: Alignment.center,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('lib/images/googlemaps.jpg'),
             fit: BoxFit.cover,
           ),
         ),
