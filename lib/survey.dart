@@ -9,6 +9,7 @@ class ParkingLotSurveyScreen extends StatefulWidget {
 
 class _ParkingLotSurveyScreenState extends State<ParkingLotSurveyScreen> {
   int? _chosenIndex;
+  String? _selectedOption;
   final List<String> _options = [
     'Full',
     'Almost Full',
@@ -18,8 +19,13 @@ class _ParkingLotSurveyScreenState extends State<ParkingLotSurveyScreen> {
   ];
 
   void _submitSurvey() {
-    // TODO: Handle the submission logic here.
-    Navigator.of(context).popUntil((route) => route.isFirst);
+    if (_chosenIndex != null) {
+      // Update the _selectedOption with the chosen option's text
+      setState(() {
+        _selectedOption = _options[_chosenIndex!];
+      });
+      Navigator.of(context).popUntil((route) => route.isFirst);
+    }
   }
 
   @override
