@@ -1,8 +1,8 @@
+import 'package:flutter_map/flutter_map.dart';
 import 'package:upark/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'survey.dart';
-import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
 // Homepage
@@ -17,7 +17,7 @@ class HomePage extends StatelessWidget {
         leading: Row(
           children: [
             IconButton(
-              icon: Icon(Icons.settings),
+              icon: const Icon(Icons.settings),
               color: Colors.white,
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
@@ -72,23 +72,9 @@ class HomePageMap extends StatefulWidget {
 }
 
 class _HomePageMapState extends State<HomePageMap> {
-  final MapController controller = MapController();
+  static final MapController controller = MapController();
   LatLng latLng = const LatLng(40.76497, -111.84611);
-
-  @override
-  Widget build(BuildContext context) {
-    return FlutterMap(
-      mapController: controller,
-      options: MapOptions(
-        initialCenter: latLng,
-        initialZoom: 14,
-      ),
-      children: [
-        TileLayer(
-            urlTemplate:
-                "https://api.mapbox.com/styles/v1/notrh99/clrzb93vx009s01pu7y5g5wyt/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoibm90cmg5OSIsImEiOiJjbHJremlxaHUwa205MmprZGJ3dWFzYWR3In0.R-PO20FWueN9Mzx9EwmeEA"),
-        MarkerLayer(
-          markers: [
+  static List<Marker> my_markers = [
             Marker( //1 Done
               point: const LatLng(40.76047615, -111.8457732),
               width: 30,
@@ -745,7 +731,23 @@ class _HomePageMapState extends State<HomePageMap> {
                 ),
               ),
             ),
-          ],
+          ];
+
+
+  @override
+  Widget build(BuildContext context) {
+    return FlutterMap(
+      mapController: controller,
+      options: MapOptions(
+        initialCenter: latLng,
+        initialZoom: 14,
+      ),
+      children: [
+        TileLayer(
+            urlTemplate:
+                "https://api.mapbox.com/styles/v1/notrh99/clrzb93vx009s01pu7y5g5wyt/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoibm90cmg5OSIsImEiOiJjbHJremlxaHUwa205MmprZGJ3dWFzYWR3In0.R-PO20FWueN9Mzx9EwmeEA"),
+        MarkerLayer(
+          markers: my_markers,
         ),
       ],
     );
@@ -753,94 +755,135 @@ class _HomePageMapState extends State<HomePageMap> {
 }
 
 class CustomSearchDelegate extends SearchDelegate {
+  _HomePageMapState myInstance = _HomePageMapState();
   String lastQuery = '';
-  List<String> searchTerms = [
-    'A. Ray Olpin Union',
-    'Alfred C. Emery Building',
-    'Alice Sheets Marriott Center for Dance',
-    'Aline Wilmot Skaggs Biology Building',
-    'Annette Poulson Cumming College of Nursing Building',
-    'Architecture Building',
-    'Art Building',
-    'Beverley Taylor Sorenson Arts and Education Complex',
-    'Business Classroom Building',
-    'C. Roland Christensen Center',
-    'Carolyn and Kem Gardner Commons',
-    'Carolyn Tanner Irish Humanities Building',
-    'Cauldron Legacy Plaza Visitors Ctr',
-    'Chase N. Peterson Heritage Center',
-    'Cleone Peterson Eccles Alumni House',
-    'College of Social Work',
-    'David P. Gardner Hall',
-    'Dumke Gymnastics Center',
-    'Film and Media Arts Building',
-    'Fine Arts West',
-    'Fort Douglas Bandstand',
-    'Fort Douglas Chapel',
-    'Fort Douglas Commander’s House',
-    'Fort Douglas Officers Club',
-    'Fort Douglas Theatre',
-    'Frederick Albert Sutton Building',
-    'George and Dolores Eccles Institute of Human Genetics',
-    'George S Eccles Student Life Center',
-    'George S. Eccles Tennis Center Indoor',
-    'George S. Eccles Tennis Center Outdoor',
-    'Henry Eyring Chemistry Building',
-    'HPER East',
-    'HPER North',
-    'HPER West',
-    'Huntsman Cancer Institute',
-    'Huntsman Cancer Institute – Primary Children’s and Families’ Cancer Research Center',
-    'Intermountain Network Scientific CC',
-    'J. Willard Marriott Library',
-    'James C. Fletcher Building',
-    'James LeVoy Sorenson Molecular Biotechnology Building – A USTAR Innovation Center',
-    'James Talmage Building',
-    'John & Marcia Price Theatre Arts Building',
-    'John A. Moran Eye Center',
-    'John A. Widtsoe Building',
-    'John and Marva Warnock Engineering Building',
-    'John and Marva Warnock Engineering Building (L)',
-    'John R. Park Building',
-    'Jon M. and Karen Huntsman Basketball Facility',
-    'Jon M. Huntsman Center',
-    'Joseph F. Merrill Engineering Building',
-    'Joseph T. Kingsbury Hall',
-    'L.S. Skaggs Jr. Research Building',
-    'Language & Communication Building',
-    'Lassonde Studios',
-    'LeRoy E. Cowles Building',
-    'Life Science Building',
-    'Marcia & John Price Museum Building',
-    'Natural History Museum of Utah',
-    'Open Space',
-    'Performing Arts Building',
-    'Pierre Lassonde Entrepreneur Center',
-    'Red Butte Garden Amphitheatre',
-    'Red Butte Garden Rose House',
-    'Rice-Eccles Stadium',
-    'Richard K. Hemingway Orangerie',
-    'Rio Tinto Kennecott Mechanical Engineering Building',
-    'Robert H. and Katharine B. Garff Executive Education Building',
-    'Roy W. & Elizabeth E. Simmons Pioneer Memorial Theatre',
-    'S.J.Quinney College of Law',
-    'School of Medicine',
-    'Social & Behavioral Sciences',
-    'Social Beh. Science Lecture Hall',
-    'Spence and Cleone Eccles Football Center',
-    'Spence Eccles Field House',
-    'Spencer F. and Cleone P. Eccles Health Sciences Education Building',
-    'Spencer Fox Eccles Business Building',
-    'Spencer S. Eccles Health Sciences Library',
-    'Sterling Sill Center',
-    'Student Services Building',
-    'Thatcher Building for Biological and Biophysical Chemistry',
-    'The Gary L. and Ann T. Crocker Science Center at the George Thomas Building',
-    'Thomas S. Monson Center',
-    'University Guest House',
-    'William C. Browning Building',
-    'William Stewart Building',
-  ];
+  final Map<String, LatLng> searchTerms = {
+    'Campus Bike Shop': const LatLng(40.7605798, -111.8428217),
+    'S.J. Quinney College of Law': const LatLng(40.7612208, -111.8514449),
+    'Mineral Processing Lab': const LatLng(40.7665169, -111.8448861),
+    'Mining Systems Research Lab': const LatLng(40.7666465, -111.8445482),
+    'Experimental Studies Building': const LatLng(40.7660466, -111.8447915),
+    'John and Marva Warnock Engineering Building': const LatLng(40.7677074, -111.845305),
+    'Alice Sheets Marriott Center for Dance': const LatLng(40.762399, -111.8485909),
+    'Life Science Building': const LatLng(40.763534, -111.8501393),
+    'Chemistry Cooling Tower': const LatLng(40.7623958, -111.8502781),
+    'High Temperature Water Plant': const LatLng(40.760472, -111.8418901),
+    'Recycling Center': const LatLng(40.760223, -111.8413411),
+    'Buildings & Grounds Storage Shed #2': const LatLng(40.7603222, -111.8403604),
+    'Buildings & Grounds Storage Shed #1': const LatLng(40.7604644, -111.84049),
+    'Motor Pool Gas Station': const LatLng(40.760738, -111.8399211),
+    'Motor Pool Building': const LatLng(40.7605685, -111.8402757),
+    'Buildings & Grounds': const LatLng(40.760374, -111.8406457),
+    'Physical Plant Services': const LatLng(40.7609436, -111.8412124),
+    'Public Safety Storage Shed': const LatLng(40.760029, -111.8408105),
+    'George S. Eccles 2002 Legacy Bridge': const LatLng(40.7649731, -111.8372508),
+    'Joseph F. Merrill Engineering Building': const LatLng(40.7685435, -111.8461438),
+    'Floyd and Jeri Meldrum Civil Engineering Building': const LatLng(40.7670116, -111.8455091),
+    'C. Roland Christensen Center': const LatLng(40.761274, -111.8439109),
+    'Sculpture Building': const LatLng(40.7604263, -111.8446468),
+    'Marcia & John Price Museum Building': const LatLng(40.7602453, -111.843287),
+    'Social and Behavioral Science Lecture Hall': const LatLng(40.7609948, -111.8459596),
+    'College of Social Work': const LatLng(40.7609527, -111.8466878),
+    'Questar Gas Shed #1': const LatLng(40.7630119, -111.8361847),
+    'Roy W. & Elizabeth E. Simmons Pioneer Memorial Theatre': const LatLng(40.7627743, -111.8510771),
+    'Office Building 44': const LatLng(40.7631331, -111.8484522),
+    'Aline Wilmot Skaggs Biology Building': const LatLng(40.7636844, -111.8486777),
+    'Alfred C. Emery Building': const LatLng(40.7641708, -111.8501068),
+    'Steam Generating Plant': const LatLng(40.7656879, -111.8481054),
+    'McCarthey Family Track and Field Storage Building': const LatLng(40.767219, -111.8391541),
+    'Golf Pro Shop': const LatLng(40.7680291, -111.8433072),
+    'James LeVoy Sorenson Molecular Biotechnology Building - A USTAR Innovation Center': const LatLng(40.7689427, -111.8421158),
+    'Office of Sponsored Projects': const LatLng(40.768284, -111.8485698),
+    'Fine Arts West': const LatLng(40.7631906, -111.8528793),
+    'Cauldron Legacy Plaza Visitors Center': const LatLng(40.7588343, -111.8497591),
+    'David P. Gardner Hall': const LatLng(40.7662045, -111.8517317),
+    'James Talmage Building': const LatLng(40.7644381, -111.8495015),
+    'Cowles Cooling Tower': const LatLng(40.7661025, -111.8497673),
+    'Beverley Taylor Sorenson Arts & Education Complex': const LatLng(40.7628492, -111.8415156),
+    'HPER Natatorium': const LatLng(40.7633309, -111.8398826),
+    'Skaggs Cooling Tower': const LatLng(40.7636082, -111.8482286),
+    'Building 124': const LatLng(40.7642739, -111.8491462),
+    'Thatcher Building for Biological & Biophysical Chemistry': const LatLng(40.7617233, -111.849658),
+    'Civil and Materials Engineering': const LatLng(40.7664854, -111.8459993),
+    'John R. Park Building': const LatLng(40.7650072, -111.8487908),
+    'Intermountain Network Scientific Computation Center': const LatLng(40.7659168, -111.848729),
+    'LeRoy E. Cowles Building': const LatLng(40.7656173, -111.8495495),
+    'Naval Science Building': const LatLng(40.766645, -111.8493796),
+    'Spencer Fox Eccles Business Building': const LatLng(40.7617223, -111.8433843),
+    'Spence Eccles Ski Team Building': const LatLng(40.7669476, -111.8405543),
+    'Grounds Storage Building': const LatLng(40.7606638, -111.8412352),
+    'Salt Lake City Reservoir': const LatLng(40.7592434, -111.8470646),
+    'George S. Eccles Student Life Center': const LatLng(40.7650827, -111.838233),
+    'Pumphouse #3': const LatLng(40.7626118, -111.8359859),
+    'North Campus Chiller Plant': const LatLng(40.7674303, -111.8427461),
+    'Joseph T. Kingsbury Hall': const LatLng(40.7661964, -111.8509428),
+    'Henry Eyring Chemistry Building': const LatLng(40.7623469, -111.8494898),
+    'V. Randall Turpin University Services Building': const LatLng(40.7613875, -111.8400721),
+    'Jon M. Huntsman Center': const LatLng(40.7620589, -111.8387518),
+    'Space Planning & Management': const LatLng(40.7687097, -111.8486904),
+    'Social & Behavioral Sciences': const LatLng(40.7614548, -111.8462603),
+    'Biology Building': const LatLng(40.7635123, -111.8495492),
+    'Alan W. Layton Engineering Building': const LatLng(40.7665156, -111.84548),
+    'Performing Arts Building': const LatLng(40.7639132, -111.8479817),
+    'Eccles House': const LatLng(40.7725992, -111.8437945),
+    'Soccer Field Ticket Office': const LatLng(40.7673491, -111.8409302),
+    'Equipment Shed': const LatLng(40.7679182, -111.8417775),
+    'Dumke Family Softball Stadium': const LatLng(40.7677039, -111.8411626),
+    'Field Storage Building': const LatLng(40.7681291, -111.8416951),
+    'Einar Nielsen Fieldhouse': const LatLng(40.7612137, -111.8488777),
+    'Transformer Building': const LatLng(40.7587237, -111.851231),
+    'William Stewart Building': const LatLng(40.7634326, -111.8509426),
+    'The Gary L. and Ann T. Crocker Science Center at the George Thomas Building': const LatLng(40.7640556, -111.8511161),
+    'HPER West': const LatLng(40.762922, -111.8406218),
+    'HPER East': const LatLng(40.7636929, -111.8391684),
+    'Kenneth P. Burbidge, Jr., Family Athletics Academic Center': const LatLng(40.7629723, -111.8396537),
+    'HPER North': const LatLng(40.7638422, -111.8403347),
+    'HPER Mechanical Building Southwest': const LatLng(40.7627283, -111.8396291),
+    'Central Garage': const LatLng(40.7616177, -111.8414221),
+    'HTW Plant Cooling Tower': const LatLng(40.7607224, -111.8416042),
+    'Language & Communication Building': const LatLng(40.763612, -111.843649),
+    'Bldg 301': const LatLng(40.7599051, -111.8410001),
+    'Art Building': const LatLng(40.7608952, -111.8448774),
+    'Architecture Building': const LatLng(40.7611435, -111.8445216),
+    'A. Ray Olpin Union': const LatLng(40.7649585, -111.8460258),
+    'Carolyn Tanner Irish Humanities Building': const LatLng(40.764559, -111.8429781),
+    'Student Services Cooling Tower': const LatLng(40.7653175, -111.8484318),
+    'Student Services Building': const LatLng(40.7650099, -111.8480666),
+    'James C. Fletcher Building': const LatLng(40.7667215, -111.8504586),
+    'Physics Maintenance Shed': const LatLng(40.7663155, -111.8497409),
+    'Voice & Opera Center': const LatLng(40.7668481, -111.8518531),
+    'Frederick Albert Sutton Building': const LatLng(40.7666686, -111.8477967),
+    'William C. Browning Building': const LatLng(40.7662422, -111.8477118),
+    'SW Cooling Tower': const LatLng(40.7611313, -111.8480044),
+    'John A. Widtsoe Building': const LatLng(40.7659103, -111.8501467),
+    'J. Willard Marriott Library': const LatLng(40.7624564, -111.8462009),
+    'Film and Media Arts Building': const LatLng(40.7612975, -111.8454004),
+    'Business Classroom Building': const LatLng(40.7617724, -111.8441455),
+    'Pumphouse #8': const LatLng(40.76537, -111.8393343),
+    'Donna Garff Marriott Residential Scholars Community': const LatLng(40.7638268, -111.8368582),
+    'Cleone Peterson Eccles Alumni House': const LatLng(40.7658899, -111.8436309),
+    'Rosenblatt House': const LatLng(40.7714816, -111.845167),
+    'Carolyn and Kem Gardner Commons': const LatLng(40.7633607, -111.8446581),
+    'HPER Mechanical Building Southeast': const LatLng(40.7629181, -111.8392586),
+    'Jon M. and Karen Huntsman Basketball Facility': const LatLng(40.7630993, -111.8387277),
+    'Northwest Garage': const LatLng(40.7665208, -111.8487329),
+    'Sterling Sill Center': const LatLng(40.7653351, -111.8436888),
+    'University Campus Store': const LatLng(40.7637118, -111.8475237),
+    'Physics Cooling Tower': const LatLng(40.7665293, -111.8498995),
+    'SW Cooling Tower': const LatLng(40.7612905, -111.8480052),
+    'Physics Building': const LatLng(40.7663942, -111.8500583),
+    'Meldrum House': const LatLng(40.7649572948751, -111.853380680972),
+    'Building 72': const LatLng(40.7620302, -111.8514106),
+    'John & Marcia Price Theatre Arts Building': const LatLng(40.7620336, -111.8518393),
+    'Impact Prosperity Epicenter Building': const LatLng(40.7653564842492, -111.839022701725),
+    'Rio Tinto Kennecott Mechanical Engineering Building': const LatLng(40.7674748, -111.8477638),
+    'Lassonde Studios': const LatLng(40.7645445, -111.8415405),
+    'Rice-Eccles Stadium': const LatLng(40.7600622, -111.8489259),
+    'Robert H. and Katharine B. Garff Executive Education Building': const LatLng(40.7621344, -111.8422519),
+    'Dolores Dore Eccles Broadcast Center': const LatLng(40.7673162, -111.8378598),
+    'Kahlert Village': const LatLng(40.7637771, -111.837987),
+    'Dumke Gymnastics Center': const LatLng(40.7643456, -111.8396279),
+  };
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -868,7 +911,7 @@ class CustomSearchDelegate extends SearchDelegate {
     );
   }
 
-  @override
+ @override
   Widget buildResults(BuildContext context) {
     Future.delayed(Duration.zero, () {
       Navigator.push(
@@ -878,12 +921,37 @@ class CustomSearchDelegate extends SearchDelegate {
         ),
       );
     });
-
-    // Placeholder for the search result view
+     // Placeholder for the search result view
     return const Center(
       child: Text('Searching...'),
     );
   }
+
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    List<String> mathcQuery = [];
+    for (var building in searchTerms.keys.toList()) {
+      if (building.toLowerCase().contains(query.toLowerCase())) {
+        mathcQuery.add(building);
+      }
+    }
+    return ListView.builder(
+      itemCount: mathcQuery.length,
+      itemBuilder: (context, index) {
+        var result = mathcQuery[index];
+        return ListTile(
+          title: Text(result),
+          onTap: () {
+            query = result;
+            showResults((context));
+          },
+        );
+      },
+    );
+  }
+}
+
 
   // => const Center(
   //   child: Text(
@@ -911,30 +979,6 @@ class CustomSearchDelegate extends SearchDelegate {
   //     },
   //   );
   // }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    List<String> mathcQuery = [];
-    for (var building in searchTerms) {
-      if (building.toLowerCase().contains(query.toLowerCase())) {
-        mathcQuery.add(building);
-      }
-    }
-    return ListView.builder(
-      itemCount: mathcQuery.length,
-      itemBuilder: (context, index) {
-        var result = mathcQuery[index];
-        return ListTile(
-          title: Text(result),
-          onTap: () {
-            query = result;
-            showResults((context));
-          },
-        );
-      },
-    );
-  }
-}
 
 class moqup2Screen extends StatelessWidget {
   const moqup2Screen({super.key});
