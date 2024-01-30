@@ -2,6 +2,8 @@ import 'package:upark/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'survey.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 
 // Homepage
 class HomePage extends StatelessWidget {
@@ -59,49 +61,48 @@ class HomePage extends StatelessWidget {
               )),
         ),
       ),
-      body: HomePageImage(),
+      body: HomePageMap(),
     );
   }
 }
 
-class HomePageImage extends StatefulWidget {
+class HomePageMap extends StatefulWidget {
   @override
-  _HomePageImageState createState() => _HomePageImageState();
+  _HomePageMapState createState() => _HomePageMapState();
 }
 
-class _HomePageImageState extends State<HomePageImage> {
-  Offset _position = const Offset(0.0, 0.0);
+class _HomePageMapState extends State<HomePageMap> {
+  final MapController controller = MapController();
+  LatLng latLng = const LatLng(40.76497, -111.84611);
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onDoubleTap: () {
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const moqup1Screen()));
-      },
-      child: Stack(
-        children: <Widget>[
-          Positioned(
-              left: _position.dx,
-              top: _position.dy,
-              child: Container(
-                alignment: Alignment.center,
-                child: Draggable(
-                  feedback: Image.asset('lib/images/Parking-Lot-Occupancy.png',
-                      fit: BoxFit.cover),
-                  childWhenDragging: Container(),
-                  onDraggableCanceled: (_, __) {},
-                  onDragEnd: (details) {
-                    setState(() {
-                      _position = details.offset;
-                    });
-                  },
-                  child: Image.asset('lib/images/Parking-Lot-Occupancy.png',
-                      fit: BoxFit.cover),
-                ),
-              )),
-        ],
+    return FlutterMap(
+      mapController: controller,
+      options: MapOptions(
+        initialCenter: latLng,
+        initialZoom: 18,
       ),
+      children: [
+        TileLayer(
+            urlTemplate:
+                "https://api.mapbox.com/styles/v1/notrh99/clrzb93vx009s01pu7y5g5wyt/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoibm90cmg5OSIsImEiOiJjbHJremlxaHUwa205MmprZGJ3dWFzYWR3In0.R-PO20FWueN9Mzx9EwmeEA"),
+        MarkerLayer(
+          markers: [
+            Marker(
+              point: latLng,
+              width: 60,
+              height: 60,
+              alignment: Alignment.topCenter,
+              child: Icon(
+                Icons.location_pin,
+                color: Colors.red.shade700,
+                size: 60,
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
