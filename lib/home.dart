@@ -81,7 +81,7 @@ class _HomePageMapState extends State<HomePageMap> {
       mapController: controller,
       options: MapOptions(
         initialCenter: latLng,
-        initialZoom: 18,
+        initialZoom: 14,
       ),
       children: [
         TileLayer(
@@ -89,15 +89,660 @@ class _HomePageMapState extends State<HomePageMap> {
                 "https://api.mapbox.com/styles/v1/notrh99/clrzb93vx009s01pu7y5g5wyt/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoibm90cmg5OSIsImEiOiJjbHJremlxaHUwa205MmprZGJ3dWFzYWR3In0.R-PO20FWueN9Mzx9EwmeEA"),
         MarkerLayer(
           markers: [
-            Marker(
-              point: latLng,
-              width: 60,
-              height: 60,
+            Marker( //1 Done
+              point: const LatLng(40.76047615, -111.8457732),
+              width: 30,
+              height: 30,
               alignment: Alignment.topCenter,
-              child: Icon(
-                Icons.location_pin,
-                color: Colors.red.shade700,
-                size: 60,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.76047615, -111.8457732), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              )
+            ),
+            Marker( //2 //Done
+              point: const LatLng(40.76609893830639, -111.84567689958726),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.76609893830639, -111.84567689958726), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              )
+            ),
+            Marker( //3 //Done
+              point: const LatLng(40.76553734, -111.8475873),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.76553734, -111.8475873), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              )
+            ),
+            Marker( //4 //Done
+              point: const LatLng(40.75964557, -111.8510534),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.75964557, -111.8510534), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              )
+            ),
+            Marker(//5 Done
+              point: const LatLng(40.76184712, -111.8487463),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.76184712, -111.8487463), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              ),
+            ),
+            Marker(//6 Done
+              point: const LatLng(40.76239342, -111.847587),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.76239342, -111.847587), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              ),
+            ),
+            Marker(//7 Done
+              point: const LatLng(40.76021823, -111.8443649),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.76021823, -111.8443649), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              ),
+            ),
+            Marker(//8 Done
+              point: const LatLng(40.76146288, -111.8381891),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.76146288, -111.8381891), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              ),
+            ),
+            Marker(//9 Done
+              point: const LatLng(40.76650879, -111.8450367),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.76650879, -111.8450367), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              ),
+            ),
+            Marker(//10 Done
+              point: const LatLng(40.76343596, -111.8532355),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.76343596, -111.8532355), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              ),
+            ),
+            Marker(//11
+              point: const LatLng(40.76679045, -111.8514649),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.76679045, -111.8514649), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              ),
+            ),
+            Marker(//12
+              point: const LatLng(40.76612338, -111.8456363),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.76612338, -111.8456363), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              ),
+            ),
+            Marker(//13
+              point: const LatLng(40.76545653, -111.8375496),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.76545653, -111.8375496), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              ),
+            ),
+            Marker(//14
+              point: const LatLng(40.76108824, -111.8425409),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.76108824, -111.8425409), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              ),
+            ),
+            Marker(//15
+              point: const LatLng(40.75947206, -111.8460659),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.75947206, -111.8460659), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              ),
+            ),
+            Marker(//16
+              point: const LatLng(40.76183744, -111.850429),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.76183744, -111.850429), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              ),
+            ),
+            Marker(//17
+              point: const LatLng(40.77022927, -111.8462263),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.77022927, -111.8462263), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              ),
+            ),
+            Marker(//18
+              point: const LatLng(40.766834, -111.8437108),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.766834, -111.8437108), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              ),
+            ),
+            Marker(//19
+              point: const LatLng(40.76930197, -111.8441186),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.76930197, -111.8441186), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              ),
+            ),
+            Marker(//20
+              point: const LatLng(40.7678793, -111.8480301),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.7678793, -111.8480301), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              ),
+            ),
+            Marker(//21
+              point: const LatLng(40.76505561, -111.849477),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.76505561, -111.849477), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              ),
+            ),
+            Marker(//22
+              point: const LatLng(40.76164289, -111.8414329),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.76164289, -111.8414329), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              ),
+            ),
+            Marker(//23
+              point: const LatLng(40.76164289, -111.8414329),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.76164289, -111.8414329), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              ),
+            ),
+            Marker(//24
+              point: const LatLng(40.76164289, -111.8414329),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.76164289, -111.8414329), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              ),
+            ),
+            Marker(//25
+              point: const LatLng(40.76164289, -111.8414329),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.76164289, -111.8414329), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              ),
+            ),
+            Marker(//26
+              point: const LatLng(40.76639168, -111.8487693),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.76639168, -111.8487693), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              ),
+            ),
+            Marker(//27
+              point: const LatLng(40.76639168, -111.8487693),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.76639168, -111.8487693), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              ),
+            ),
+            Marker(//27
+              point: const LatLng(40.76639168, -111.8487693),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.76639168, -111.8487693), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              ),
+            ),
+            Marker(//28
+              point: const LatLng(40.76639168, -111.8487693),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.76639168, -111.8487693), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              ),
+            ),
+            Marker(//29
+              point: const LatLng(40.76639168, -111.8487693),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.76639168, -111.8487693), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              ),
+            ),
+            Marker(//30
+              point: const LatLng(40.76188585, -111.8404306),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.76188585, -111.8404306), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              ),
+            ),
+            Marker(//31
+              point: const LatLng(40.76173022, -111.8467084),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.76173022, -111.8467084), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              ),
+            ),
+            Marker(//32
+              point: const LatLng(40.76307923, -111.8374067),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.76307923, -111.8374067), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              ),
+            ),
+            Marker(//33
+              point: const LatLng(40.76081929, -111.8395905),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.76081929, -111.8395905), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              ),
+            ),
+            Marker(//34
+              point: const LatLng(40.7611466, -111.8406582),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.7611466, -111.8406582), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              ),
+            ),
+            Marker(//35
+              point: const LatLng(40.76748713, -111.8398083),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.76748713, -111.8398083), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              ),
+            ),
+            Marker(//36
+              point: const LatLng(40.76608434, -111.8494079),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.76608434, -111.8494079), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              ),
+            ),
+            Marker(//37
+              point: const LatLng(40.765003, -111.8443877),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.765003, -111.8443877), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              ),
+            ),
+            Marker(//38
+              point: const LatLng(40.77055754, -111.843232),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.77055754, -111.843232), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              ),
+            ),
+            Marker(//39
+              point: const LatLng(40.76906066, -111.8393496),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.76906066, -111.8393496), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
+              ),
+            ),
+            Marker(//40
+              point: const LatLng(40.76502741, -111.8421128),
+              width: 30,
+              height: 30,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.76502741, -111.8421128), 20, 0);
+                },
+                child: Icon(
+                  Icons.location_pin,
+                  color: Colors.red.shade700,
+                  size: 25,
+                ),
               ),
             ),
           ],
