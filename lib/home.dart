@@ -73,6 +73,7 @@ class HomePageMap extends StatefulWidget {
 
 class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
   static final MapController controller = MapController();
+  static bool isReturningFromGoogleMaps = false;
   LatLng latLng = const LatLng(40.76497, -111.84611);
   static List<Marker> my_markers = [
     Marker(
@@ -103,6 +104,7 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
           onTap: () {
             controller.moveAndRotate(
                 const LatLng(40.76609893830639, -111.84567689958726), 20, 0);
+
             openMap(40.76609893830639, -111.84567689958726);
           },
           child: Icon(
@@ -889,12 +891,13 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.resumed) {
-      // App has returned to the foreground, navigate to survey screen
+    if (state == AppLifecycleState.resumed && isReturningFromGoogleMaps) {
+      // Reset the flag
+      isReturningFromGoogleMaps = false;
+
+      // Now navigate to the survey screen
       Navigator.of(context).push(
-        MaterialPageRoute(
-            builder: (context) =>
-                const ParkingLotSurveyScreen()), // Replace with your survey screen
+        MaterialPageRoute(builder: (context) => const ParkingLotSurveyScreen()),
       );
     }
   }
@@ -1175,6 +1178,7 @@ Future<void> openMap(double lat, double long) async {
   Uri googleMapUrl =
       Uri.parse("https://www.google.com/maps/search/?api=1&query=$lat,$long");
   if (await canLaunchUrl(googleMapUrl)) {
+    _HomePageMapState.isReturningFromGoogleMaps = true;
     // Checking if google map is installed on the device
     await launchUrl(googleMapUrl);
   } else {
