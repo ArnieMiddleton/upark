@@ -733,6 +733,27 @@ class _HomePageMapState extends State<HomePageMap> {
             ),
           ];
 
+  void addMarker(LatLng coordinates) {
+    setState(() {
+       my_markers.add(
+        Marker(
+              point: coordinates,
+              width: 60,
+              height: 60,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  controller.moveAndRotate(const LatLng(40.76502741, -111.8421128), 20, 0);
+                },
+                child: const Icon(
+                  Icons.location_pin,
+                  color: Color.fromARGB(255, 7, 3, 238),
+                  size: 30,
+                ),
+              ),
+            ));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -757,7 +778,7 @@ class _HomePageMapState extends State<HomePageMap> {
 class CustomSearchDelegate extends SearchDelegate {
   _HomePageMapState myInstance = _HomePageMapState();
   String lastQuery = '';
-  final Map<String, LatLng> searchTerms = {
+  final Map<String, LatLng> locations = {
     'Campus Bike Shop': const LatLng(40.7605798, -111.8428217),
     'S.J. Quinney College of Law': const LatLng(40.7612208, -111.8514449),
     'Mineral Processing Lab': const LatLng(40.7665169, -111.8448861),
@@ -911,74 +932,67 @@ class CustomSearchDelegate extends SearchDelegate {
     );
   }
 
- @override
+  @override
   Widget buildResults(BuildContext context) {
-    Future.delayed(Duration.zero, () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const moqup1Screen(),
-        ),
-      );
-    });
-     // Placeholder for the search result view
-    return const Center(
-      child: Text('Searching...'),
-    );
+    return _buildSearchResult();
   }
 
+  Widget _buildSearchResult() {
+    List<String> filteredList = locations.keys.where((item) => item.toLowerCase().contains(query.toLowerCase())).toList();
 
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    List<String> mathcQuery = [];
-    for (var building in searchTerms.keys.toList()) {
-      if (building.toLowerCase().contains(query.toLowerCase())) {
-        mathcQuery.add(building);
-      }
-    }
     return ListView.builder(
-      itemCount: mathcQuery.length,
+      itemCount: filteredList.length,
       itemBuilder: (context, index) {
-        var result = mathcQuery[index];
+        final item = filteredList[index];
+        final LatLng coordinates = locations[item]!;
+
         return ListTile(
-          title: Text(result),
+          title: Text(item),
           onTap: () {
-            query = result;
-            showResults((context));
+            // Take action based on the selected item (e.g., show marker on the map)
+            List<Marker> markersToRemove = [];
+            for (Marker currentMarker in _HomePageMapState.my_markers) {
+              if (currentMarker.width == 60){
+                  markersToRemove.add(currentMarker);
+              }
+            }
+            
+            for (Marker removingMarker in markersToRemove) {
+              _HomePageMapState.my_markers.remove(removingMarker);
+            }
+            _HomePageMapState.controller.moveAndRotate(coordinates,19,0);
+            _HomePageMapState.my_markers.add(
+              Marker(
+              point: coordinates,
+              width: 60,
+              height: 60,
+              alignment: Alignment.topCenter,
+              child: GestureDetector(
+                onTap: () {
+                  _HomePageMapState.controller.moveAndRotate(coordinates, 20, 0);
+                },
+                child: const Icon(
+                  Icons.location_pin,
+                  color: Color.fromARGB(255, 7, 3, 238),
+                  size: 30,
+                ),
+              ),
+            )
+            );
+
+            // Close the search bar
+            close(context, null);
           },
         );
       },
     );
   }
+
+    @override
+  Widget buildSuggestions(BuildContext context) {
+    return _buildSearchResult();
 }
-
-
-  // => const Center(
-  //   child: Text(
-  //     "WELCOME TO HOMEPAGE",)
-  // );
-  // {
-  //   List<String> mathcQuery = [];
-  //   for (var building in searchTerms) {
-  //     if (building.toLowerCase().contains(query.toLowerCase())) {
-  //       mathcQuery.add(building);
-  //     }
-  //   }
-  //   return ListView.builder(
-  //     itemCount: mathcQuery.length,
-  //     itemBuilder: (context, index) {
-  //       var result = mathcQuery[index];
-  //       return ListTile(
-  //         title: Text(result),
-  //         onTap: () {
-  //           query = result;
-  //           close(context,query);
-  //           showResults((context));
-  //         },
-  //       );
-  //     },
-  //   );
-  // }
+  }
 
 class moqup2Screen extends StatelessWidget {
   const moqup2Screen({super.key});
@@ -1051,3 +1065,4 @@ class moqup1Screen extends StatelessWidget {
     ));
   }
 }
+
