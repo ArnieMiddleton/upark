@@ -290,15 +290,15 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
     ),
     Marker(
       //12
-      point: const LatLng(40.76612338, -111.8456363),
+      point: const LatLng(40.76546238902576, -111.84641257823544),
       width: 30,
       height: 30,
       alignment: Alignment.topCenter,
       child: GestureDetector(
         onTap: () {
           controller.moveAndRotate(
-              const LatLng(40.76612338, -111.8456363), 20, 0);
-          openMap(40.76612338, -111.8456363);
+              const LatLng(40.76546238902576, -111.84641257823544), 20, 0);
+          openMap(40.76546238902576, -111.84641257823544);
         },
         child: Icon(
           Icons.location_pin,
