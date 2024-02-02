@@ -75,6 +75,7 @@ flutter:
     - lib/images/Parking-Lot-Occupancy.png
     - lib/images/moqup_3.jpg
     - lib/images/googlemaps.jpg
+    - lib/assets/distances.json
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
