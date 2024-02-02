@@ -1,9 +1,14 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:upark/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'survey.dart';
 import 'package:latlong2/latlong.dart';
+import 'dart:developer' as developer;
 
 // Homepage
 class HomePage extends StatelessWidget {
@@ -923,6 +928,31 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
   }
 }
 
+Future<Map<String, List<MapEntry<String, double>>>> loadParkingData() async {
+  // Load the JSON data
+  String jsonString = await rootBundle.loadString('lib/assets/distances.json');
+
+  // Parse the JSON string into a Map
+  Map<String, dynamic> buildings = jsonDecode(jsonString);
+
+  // Process the JSON to find the top 4 parking lots for each building
+  Map<String, List<MapEntry<String, double>>> topParkingLots = {};
+
+  buildings.forEach((building, parkingLots) {
+    // Convert parking lots to a list of MapEntries for sorting, ensuring keys are Strings
+    var parkingLotsList = (parkingLots as Map)
+        .entries
+        .map((entry) =>
+            MapEntry(entry.key as String, double.parse(entry.value.toString())))
+        .toList();
+
+    // Take the top 4 parking lots
+    topParkingLots[building] = parkingLotsList.take(4).toList();
+  });
+
+  return topParkingLots;
+}
+
 class CustomSearchDelegate extends SearchDelegate {
   _HomePageMapState myInstance = _HomePageMapState();
   String lastQuery = '';
@@ -1118,6 +1148,8 @@ class CustomSearchDelegate extends SearchDelegate {
   }
 
   Widget _buildSearchResult() {
+    var topParkingLots = loadParkingData();
+
     List<String> filteredList = locations.keys
         .where((item) => item.toLowerCase().contains(query.toLowerCase()))
         .toList();

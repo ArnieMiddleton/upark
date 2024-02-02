@@ -153,32 +153,29 @@ parking_lot_locations = {
     'Parking Lot 20': (40.7678793, -111.8480301),
     'Parking Lot 21': (40.76505561, -111.849477),
     'Parking Lot 22': (40.76164289, -111.8414329),
-    'Parking Lot 23': (40.76164289, -111.8414329),
-    'Parking Lot 24': (40.76164289, -111.8414329),
-    'Parking Lot 25': (40.76164289, -111.8414329),
-    'Parking Lot 26': (40.76639168, -111.8487693),
-    'Parking Lot 27': (40.76639168, -111.8487693),
-    'Parking Lot 28': (40.76639168, -111.8487693),
-    'Parking Lot 29': (40.76639168, -111.8487693),
-    'Parking Lot 30': (40.76188585, -111.8404306),
-    'Parking Lot 31': (40.76307923, -111.8374067),
-    'Parking Lot 32': (40.76307923, -111.8374067),
-    'Parking Lot 33': (40.76081929, -111.8395905),
-    'Parking Lot 34': (40.7611466, -111.8406582),
-    'Parking Lot 35': (40.76748713, -111.8398083),
-    'Parking Lot 36': (40.76608434, -111.8494079),
-    'Parking Lot 37': (40.765003, -111.8443877),
-    'Parking Lot 38': (40.77055754, -111.843232),
-    'Parking Lot 39': (40.76906066, -111.8393496),
-    'Parking Lot 40': (40.76502741, -111.8421128),
+    'Parking Lot 23': (40.76639168, -111.8487693),
+    'Parking Lot 24': (40.76188585, -111.8404306),
+    'Parking Lot 25': (40.76307923, -111.8374067),
+    'Parking Lot 26': (40.76081929, -111.8395905),
+    'Parking Lot 27': (40.7611466, -111.8406582),
+    'Parking Lot 28': (40.76748713, -111.8398083),
+    'Parking Lot 29': (40.76608434, -111.8494079),
+    'Parking Lot 30': (40.765003, -111.8443877),
+    'Parking Lot 31': (40.77055754, -111.843232),
+    'Parking Lot 32': (40.76906066, -111.8393496),
+    'Parking Lot 31': (40.76502741, -111.8421128),
 
 }
 distance_data = {}
 for building_name, building_coords in building_locations.items():
-    distance_data[building_name] = {}
+    distances = {}
     for parking_lot_name, parking_lot_coords in parking_lot_locations.items():
         distance = haversine(building_coords, parking_lot_coords) * 1000  # Distance in meters
-        distance_data[building_name][parking_lot_name] = distance
+        distances[parking_lot_name] = distance
+
+    # Sort the parking lots by distance in ascending order
+    sorted_distances = dict(sorted(distances.items(), key=lambda item: item[1]))
+    distance_data[building_name] = sorted_distances
 
 # Write the distance data to a JSON file
 with open('distances.json', 'w') as outfile:
