@@ -1148,128 +1148,140 @@ class CustomSearchDelegate extends SearchDelegate {
   }
 
   Widget _buildSearchResult() {
-    var topParkingLots = loadParkingData();
+    // Use FutureBuilder to handle the future returned by loadParkingData
+    return FutureBuilder<Map<String, List<MapEntry<String, double>>>>(
+      future: loadParkingData(), // the Future your method returns
+      builder: (BuildContext context,
+          AsyncSnapshot<Map<String, List<MapEntry<String, double>>>> snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          // Return loading indicator while waiting for the data
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          // Handle the case when there's an error fetching the data
+          return Center(child: Text('Error: ${snapshot.error}'));
+        } else if (snapshot.hasData) {
+          // Once the data is fetched, you can display it
+          final topParkingLots = snapshot.data!;
+          List<String> filteredList = locations.keys
+              .where((item) => item.toLowerCase().contains(query.toLowerCase()))
+              .toList();
 
-    List<String> filteredList = locations.keys
-        .where((item) => item.toLowerCase().contains(query.toLowerCase()))
-        .toList();
-    return ListView.builder(
-      itemCount: filteredList.length,
-      itemBuilder: (context, index) {
-        final item = filteredList[index];
-        final LatLng coordinates = locations[item]!;
+          // Build your list view with the actual data
+          return ListView.builder(
+            itemCount: filteredList.length,
+            itemBuilder: (context, index) {
+              final item = filteredList[index];
+              final LatLng coordinates = locations[item]!;
+              final List<MapEntry<String, double>>? buildingParkingLots =
+                  topParkingLots[item];
 
-        return ListTile(
-          title: Text(item),
-          onTap: () {
-            // Take action based on the selected item (e.g., show marker on the map)
-            List<Marker> markersToRemove = [];
-            for (Marker currentMarker in _HomePageMapState.my_markers) {
-              if (currentMarker.width == 60) {
-                markersToRemove.add(currentMarker);
-              }
-            }
-
-            for (Marker removingMarker in markersToRemove) {
-              _HomePageMapState.my_markers.remove(removingMarker);
-            }
-            _HomePageMapState.controller.moveAndRotate(coordinates, 19, 0);
-            _HomePageMapState.my_markers.add(Marker(
-              point: coordinates,
-              width: 60,
-              height: 60,
-              alignment: Alignment.topCenter,
-              child: GestureDetector(
+              return ListTile(
+                title: Text(item),
                 onTap: () {
+                  // Take action based on the selected item (e.g., show marker on the map)
+                  List<Marker> markersToRemove = [];
+                  for (Marker currentMarker in _HomePageMapState.my_markers) {
+                    if (currentMarker.width == 60) {
+                      markersToRemove.add(currentMarker);
+                    }
+                  }
+
+                  for (Marker removingMarker in markersToRemove) {
+                    _HomePageMapState.my_markers.remove(removingMarker);
+                  }
                   _HomePageMapState.controller
-                      .moveAndRotate(coordinates, 20, 0);
+                      .moveAndRotate(coordinates, 19, 0);
+                  _HomePageMapState.my_markers.add(Marker(
+                    point: coordinates,
+                    width: 60,
+                    height: 60,
+                    alignment: Alignment.topCenter,
+                    child: GestureDetector(
+                      onTap: () {
+                        _HomePageMapState.controller
+                            .moveAndRotate(coordinates, 20, 0);
+                      },
+                      child: const Icon(
+                        Icons.location_pin,
+                        color: Color.fromARGB(255, 7, 3, 238),
+                        size: 30,
+                      ),
+                    ),
+                  ));
+                  // Close the search bar
+                  close(context, null);
+
+                  if (buildingParkingLots != null &&
+                      buildingParkingLots.isNotEmpty) {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      builder: (BuildContext context) {
+                        return _buildParkingLotBottomSheet(
+                            context, buildingParkingLots);
+                      },
+                    );
+                  }
                 },
-                child: const Icon(
-                  Icons.location_pin,
-                  color: Color.fromARGB(255, 7, 3, 238),
-                  size: 30,
+              );
+            },
+          );
+        } else {
+          // Handle the case when there's no data but also no error
+          return const Center(child: Text('No data available'));
+        }
+      },
+    );
+  }
+
+  Widget _buildParkingLotBottomSheet(
+      BuildContext context, List<MapEntry<String, double>> parkingLots) {
+    return DraggableScrollableSheet(
+      initialChildSize: 0.3, // 30% of screen height
+      minChildSize: 0.2, // 20% of screen height
+      maxChildSize: 0.6, // 60% of screen height
+      expand: false,
+      builder: (BuildContext context, ScrollController scrollController) {
+        return Container(
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(18)),
+            boxShadow: [BoxShadow(blurRadius: 10, color: Colors.black12)],
+          ),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 24,
+                child: Center(
+                  child: Container(
+                    width: 30,
+                    height: 5,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(2.5)),
+                    ),
+                  ),
                 ),
               ),
-            ));
-            // Close the search bar
-            close(context, null);
-
-            showModalBottomSheet(
-              context: context,
-              isScrollControlled: true, // Make the sheet height adjustable
-              builder: (BuildContext context) {
-                // Set the initial fraction of the screen height you want the bottom sheet to cover
-                double initialFraction = 0.3;
-
-                // Define your parking lots or other options here
-                List<String> parkingLots = [
-                  'Parking Lot A',
-                  'Parking Lot B',
-                  'Parking Lot C',
-                  'Parking Lot D'
-                ];
-
-                // Bottom sheet with draggable feature
-                return DraggableScrollableSheet(
-                  initialChildSize: initialFraction,
-                  minChildSize:
-                      0.2, // Set minimum size to 20% of the screen height
-                  maxChildSize: 0.6, // Maximum size while dragging up
-                  expand: false,
-                  builder: (BuildContext context,
-                      ScrollController scrollController) {
-                    return Container(
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(18)),
-                        boxShadow: [
-                          BoxShadow(blurRadius: 10, color: Colors.black12)
-                        ],
-                      ),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 24,
-                            child: Center(
-                              child: Container(
-                                width: 30,
-                                height: 5,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[300],
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(2.5)),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: ListView.separated(
-                              controller: scrollController,
-                              itemCount: parkingLots.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return ListTile(
-                                  title: Text(parkingLots[index]),
-                                  trailing: Icon(Icons.arrow_forward),
-                                  onTap: () {
-                                    // Perform the action when a parking lot is tapped
-                                    // For example, navigate to a new screen or update the map location
-                                  },
-                                );
-                              },
-                              separatorBuilder:
-                                  (BuildContext context, int index) =>
-                                      Divider(height: 1),
-                            ),
-                          ),
-                        ],
-                      ),
+              Expanded(
+                child: ListView.builder(
+                  controller: scrollController,
+                  itemCount: parkingLots.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final parkingLotEntry = parkingLots[index];
+                    return ListTile(
+                      title: Text(
+                          '${parkingLotEntry.key}: ${parkingLotEntry.value.toStringAsFixed(2)} meters'),
+                      onTap: () {
+                        //open the parking lot the user selected from the list using openMap(double lat, double long).
+                      },
                     );
                   },
-                );
-              },
-            );
-          },
+                ),
+              ),
+            ],
+          ),
         );
       },
     );
