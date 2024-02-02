@@ -73,6 +73,7 @@ class HomePageMap extends StatefulWidget {
 
 class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
   static final MapController controller = MapController();
+  ValueNotifier<bool> isSheetExpanded = ValueNotifier(false);
   static bool isReturningFromGoogleMaps = false;
   LatLng latLng = const LatLng(40.76497, -111.84611);
   static List<Marker> my_markers = [
@@ -1120,7 +1121,6 @@ class CustomSearchDelegate extends SearchDelegate {
     List<String> filteredList = locations.keys
         .where((item) => item.toLowerCase().contains(query.toLowerCase()))
         .toList();
-
     return ListView.builder(
       itemCount: filteredList.length,
       itemBuilder: (context, index) {
@@ -1159,9 +1159,84 @@ class CustomSearchDelegate extends SearchDelegate {
                 ),
               ),
             ));
-
             // Close the search bar
             close(context, null);
+
+            showModalBottomSheet(
+              context: context,
+              isScrollControlled: true, // Make the sheet height adjustable
+              builder: (BuildContext context) {
+                // Set the initial fraction of the screen height you want the bottom sheet to cover
+                double initialFraction = 0.3;
+
+                // Define your parking lots or other options here
+                List<String> parkingLots = [
+                  'Parking Lot A',
+                  'Parking Lot B',
+                  'Parking Lot C',
+                  'Parking Lot D'
+                ];
+
+                // Bottom sheet with draggable feature
+                return DraggableScrollableSheet(
+                  initialChildSize: initialFraction,
+                  minChildSize:
+                      0.2, // Set minimum size to 20% of the screen height
+                  maxChildSize: 0.6, // Maximum size while dragging up
+                  expand: false,
+                  builder: (BuildContext context,
+                      ScrollController scrollController) {
+                    return Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius:
+                            BorderRadius.vertical(top: Radius.circular(18)),
+                        boxShadow: [
+                          BoxShadow(blurRadius: 10, color: Colors.black12)
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 24,
+                            child: Center(
+                              child: Container(
+                                width: 30,
+                                height: 5,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(2.5)),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: ListView.separated(
+                              controller: scrollController,
+                              itemCount: parkingLots.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return ListTile(
+                                  title: Text(parkingLots[index]),
+                                  trailing: Icon(Icons.arrow_forward),
+                                  onTap: () {
+                                    // Perform the action when a parking lot is tapped
+                                    // For example, navigate to a new screen or update the map location
+                                  },
+                                );
+                              },
+                              separatorBuilder:
+                                  (BuildContext context, int index) =>
+                                      Divider(height: 1),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              },
+            );
           },
         );
       },
