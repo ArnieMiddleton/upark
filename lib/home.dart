@@ -1116,6 +1116,42 @@ class CustomSearchDelegate extends SearchDelegate {
     'Dumke Gymnastics Center': const LatLng(40.7643456, -111.8396279),
   };
 
+  final Map<String, LatLng> parking_locations = {
+    'Parking Lot 1': const LatLng(40.76047615, -111.8457732),
+    'Parking Lot 2': const LatLng(40.76609893830639, -111.84567689958726),
+    'Parking Lot 3': const LatLng(40.76553734, -111.8475873),
+    'Parking Lot 4': const LatLng(40.75964557, -111.8510534),
+    'Parking Lot 5': const LatLng(40.76184712, -111.8487463),
+    'Parking Lot 6': const LatLng(40.76239342, -111.847587),
+    'Parking Lot 7': const LatLng(40.76021823, -111.8443649),
+    'Parking Lot 8': const LatLng(40.76146288, -111.8381891),
+    'Parking Lot 9': const LatLng(40.76650879, -111.8450367),
+    'Parking Lot 10': const LatLng(40.76343596, -111.8532355),
+    'Parking Lot 11': const LatLng(40.76679045, -111.8514649),
+    'Parking Lot 12': const LatLng(40.76612338, -111.8456363),
+    'Parking Lot 13': const LatLng(40.76545653, -111.8375496),
+    'Parking Lot 14': const LatLng(40.76108824, -111.8425409),
+    'Parking Lot 15': const LatLng(40.75947206, -111.8460659),
+    'Parking Lot 16': const LatLng(40.76183744, -111.850429),
+    'Parking Lot 17': const LatLng(40.77022927, -111.8462263),
+    'Parking Lot 18': const LatLng(40.766834, -111.8437108),
+    'Parking Lot 19': const LatLng(40.76930197, -111.8441186),
+    'Parking Lot 20': const LatLng(40.7678793, -111.8480301),
+    'Parking Lot 21': const LatLng(40.76505561, -111.849477),
+    'Parking Lot 22': const LatLng(40.76164289, -111.8414329),
+    'Parking Lot 23': const LatLng(40.76639168, -111.8487693),
+    'Parking Lot 24': const LatLng(40.76188585, -111.8404306),
+    'Parking Lot 25': const LatLng(40.76307923, -111.8374067),
+    'Parking Lot 26': const LatLng(40.76081929, -111.8395905),
+    'Parking Lot 27': const LatLng(40.7611466, -111.8406582),
+    'Parking Lot 28': const LatLng(40.76748713, -111.8398083),
+    'Parking Lot 29': const LatLng(40.76608434, -111.8494079),
+    'Parking Lot 30': const LatLng(40.765003, -111.8443877),
+    'Parking Lot 31': const LatLng(40.77055754, -111.843232),
+    'Parking Lot 32': const LatLng(40.76906066, -111.8393496),
+    'Parking Lot 33': const LatLng(40.76502741, -111.8421128)
+  };
+
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
@@ -1274,7 +1310,8 @@ class CustomSearchDelegate extends SearchDelegate {
                       title: Text(
                           '${parkingLotEntry.key}: ${parkingLotEntry.value.toStringAsFixed(2)} meters'),
                       onTap: () {
-                        //open the parking lot the user selected from the list using openMap(double lat, double long).
+                        LatLng loc = parking_locations[parkingLotEntry.key]!;
+                        openMap(loc.latitude, loc.longitude);
                       },
                     );
                   },
@@ -1305,63 +1342,3 @@ Future<void> openMap(double lat, double long) async {
     throw 'Could not open the map.';
   }
 }
-
-// class moqup2Screen extends StatelessWidget {
-//   const moqup2Screen({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     // Capture the Navigator state before the async operation
-//     final NavigatorState navigator = Navigator.of(context);
-
-//     return Scaffold(
-//       body: GestureDetector(
-//         onTap: () async {
-//           await openMap(40.76497, -111.84611); // Open Google Maps first
-//           if (!navigator.mounted) {
-//             return;
-//           }
-//           // Use the navigator after the async operation
-//           navigator.push(
-//             MaterialPageRoute(
-//               builder: (context) => const ParkingLotSurveyScreen(),
-//             ),
-//           );
-//         },
-//         child: Container(
-//           alignment: Alignment.center,
-//           decoration: const BoxDecoration(
-//             image: DecorationImage(
-//               image: AssetImage('lib/images/moqup_2.jpg'),
-//               fit: BoxFit.cover,
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// class moqup1Screen extends StatelessWidget {
-//   const moqup1Screen({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//         body: GestureDetector(
-//       onTap: () {
-//         Navigator.of(context).push(
-//             MaterialPageRoute(builder: (context) => const moqup2Screen()));
-//       },
-//       child: Container(
-//         alignment: Alignment.center,
-//         decoration: const BoxDecoration(
-//           image: DecorationImage(
-//             image: AssetImage('lib/images/moqup_1.jpg'),
-//             fit: BoxFit.cover,
-//           ),
-//         ),
-//       ),
-//     ));
-//   }
-// }

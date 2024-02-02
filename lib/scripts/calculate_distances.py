@@ -163,8 +163,7 @@ parking_lot_locations = {
     'Parking Lot 30': (40.765003, -111.8443877),
     'Parking Lot 31': (40.77055754, -111.843232),
     'Parking Lot 32': (40.76906066, -111.8393496),
-    'Parking Lot 31': (40.76502741, -111.8421128),
-
+    'Parking Lot 33': (40.76502741, -111.8421128)
 }
 distance_data = {}
 for building_name, building_coords in building_locations.items():
@@ -180,3 +179,5 @@ for building_name, building_coords in building_locations.items():
 # Write the distance data to a JSON file
 with open('distances.json', 'w') as outfile:
     json.dump(distance_data, outfile, indent=4)
+
+#write lat and long
