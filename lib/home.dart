@@ -914,7 +914,7 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
       children: [
         TileLayer(
             urlTemplate:
-                "https://api.mapbox.com/styles/v1/notrh99/clrzb93vx009s01pu7y5g5wyt/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoibm90cmg5OSIsImEiOiJjbHJremlxaHUwa205MmprZGJ3dWFzYWR3In0.R-PO20FWueN9Mzx9EwmeEA"),
+                "https://api.mapbox.com/styles/v1/notrh99/cls4817h500dx01po4rvgauqt/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoibm90cmg5OSIsImEiOiJjbHJremlxaHUwa205MmprZGJ3dWFzYWR3In0.R-PO20FWueN9Mzx9EwmeEA"),
         MarkerLayer(
           markers: my_markers,
         ),
