@@ -169,12 +169,14 @@ distance_data = {}
 for building_name, building_coords in building_locations.items():
     distances = {}
     for parking_lot_name, parking_lot_coords in parking_lot_locations.items():
-        distance = haversine(building_coords, parking_lot_coords) * 1000  # Distance in meters
+        # Calculate distance in meters, rounded to the nearest meter
+        distance = round(haversine(building_coords, parking_lot_coords) * 1000)
         distances[parking_lot_name] = distance
 
     # Sort the parking lots by distance in ascending order
     sorted_distances = dict(sorted(distances.items(), key=lambda item: item[1]))
     distance_data[building_name] = sorted_distances
+
 
 # Write the distance data to a JSON file
 with open('distances.json', 'w') as outfile:

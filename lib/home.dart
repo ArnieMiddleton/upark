@@ -9,6 +9,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'survey.dart';
 import 'package:latlong2/latlong.dart';
 import 'dart:developer' as developer;
+import 'package:fuzzy/fuzzy.dart';
 
 // Homepage
 class HomePage extends StatelessWidget {
@@ -1184,6 +1185,21 @@ class CustomSearchDelegate extends SearchDelegate {
   }
 
   Widget _buildSearchResult() {
+    // Convert locations to a list of names for the fuzzy search.
+    final locationNames = locations.keys.toList();
+
+    // Perform a fuzzy search. This is a placeholder for the actual search logic.
+    // Replace this with the call to your fuzzy search library.
+    final fuzzy = Fuzzy(locationNames,
+        options: FuzzyOptions(
+          findAllMatches: true,
+          threshold: 0.4, // Adjust based on your needs
+        ));
+    final results = fuzzy.search(query);
+
+    // Extract the original location names from the search results.
+    final filteredList = results.map((r) => r.item).toList();
+
     // Use FutureBuilder to handle the future returned by loadParkingData
     return FutureBuilder<Map<String, List<MapEntry<String, double>>>>(
       future: loadParkingData(), // the Future your method returns
@@ -1198,9 +1214,6 @@ class CustomSearchDelegate extends SearchDelegate {
         } else if (snapshot.hasData) {
           // Once the data is fetched, you can display it
           final topParkingLots = snapshot.data!;
-          List<String> filteredList = locations.keys
-              .where((item) => item.toLowerCase().contains(query.toLowerCase()))
-              .toList();
 
           // Build your list view with the actual data
           return ListView.builder(
