@@ -10,6 +10,8 @@ import 'survey.dart';
 import 'package:latlong2/latlong.dart';
 import 'dart:developer' as developer;
 import 'package:fuzzy/fuzzy.dart';
+import 'package:fl_chart/fl_chart.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 // Homepage
 class HomePage extends StatelessWidget {
@@ -1322,9 +1324,25 @@ class CustomSearchDelegate extends SearchDelegate {
                     return ListTile(
                       title: Text(
                           '${parkingLotEntry.key}: ${parkingLotEntry.value.toStringAsFixed(2)} meters'),
+                      // When you want to show the HistogramScreen, pass the location parameter
                       onTap: () {
-                        LatLng loc = parking_locations[parkingLotEntry.key]!;
-                        openMap(loc.latitude, loc.longitude);
+                        LatLng loc = parking_locations[parkingLotEntry
+                            .key]!; // Get the location data for the selected parking lot
+                        showModalBottomSheet(
+                          context: context,
+                          isScrollControlled: true,
+                          builder: (BuildContext context) {
+                            return DraggableScrollableSheet(
+                              expand: false,
+                              builder: (BuildContext context,
+                                  ScrollController scrollController) {
+                                return HistogramScreen(
+                                    location:
+                                        loc); // Pass the location data here
+                              },
+                            );
+                          },
+                        );
                       },
                     );
                   },
@@ -1354,4 +1372,84 @@ Future<void> openMap(double lat, double long) async {
     // If Google Maps is not installed, you might want to show a dialog to the user or handle it otherwise
     throw 'Could not open the map.';
   }
+}
+
+class HistogramScreen extends StatefulWidget {
+  final LatLng location;
+
+  // Updated constructor using super parameter for 'key'
+  const HistogramScreen({super.key, required this.location});
+
+  @override
+  _HistogramScreenState createState() => _HistogramScreenState();
+}
+
+class _HistogramScreenState extends State<HistogramScreen> {
+  String selectedDay = 'Mon'; // Default to Monday
+  final List<String> _days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+  // Placeholder data for the histogram
+  final List<ChartData> chartData = [
+    ChartData('6am', 5),
+    ChartData('9am', 10),
+    ChartData('12pm', 7),
+    ChartData('3pm', 15),
+    ChartData('6pm', 9),
+    // Add more data here
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Histogram Data'),
+        leading: IconButton(
+          icon: const Icon(Icons.close),
+          onPressed: () => Navigator.pop(context), // Close the screen
+        ),
+        actions: <Widget>[
+          DropdownButton<String>(
+            value: selectedDay,
+            icon: const Icon(Icons.arrow_drop_down),
+            onChanged: (String? newValue) {
+              setState(() {
+                selectedDay = newValue!;
+                // Update your histogram data here based on the selectedDay
+              });
+            },
+            items: _days.map<DropdownMenuItem<String>>((String day) {
+              return DropdownMenuItem<String>(
+                value: day,
+                child: Text(day),
+              );
+            }).toList(),
+          ),
+          IconButton(
+            icon: const Icon(Icons.arrow_forward_outlined),
+            onPressed: () {
+              // Use the location data to open Google Maps
+              openMap(widget.location.latitude, widget.location.longitude);
+            },
+          ),
+        ],
+      ),
+      body: SfCartesianChart(
+        // Configure the axes and series as needed
+        primaryXAxis: const CategoryAxis(),
+        series: <ColumnSeries<ChartData, String>>[
+          ColumnSeries<ChartData, String>(
+            dataSource: chartData,
+            xValueMapper: (ChartData data, _) => data.time,
+            yValueMapper: (ChartData data, _) => data.value,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ChartData {
+  ChartData(this.time, this.value);
+  final String time;
+  final double value;
 }
