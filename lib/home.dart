@@ -900,14 +900,22 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.resumed && isReturningFromGoogleMaps) {
+    if (state == AppLifecycleState.resumed && isReturningFromMaps) {
       // Reset the flag
-      isReturningFromGoogleMaps = false;
+      isReturningFromMaps = false;
 
-      // Now navigate to the survey screen
-      Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => const ParkingLotSurveyScreen()),
-      );
+      // Now navigate to the survey screen if we're not already on it
+      if (Navigator.of(context).canPop()) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+              builder: (context) => const ParkingLotSurveyScreen()),
+        );
+      } else {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+              builder: (context) => const ParkingLotSurveyScreen()),
+        );
+      }
     }
   }
 
@@ -1361,16 +1369,25 @@ class CustomSearchDelegate extends SearchDelegate {
   }
 }
 
+bool isReturningFromMaps = false;
 Future<void> openMap(double lat, double long) async {
-  Uri googleMapUrl =
-      Uri.parse("https://www.google.com/maps/search/?api=1&query=$lat,$long");
-  if (await canLaunchUrl(googleMapUrl)) {
-    _HomePageMapState.isReturningFromGoogleMaps = true;
-    // Checking if google map is installed on the device
-    await launchUrl(googleMapUrl);
+  String googleMapsUrl =
+      "https://www.google.com/maps/search/?api=1&query=$lat,$long";
+  String appleMapsUrl = "https://maps.apple.com/?q=$lat,$long";
+  String geoUrl = "geo:$lat,$long";
+  Uri mapUrl =
+      Platform.isIOS ? Uri.parse(appleMapsUrl) : Uri.parse(googleMapsUrl);
+
+  if (await canLaunchUrl(mapUrl)) {
+    // Set the flag right before launching the maps app
+    isReturningFromMaps = true;
+    await launchUrl(mapUrl);
+  } else if (await canLaunchUrl(Uri.parse(geoUrl))) {
+    // Launch the default maps app
+    isReturningFromMaps = true;
+    await launchUrl(Uri.parse(geoUrl));
   } else {
-    // If Google Maps is not installed, you might want to show a dialog to the user or handle it otherwise
-    throw 'Could not open the map.';
+    throw 'Could not launch map';
   }
 }
 
@@ -1385,7 +1402,7 @@ class HistogramScreen extends StatefulWidget {
 }
 
 class _HistogramScreenState extends State<HistogramScreen> {
-  String selectedDay = 'Mon'; // Default to Monday
+  late String selectedDay; // Default to Monday
   final List<String> _days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
   // Placeholder data for the histogram
@@ -1397,6 +1414,15 @@ class _HistogramScreenState extends State<HistogramScreen> {
     ChartData('6pm', 9),
     // Add more data here
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    // Set the default day to today's weekday
+    int currentWeekday = DateTime.now().weekday;
+    // Dart's DateTime class defines Sunday as 7 instead of 0
+    selectedDay = _days[(currentWeekday % 7) - 1];
+  }
 
   @override
   Widget build(BuildContext context) {
