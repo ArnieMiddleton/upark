@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
+import 'dart:math';
 import 'package:flutter_map/flutter_map.dart';
 // import 'package:flutter_map/flutter_map.dart';
 import 'package:upark/settings.dart';
@@ -81,6 +82,7 @@ class HomePageMap extends StatefulWidget {
   _HomePageMapState createState() => _HomePageMapState();
 }
 
+// Creates a dictionary (lotName (str) -> location (LatLng))
 Map<String, LatLng> createLotLngDict()
 {
   Map<String, LatLng> parkinglotsLocation = {
@@ -123,6 +125,7 @@ Map<String, LatLng> createLotLngDict()
 
   return parkinglotsLocation;
 }
+
 // Creates a list of markers that will be placed on the map from a Map (LotNames -> (Latitude, Longitude))
 List<Marker> createMarkerList(MapController controller)
 {
@@ -167,80 +170,98 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
   static Map<String, LatLng> lot_name_TO_coordinate = createLotLngDict();
   late Timer timer;
   
-static void updateMarker(Map<String, int> occupancyPerLot, Map<String, LatLng> parkinglotsLocation)
-{
-  Color green = Colors.green;
-  Color yellow = Colors.yellow;
-  Color orange = Colors.orange.shade600;
-  Color red = Colors.red.shade700;
-
-  for (var parkingLot in occupancyPerLot.entries)
+  // given a two dictionaries (lotName -> occupancy percentage) and (lotName -> Location) updates the color of the markers
+  static void updateMarker(Map<String, int> occupancyPerLot, Map<String, LatLng> parkinglotsLocation)
   {
-    String lotName = parkingLot.key;
-    int occupancy = parkingLot.value;
+    Color green = Colors.green;
+    Color yellow = Colors.yellow.shade600;
+    Color orange = Colors.orange.shade600;
+    Color red = Colors.red.shade700;
 
-    Color newColor;
+    for (var parkingLot in occupancyPerLot.entries)
+    {
+      String lotName = parkingLot.key;
+      int occupancy = parkingLot.value;
 
-  // Convert map keys to a list
-  List<String> keysList = parkinglotsLocation.keys.toList();
+      Color newColor;
 
-  // Find the index of the key
-  int listIndex = keysList.indexOf(lotName);
+    // Convert map keys to a list
+    List<String> keysList = parkinglotsLocation.keys.toList();
 
-  // Find the new color for the marker based on occupancy.
-  if(0 <= occupancy && occupancy <= 40)
-  {
-    newColor = green;
-  }
-  else if (40 < occupancy && occupancy <= 60)
-  {
-    newColor = yellow;
-  }
-  else if (60 < occupancy && occupancy <= 80)
-  {
-    newColor = orange;
-  }
-  else 
-  {
-    newColor = red;
-  }
-  
-  LatLng coord = parkinglotsLocation[lotName]!;
-  // Create a new marker that will be replaced with current one
-  Marker replaceMarker = Marker(
-    point: coord,
-    width: 30,
-    height: 30,
-    alignment: Alignment.topCenter,
-    child: GestureDetector(
-      onTap: () {
-        controller.moveAndRotate(
-          coord, 20, 0
-        );
-        openMap(coord.latitude, coord.longitude);
-      },
-      child: Icon(
-        Icons.location_pin,
-        color: newColor,
-        size: 25,
-      ),
-    )
-  );
-  
-  my_markers[listIndex] = replaceMarker;
+    // Find the index of the key
+    int listIndex = keysList.indexOf(lotName);
 
+    // Find the new color for the marker based on occupancy.
+    if(0 <= occupancy && occupancy <= 40)
+    {
+      newColor = green;
+    }
+    else if (40 < occupancy && occupancy <= 60)
+    {
+      newColor = yellow;
+    }
+    else if (60 < occupancy && occupancy <= 80)
+    {
+      newColor = orange;
+    }
+    else 
+    {
+      newColor = red;
+    }
+    
+    LatLng coord = parkinglotsLocation[lotName]!;
+    // Create a new marker that will be replaced with current one
+    Marker replaceMarker = Marker(
+      point: coord,
+      width: 30,
+      height: 30,
+      alignment: Alignment.topCenter,
+      child: GestureDetector(
+        onTap: () {
+          controller.moveAndRotate(
+            coord, 20, 0
+          );
+          openMap(coord.latitude, coord.longitude);
+        },
+        child: Icon(
+          Icons.location_pin,
+          color: newColor,
+          size: 25,
+        ),
+      )
+    );
+    
+    my_markers[listIndex] = replaceMarker;
+
+    }
   }
-}
+
+  // Method that is being called every 'X' seconds/minutes to update the Map.
+  void updateMap() {
+    // CREATING DUMMY DATA TO TEST MARKER UPDATING EVERY X SECONDS
+    List<String> parkingNames = createLotLngDict().keys.toList();
+    print("The length of the list is: ${parkingNames.length}");
+    Random random = Random();
+    List<int> randomOccupancy = List.generate(34, (_) => random.nextInt(101));
+    Map<String, int> dummy_map = Map.fromIterables(parkingNames,randomOccupancy);
+    
+    setState(() {
+      updateMarker(dummy_map, createLotLngDict());
+    });
+  }
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this); // Register observer
+    timer = Timer.periodic(Duration(seconds: 5), (Timer t) => updateMap());
+    // call updateMap every 5 seconds to update the markers.
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this); // Unregister observer
+    timer.cancel();
     super.dispose();
   }
 
@@ -277,7 +298,8 @@ static void updateMarker(Map<String, int> occupancyPerLot, Map<String, LatLng> p
       children: [
         TileLayer(
             urlTemplate:
-                "https://api.mapbox.com/styles/v1/notrh99/cls4817h500dx01po4rvgauqt/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoibm90cmg5OSIsImEiOiJjbHJremlxaHUwa205MmprZGJ3dWFzYWR3In0.R-PO20FWueN9Mzx9EwmeEA"),
+                "https://api.mapbox.com/styles/v1/notrh99/clt8xt1yy006l01r5g8j7dmxp/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoibm90cmg5OSIsImEiOiJjbHJremlxaHUwa205MmprZGJ3dWFzYWR3In0.R-PO20FWueN9Mzx9EwmeEA"),
+                // "https://api.mapbox.com/styles/v1/notrh99/cls4817h500dx01po4rvgauqt/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoibm90cmg5OSIsImEiOiJjbHJremlxaHUwa205MmprZGJ3dWFzYWR3In0.R-PO20FWueN9Mzx9EwmeEA"),
         MarkerLayer(
           markers: my_markers,
         ),
