@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -80,11 +81,8 @@ class HomePageMap extends StatefulWidget {
   _HomePageMapState createState() => _HomePageMapState();
 }
 
-List<Marker> createMarkerList(MapController controller)
+Map<String, LatLng> createLotLngDict()
 {
-  List<Marker> lotMarkers = [];
-   //CREATING A DICTIONARY -> KEYS: PARKING LOT NAMES, VALUES: LATITUDE AND LONGITUDE FOR THE CORRESPONDING PARKING LOT
-
   Map<String, LatLng> parkinglotsLocation = {
     'Social Work': const LatLng(40.76047615, -111.8457732),
     'Union North': const LatLng(40.76551563, -111.8464372),
@@ -123,6 +121,16 @@ List<Marker> createMarkerList(MapController controller)
     'HPER Sports': const LatLng(40.76502741, -111.8421128),
   };
 
+  return parkinglotsLocation;
+}
+// Creates a list of markers that will be placed on the map from a Map (LotNames -> (Latitude, Longitude))
+List<Marker> createMarkerList(MapController controller)
+{
+  List<Marker> lotMarkers = [];
+   //CREATING A DICTIONARY -> KEYS: PARKING LOT NAMES, VALUES: LATITUDE AND LONGITUDE FOR THE CORRESPONDING PARKING LOT
+
+  Map<String, LatLng> parkinglotsLocation = createLotLngDict();
+
   for (var parkingLot in parkinglotsLocation.entries)
   {
     Marker newMarker = Marker(
@@ -156,29 +164,73 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
   static bool isReturningFromGoogleMaps = false;
   LatLng latLng = const LatLng(40.76497, -111.84611);
   static List<Marker> my_markers = createMarkerList(controller);
+  static Map<String, LatLng> lot_name_TO_coordinate = createLotLngDict();
+  late Timer timer;
+  
+static void updateMarker(Map<String, int> occupancyPerLot, Map<String, LatLng> parkinglotsLocation)
+{
+  Color green = Colors.green;
+  Color yellow = Colors.yellow;
+  Color orange = Colors.orange.shade600;
+  Color red = Colors.red.shade700;
 
+  for (var parkingLot in occupancyPerLot.entries)
+  {
+    String lotName = parkingLot.key;
+    int occupancy = parkingLot.value;
 
-  void addMarker(LatLng coordinates) {
-    setState(() {
-      my_markers.add(Marker(
-        point: coordinates,
-        width: 60,
-        height: 60,
-        alignment: Alignment.topCenter,
-        child: GestureDetector(
-          onTap: () {
-            controller.moveAndRotate(
-                const LatLng(40.76502741, -111.8421128), 20, 0);
-          },
-          child: const Icon(
-            Icons.location_pin,
-            color: Color.fromARGB(255, 7, 3, 238),
-            size: 30,
-          ),
-        ),
-      ));
-    });
+    Color newColor;
+
+  // Convert map keys to a list
+  List<String> keysList = parkinglotsLocation.keys.toList();
+
+  // Find the index of the key
+  int listIndex = keysList.indexOf(lotName);
+
+  // Find the new color for the marker based on occupancy.
+  if(0 <= occupancy && occupancy <= 40)
+  {
+    newColor = green;
   }
+  else if (40 < occupancy && occupancy <= 60)
+  {
+    newColor = yellow;
+  }
+  else if (60 < occupancy && occupancy <= 80)
+  {
+    newColor = orange;
+  }
+  else 
+  {
+    newColor = red;
+  }
+  
+  LatLng coord = parkinglotsLocation[lotName]!;
+  // Create a new marker that will be replaced with current one
+  Marker replaceMarker = Marker(
+    point: coord,
+    width: 30,
+    height: 30,
+    alignment: Alignment.topCenter,
+    child: GestureDetector(
+      onTap: () {
+        controller.moveAndRotate(
+          coord, 20, 0
+        );
+        openMap(coord.latitude, coord.longitude);
+      },
+      child: Icon(
+        Icons.location_pin,
+        color: newColor,
+        size: 25,
+      ),
+    )
+  );
+  
+  my_markers[listIndex] = replaceMarker;
+
+  }
+}
 
   @override
   void initState() {
