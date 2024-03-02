@@ -758,7 +758,7 @@ class _HistogramScreenState extends State<HistogramScreen> {
   final List<String> _days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
 
   // Placeholder data for the histogram
-  final List<ChartData> chartData = [
+  List<ChartData> chartData = [
     ChartData('6am', 5),
     ChartData('9am', 10),
     ChartData('12pm', 7),
@@ -793,6 +793,82 @@ class _HistogramScreenState extends State<HistogramScreen> {
               setState(() {
                 selectedDay = newValue!;
                 // Update your histogram data here based on the selectedDay
+                if (selectedDay == "Monday") {
+                  chartData = [
+                    ChartData('7am', 70),
+                    ChartData('8am', 20),
+                    ChartData('9am', 40),
+                    ChartData('10am', 40),
+                    ChartData('11am', 40),
+                    ChartData('12pm', 40),
+                    ChartData('1pm', 40),
+                    ChartData('2pm', 40),
+                    ChartData('3pm', 40),
+                    ChartData('4pm', 40),
+                    ChartData('5pm', 40),
+                    ChartData('6pm', 40)
+                  ];
+                } else if (selectedDay == "Tuesday") {
+                  chartData = [
+                    ChartData('7am', 20),
+                    ChartData('8am', 20),
+                    ChartData('9am', 20),
+                    ChartData('10am', 20),
+                    ChartData('11am', 40),
+                    ChartData('12pm', 40),
+                    ChartData('1pm', 40),
+                    ChartData('2pm', 40),
+                    ChartData('3pm', 40),
+                    ChartData('4pm', 40),
+                    ChartData('5pm', 40),
+                    ChartData('6pm', 40)
+                  ];
+                } else if (selectedDay == "Wednesday") {
+                  chartData = [
+                    ChartData('7am', 20),
+                    ChartData('8am', 18),
+                    ChartData('9am', 20),
+                    ChartData('10am', 20),
+                    ChartData('11am', 20),
+                    ChartData('12pm', 40),
+                    ChartData('1pm', 40),
+                    ChartData('2pm', 40),
+                    ChartData('3pm', 40),
+                    ChartData('4pm', 40),
+                    ChartData('5pm', 40),
+                    ChartData('6pm', 40)
+                  ];
+                } else if (selectedDay == "Thursday") {
+                  chartData = [
+                    ChartData('7am', 18),
+                    ChartData('8am', 20),
+                    ChartData('9am', 20),
+                    ChartData('10am', 20),
+                    ChartData('11am', 20),
+                    ChartData('12pm', 20),
+                    ChartData('1pm', 20),
+                    ChartData('2pm', 40),
+                    ChartData('3pm', 40),
+                    ChartData('4pm', 40),
+                    ChartData('5pm', 40),
+                    ChartData('6pm', 40)
+                  ];
+                } else {
+                  chartData = [
+                    ChartData('7am', 18),
+                    ChartData('8am', 20),
+                    ChartData('9am', 20),
+                    ChartData('10am', 20),
+                    ChartData('11am', 20),
+                    ChartData('12pm', 20),
+                    ChartData('1pm', 20),
+                    ChartData('2pm', 20),
+                    ChartData('3pm', 20),
+                    ChartData('4pm', 40),
+                    ChartData('5pm', 40),
+                    ChartData('6pm', 40)
+                  ];
+                }
               });
             },
             items: _days.map<DropdownMenuItem<String>>((String day) {
