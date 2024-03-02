@@ -83,8 +83,7 @@ class HomePageMap extends StatefulWidget {
 }
 
 // Creates a dictionary (lotName (str) -> location (LatLng))
-Map<String, LatLng> createLotLngDict()
-{
+Map<String, LatLng> createLotLngDict() {
   Map<String, LatLng> parkinglotsLocation = {
     'Social Work': const LatLng(40.76047615, -111.8457732),
     'Union North': const LatLng(40.76551563, -111.8464372),
@@ -114,7 +113,7 @@ Map<String, LatLng> createLotLngDict()
     'Marriott South': const LatLng(40.76173022, -111.8467084),
     'Huntsman East': const LatLng(40.76307923, -111.8374067),
     'Huntsman West': const LatLng(40.76081929, -111.8395905),
-    'University Services':const LatLng(40.7611466, -111.8406582),
+    'University Services': const LatLng(40.7611466, -111.8406582),
     'Soccer': const LatLng(40.76748713, -111.8398083),
     'Naval Science': const LatLng(40.76608434, -111.8494079),
     'Union East': const LatLng(40.765003, -111.8443877),
@@ -127,34 +126,29 @@ Map<String, LatLng> createLotLngDict()
 }
 
 // Creates a list of markers that will be placed on the map from a Map (LotNames -> (Latitude, Longitude))
-List<Marker> createMarkerList(MapController controller)
-{
+List<Marker> createMarkerList(MapController controller) {
   List<Marker> lotMarkers = [];
-   //CREATING A DICTIONARY -> KEYS: PARKING LOT NAMES, VALUES: LATITUDE AND LONGITUDE FOR THE CORRESPONDING PARKING LOT
+  //CREATING A DICTIONARY -> KEYS: PARKING LOT NAMES, VALUES: LATITUDE AND LONGITUDE FOR THE CORRESPONDING PARKING LOT
 
   Map<String, LatLng> parkinglotsLocation = createLotLngDict();
 
-  for (var parkingLot in parkinglotsLocation.entries)
-  {
+  for (var parkingLot in parkinglotsLocation.entries) {
     Marker newMarker = Marker(
-      point: parkingLot.value,
-      width: 30,
-      height: 30,
-      alignment: Alignment.topCenter,
-      child: GestureDetector(
-        onTap: () {
-          controller.moveAndRotate(
-            parkingLot.value, 20, 0
-          );
-          openMap(parkingLot.value.latitude, parkingLot.value.longitude);
-        },
-        child: Icon(
-          Icons.location_pin,
-          color: Colors.red.shade700,
-          size: 25,
-        ),
-      )
-    );
+        point: parkingLot.value,
+        width: 30,
+        height: 30,
+        alignment: Alignment.topCenter,
+        child: GestureDetector(
+          onTap: () {
+            controller.moveAndRotate(parkingLot.value, 20, 0);
+            openMap(parkingLot.value.latitude, parkingLot.value.longitude);
+          },
+          child: Icon(
+            Icons.location_pin,
+            color: Colors.red.shade700,
+            size: 25,
+          ),
+        ));
     lotMarkers.add(newMarker);
   }
 
@@ -169,70 +163,58 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
   static List<Marker> my_markers = createMarkerList(controller);
   static Map<String, LatLng> lot_name_TO_coordinate = createLotLngDict();
   late Timer timer;
-  
+
   // given a two dictionaries (lotName -> occupancy percentage) and (lotName -> Location) updates the color of the markers
-  static void updateMarker(Map<String, int> occupancyPerLot, Map<String, LatLng> parkinglotsLocation)
-  {
+  static void updateMarker(Map<String, int> occupancyPerLot,
+      Map<String, LatLng> parkinglotsLocation) {
     Color green = Colors.green;
     Color yellow = Colors.yellow.shade600;
     Color orange = Colors.orange.shade600;
     Color red = Colors.red.shade700;
 
-    for (var parkingLot in occupancyPerLot.entries)
-    {
+    for (var parkingLot in occupancyPerLot.entries) {
       String lotName = parkingLot.key;
       int occupancy = parkingLot.value;
 
       Color newColor;
 
-    // Convert map keys to a list
-    List<String> keysList = parkinglotsLocation.keys.toList();
+      // Convert map keys to a list
+      List<String> keysList = parkinglotsLocation.keys.toList();
 
-    // Find the index of the key
-    int listIndex = keysList.indexOf(lotName);
+      // Find the index of the key
+      int listIndex = keysList.indexOf(lotName);
 
-    // Find the new color for the marker based on occupancy.
-    if(0 <= occupancy && occupancy <= 40)
-    {
-      newColor = green;
-    }
-    else if (40 < occupancy && occupancy <= 60)
-    {
-      newColor = yellow;
-    }
-    else if (60 < occupancy && occupancy <= 80)
-    {
-      newColor = orange;
-    }
-    else 
-    {
-      newColor = red;
-    }
-    
-    LatLng coord = parkinglotsLocation[lotName]!;
-    // Create a new marker that will be replaced with current one
-    Marker replaceMarker = Marker(
-      point: coord,
-      width: 30,
-      height: 30,
-      alignment: Alignment.topCenter,
-      child: GestureDetector(
-        onTap: () {
-          controller.moveAndRotate(
-            coord, 20, 0
-          );
-          openMap(coord.latitude, coord.longitude);
-        },
-        child: Icon(
-          Icons.location_pin,
-          color: newColor,
-          size: 25,
-        ),
-      )
-    );
-    
-    my_markers[listIndex] = replaceMarker;
+      // Find the new color for the marker based on occupancy.
+      if (0 <= occupancy && occupancy <= 40) {
+        newColor = green;
+      } else if (40 < occupancy && occupancy <= 60) {
+        newColor = yellow;
+      } else if (60 < occupancy && occupancy <= 80) {
+        newColor = orange;
+      } else {
+        newColor = red;
+      }
 
+      LatLng coord = parkinglotsLocation[lotName]!;
+      // Create a new marker that will be replaced with current one
+      Marker replaceMarker = Marker(
+          point: coord,
+          width: 30,
+          height: 30,
+          alignment: Alignment.topCenter,
+          child: GestureDetector(
+            onTap: () {
+              controller.moveAndRotate(coord, 20, 0);
+              openMap(coord.latitude, coord.longitude);
+            },
+            child: Icon(
+              Icons.location_pin,
+              color: newColor,
+              size: 25,
+            ),
+          ));
+
+      my_markers[listIndex] = replaceMarker;
     }
   }
 
@@ -243,8 +225,9 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
     print("The length of the list is: ${parkingNames.length}");
     Random random = Random();
     List<int> randomOccupancy = List.generate(34, (_) => random.nextInt(101));
-    Map<String, int> dummy_map = Map.fromIterables(parkingNames,randomOccupancy);
-    
+    Map<String, int> dummy_map =
+        Map.fromIterables(parkingNames, randomOccupancy);
+
     setState(() {
       updateMarker(dummy_map, createLotLngDict());
     });
@@ -299,7 +282,7 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
         TileLayer(
             urlTemplate:
                 "https://api.mapbox.com/styles/v1/notrh99/clt8xt1yy006l01r5g8j7dmxp/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoibm90cmg5OSIsImEiOiJjbHJremlxaHUwa205MmprZGJ3dWFzYWR3In0.R-PO20FWueN9Mzx9EwmeEA"),
-                // "https://api.mapbox.com/styles/v1/notrh99/cls4817h500dx01po4rvgauqt/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoibm90cmg5OSIsImEiOiJjbHJremlxaHUwa205MmprZGJ3dWFzYWR3In0.R-PO20FWueN9Mzx9EwmeEA"),
+        // "https://api.mapbox.com/styles/v1/notrh99/cls4817h500dx01po4rvgauqt/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoibm90cmg5OSIsImEiOiJjbHJremlxaHUwa205MmprZGJ3dWFzYWR3In0.R-PO20FWueN9Mzx9EwmeEA"),
         MarkerLayer(
           markers: my_markers,
         ),
@@ -772,7 +755,7 @@ class HistogramScreen extends StatefulWidget {
 
 class _HistogramScreenState extends State<HistogramScreen> {
   late String selectedDay; // Default to Monday
-  final List<String> _days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  final List<String> _days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
 
   // Placeholder data for the histogram
   final List<ChartData> chartData = [
