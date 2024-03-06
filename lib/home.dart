@@ -730,17 +730,25 @@ Future<void> openMap(double lat, double long) async {
   Uri mapUrl =
       Platform.isIOS ? Uri.parse(appleMapsUrl) : Uri.parse(googleMapsUrl);
 
-  if (await canLaunchUrl(mapUrl)) {
-    // Set the flag right before launching the maps app
-    isReturningFromMaps = true;
-    await launchUrl(mapUrl);
-  } else if (await canLaunchUrl(Uri.parse(geoUrl))) {
-    // Launch the default maps app
-    isReturningFromMaps = true;
-    await launchUrl(Uri.parse(geoUrl));
-  } else {
-    throw 'Could not launch map';
+  try 
+  {
+    if (await canLaunchUrl(mapUrl)) {
+      // Set the flag right before launching the maps app
+      isReturningFromMaps = true;
+      await launchUrl(mapUrl);
+    } else if (await canLaunchUrl(Uri.parse(geoUrl))) {
+      // Launch the default maps app
+      isReturningFromMaps = true;
+      await launchUrl(Uri.parse(geoUrl));
+    } else {
+      throw 'Could not launch map';
+    }
   }
+  catch(e)
+  {
+
+  }
+  
 }
 
 class HistogramScreen extends StatefulWidget {
