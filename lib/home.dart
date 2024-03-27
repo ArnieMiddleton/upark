@@ -162,11 +162,12 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
   LatLng latLng = const LatLng(40.76497, -111.84611);
   static List<Marker> my_markers = createMarkerList(controller);
   static Map<String, LatLng> lot_name_TO_coordinate = createLotLngDict();
+  static late LatLng selectedDestination;
   late Timer timer;
 
   // given a two dictionaries (lotName -> occupancy percentage) and (lotName -> Location) updates the color of the markers
   static void updateMarker(Map<String, int> occupancyPerLot,
-      Map<String, LatLng> parkinglotsLocation) {
+    Map<String, LatLng> parkinglotsLocation) {
     Color green = Colors.green;
     Color yellow = Colors.yellow.shade600;
     Color orange = Colors.orange.shade600;
@@ -259,12 +260,12 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
       if (Navigator.of(context).canPop()) {
         Navigator.of(context).push(
           MaterialPageRoute(
-              builder: (context) => const ParkingLotSurveyScreen()),
+              builder: (context) =>  ParkingLotSurveyScreen(selectedLot: selectedDestination,)),
         );
       } else {
         Navigator.of(context).push(
           MaterialPageRoute(
-              builder: (context) => const ParkingLotSurveyScreen()),
+              builder: (context) =>  ParkingLotSurveyScreen(selectedLot: selectedDestination,)),
         );
       }
     }
@@ -325,7 +326,7 @@ class CustomSearchDelegate extends SearchDelegate {
     'Mineral Processing Lab': const LatLng(40.7665169, -111.8448861),
     'Mining Systems Research Lab': const LatLng(40.7666465, -111.8445482),
     'Experimental Studies Building': const LatLng(40.7660466, -111.8447915),
-    'John and Marva Warnock Engineering Building':
+    'John and Marva Warnock Engineering Building (WEB)':
         const LatLng(40.7677074, -111.845305),
     'Alice Sheets Marriott Center for Dance':
         const LatLng(40.762399, -111.8485909),
@@ -558,9 +559,14 @@ class CustomSearchDelegate extends SearchDelegate {
           threshold: 0.4, // Adjust based on your needs
         ));
     final results = fuzzy.search(query);
+    print(results);
 
+
+    List<String> filteredList = locations.keys.where((item) => item.toLowerCase().contains(query.toLowerCase())).toList();
+
+    // item.toLowerCase().contains(query.toLowerCase())).toList();
     // Extract the original location names from the search results.
-    final filteredList = results.map((r) => r.item).toList();
+    // final filteredList = results.map((r) => r.item).toList();
 
     // Use FutureBuilder to handle the future returned by loadParkingData
     return FutureBuilder<Map<String, List<MapEntry<String, double>>>>(
@@ -727,6 +733,7 @@ Future<void> openMap(double lat, double long) async {
       "https://www.google.com/maps/search/?api=1&query=$lat,$long";
   String appleMapsUrl = "https://maps.apple.com/?q=$lat,$long";
   String geoUrl = "geo:$lat,$long";
+  _HomePageMapState.selectedDestination = LatLng(lat,long);
   Uri mapUrl =
       Platform.isIOS ? Uri.parse(appleMapsUrl) : Uri.parse(googleMapsUrl);
 

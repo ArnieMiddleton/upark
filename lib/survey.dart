@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:latlong2/latlong.dart';
 
 class ParkingLotSurveyScreen extends StatefulWidget {
-  const ParkingLotSurveyScreen({Key? key}) : super(key: key);
+  final LatLng selectedLot;
+
+  const ParkingLotSurveyScreen({Key? key, required this.selectedLot}) : super(key: key);
 
   @override
   State<ParkingLotSurveyScreen> createState() => _ParkingLotSurveyScreenState();
@@ -17,19 +20,30 @@ class _ParkingLotSurveyScreenState extends State<ParkingLotSurveyScreen> {
     'Some Spots',
     'Plenty of Spots'
   ];
-
+  
   void _submitSurvey() {
     if (_chosenIndex != null) {
       // Update the _selectedOption with the chosen option's text
       setState(() {
         _selectedOption = _options[_chosenIndex!];
+
+        print(_selectedOption);
       });
       Navigator.of(context).popUntil((route) => route.isFirst);
     }
   }
 
+  void updateLot()
+  {
+    // update the lot marker color based on the selected survey option
+
+  }
+
   @override
   Widget build(BuildContext context) {
+    LatLng lot = widget.selectedLot;
+    // parking lot that user selected
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
