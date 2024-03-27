@@ -167,7 +167,7 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
 
   // given a two dictionaries (lotName -> occupancy percentage) and (lotName -> Location) updates the color of the markers
   static void updateMarker(Map<String, int> occupancyPerLot,
-    Map<String, LatLng> parkinglotsLocation) {
+      Map<String, LatLng> parkinglotsLocation) {
     Color green = Colors.green;
     Color yellow = Colors.yellow.shade600;
     Color orange = Colors.orange.shade600;
@@ -260,12 +260,16 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
       if (Navigator.of(context).canPop()) {
         Navigator.of(context).push(
           MaterialPageRoute(
-              builder: (context) =>  ParkingLotSurveyScreen(selectedLot: selectedDestination,)),
+              builder: (context) => ParkingLotSurveyScreen(
+                    selectedLot: selectedDestination,
+                  )),
         );
       } else {
         Navigator.of(context).push(
           MaterialPageRoute(
-              builder: (context) =>  ParkingLotSurveyScreen(selectedLot: selectedDestination,)),
+              builder: (context) => ParkingLotSurveyScreen(
+                    selectedLot: selectedDestination,
+                  )),
         );
       }
     }
@@ -321,163 +325,183 @@ class CustomSearchDelegate extends SearchDelegate {
   _HomePageMapState myInstance = _HomePageMapState();
   String lastQuery = '';
   final Map<String, LatLng> locations = {
-    'Campus Bike Shop': const LatLng(40.7605798, -111.8428217),
-    'S.J. Quinney College of Law': const LatLng(40.7612208, -111.8514449),
-    'Mineral Processing Lab': const LatLng(40.7665169, -111.8448861),
-    'Mining Systems Research Lab': const LatLng(40.7666465, -111.8445482),
-    'Experimental Studies Building': const LatLng(40.7660466, -111.8447915),
+    'Campus Bike Shop (BIKE)': const LatLng(40.7605798, -111.8428217),
+    'S.J. Quinney College of Law (LAW)': const LatLng(40.7612208, -111.8514449),
+    'Mineral Processing Lab (MPL)': const LatLng(40.7665169, -111.8448861),
+    'Mining Systems Research Lab (MSRL)':
+        const LatLng(40.7666465, -111.8445482),
+    'Experimental Studies Building (ESB)':
+        const LatLng(40.7660466, -111.8447915),
     'John and Marva Warnock Engineering Building (WEB)':
         const LatLng(40.7677074, -111.845305),
-    'Alice Sheets Marriott Center for Dance':
+    'Alice Sheets Marriott Center for  (MCD)':
         const LatLng(40.762399, -111.8485909),
-    'Life Science Building': const LatLng(40.763534, -111.8501393),
+    'Life Science Building (LS)': const LatLng(40.763534, -111.8501393),
     'Chemistry Cooling Tower': const LatLng(40.7623958, -111.8502781),
-    'High Temperature Water Plant': const LatLng(40.760472, -111.8418901),
+    'High Temperature Water Plant (HTW)': const LatLng(40.760472, -111.8418901),
     'Recycling Center': const LatLng(40.760223, -111.8413411),
-    'Buildings & Grounds Storage Shed #2':
+    'Buildings & Grounds Storage Shed #2 (BLG GR)':
         const LatLng(40.7603222, -111.8403604),
-    'Buildings & Grounds Storage Shed #1': const LatLng(40.7604644, -111.84049),
+    'Buildings & Grounds Storage Shed #1 (BLG GR)':
+        const LatLng(40.7604644, -111.84049),
     'Motor Pool Gas Station': const LatLng(40.760738, -111.8399211),
-    'Motor Pool Building': const LatLng(40.7605685, -111.8402757),
+    'Motor Pool Building (MOTOR)': const LatLng(40.7605685, -111.8402757),
     'Buildings & Grounds': const LatLng(40.760374, -111.8406457),
-    'Physical Plant Services': const LatLng(40.7609436, -111.8412124),
-    'Public Safety Storage Shed': const LatLng(40.760029, -111.8408105),
-    'George S. Eccles 2002 Legacy Bridge':
+    'Physical Plant Services (PP SER)': const LatLng(40.7609436, -111.8412124),
+    'Public Safety Storage Shed (SAFETY)':
+        const LatLng(40.760029, -111.8408105),
+    'George S. Eccles 2002 Legacy Bridge (BRIDGE)':
         const LatLng(40.7649731, -111.8372508),
-    'Joseph F. Merrill Engineering Building':
+    'Joseph F. Merrill Engineering Building (MEB)':
         const LatLng(40.7685435, -111.8461438),
-    'Floyd and Jeri Meldrum Civil Engineering Building':
+    'Floyd and Jeri Meldrum Civil Engineering Building (MCE)':
         const LatLng(40.7670116, -111.8455091),
-    'C. Roland Christensen Center': const LatLng(40.761274, -111.8439109),
-    'Sculpture Building': const LatLng(40.7604263, -111.8446468),
-    'Marcia & John Price Museum Building':
-        const LatLng(40.7602453, -111.843287),
-    'Social and Behavioral Science Lecture Hall':
+    'C. Roland Christensen Center (CRCC)':
+        const LatLng(40.761274, -111.8439109),
+    'Sculpture Building (SCULPT)': const LatLng(40.7604263, -111.8446468),
+    'Utah Museum of Fine Arts (UMFA)': const LatLng(40.7602453, -111.843287),
+    'Social and Behavioral Science Lecture Hall (S BEH)':
         const LatLng(40.7609948, -111.8459596),
-    'College of Social Work': const LatLng(40.7609527, -111.8466878),
+    'College of Social Work (SW)': const LatLng(40.7609527, -111.8466878),
     'Questar Gas Shed #1': const LatLng(40.7630119, -111.8361847),
-    'Roy W. & Elizabeth E. Simmons Pioneer Memorial Theatre':
+    'Roy W. & Elizabeth E. Simmons Pioneer Memorial Theatre (PMT)':
         const LatLng(40.7627743, -111.8510771),
-    'Office Building 44': const LatLng(40.7631331, -111.8484522),
-    'Aline Wilmot Skaggs Biology Building':
+    'Office Building 44 (BLDG 44)': const LatLng(40.7631331, -111.8484522),
+    'Aline Wilmot Skaggs Biology Building (ASB)':
         const LatLng(40.7636844, -111.8486777),
-    'Alfred C. Emery Building': const LatLng(40.7641708, -111.8501068),
+    'Alfred C. Emery Building (AEB)': const LatLng(40.7641708, -111.8501068),
     'Steam Generating Plant': const LatLng(40.7656879, -111.8481054),
     'McCarthey Family Track and Field Storage Building':
         const LatLng(40.767219, -111.8391541),
-    'Golf Pro Shop': const LatLng(40.7680291, -111.8433072),
-    'James LeVoy Sorenson Molecular Biotechnology Building - A USTAR Innovation Center':
+    'Golf Pro Shop (GLF SH)': const LatLng(40.7680291, -111.8433072),
+    'Sorenson Molecular Biotechnology (SMBB)':
         const LatLng(40.7689427, -111.8421158),
-    'Office of Sponsored Projects': const LatLng(40.768284, -111.8485698),
-    'Fine Arts West': const LatLng(40.7631906, -111.8528793),
-    'Cauldron Legacy Plaza Visitors Center':
+    'Office of Sponsored Projects (S PROJ)':
+        const LatLng(40.768284, -111.8485698),
+    'Fine Arts West (FAW)': const LatLng(40.7631906, -111.8528793),
+    'Cauldron Legacy Plaza Visitors Center (PLAZA)':
         const LatLng(40.7588343, -111.8497591),
-    'David P. Gardner Hall': const LatLng(40.7662045, -111.8517317),
-    'James Talmage Building': const LatLng(40.7644381, -111.8495015),
+    'David P. Gardner Hall (DGH)': const LatLng(40.7662045, -111.8517317),
+    'James Talmage Building (JTB)': const LatLng(40.7644381, -111.8495015),
     'Cowles Cooling Tower': const LatLng(40.7661025, -111.8497673),
-    'Beverley Taylor Sorenson Arts & Education Complex':
+    'Sorenson Arts & Education Complex (SAEC)':
         const LatLng(40.7628492, -111.8415156),
-    'HPER Natatorium': const LatLng(40.7633309, -111.8398826),
+    'HPER  (HPRNAT)': const LatLng(40.7633309, -111.8398826),
     'Skaggs Cooling Tower': const LatLng(40.7636082, -111.8482286),
-    'Building 124': const LatLng(40.7642739, -111.8491462),
-    'Thatcher Building for Biological & Biophysical Chemistry':
-        const LatLng(40.7617233, -111.849658),
-    'Civil and Materials Engineering': const LatLng(40.7664854, -111.8459993),
-    'John R. Park Building': const LatLng(40.7650072, -111.8487908),
-    'Intermountain Network Scientific Computation Center':
+    'Building 124 (BLDG 124)': const LatLng(40.7642739, -111.8491462),
+    'Thatcher Chemistry (TBBC)': const LatLng(40.7617233, -111.849658),
+    'Civil and Materials Engineering (CME)':
+        const LatLng(40.7664854, -111.8459993),
+    'Park Building (PARK)': const LatLng(40.7650072, -111.8487908),
+    'Intermountain Network Scientific Computation Center (INSCC)':
         const LatLng(40.7659168, -111.848729),
-    'LeRoy E. Cowles Building': const LatLng(40.7656173, -111.8495495),
-    'Naval Science Building': const LatLng(40.766645, -111.8493796),
-    'Spencer Fox Eccles Business Building':
+    'LeRoy E. Cowles Building (LCB)': const LatLng(40.7656173, -111.8495495),
+    'Naval Science Building (NS)': const LatLng(40.766645, -111.8493796),
+    'Spencer Fox Eccles Business Building (SFEBB)':
         const LatLng(40.7617223, -111.8433843),
-    'Spence Eccles Ski Team Building': const LatLng(40.7669476, -111.8405543),
-    'Grounds Storage Building': const LatLng(40.7606638, -111.8412352),
+    'Spence Eccles Ski Team Building (SKI)':
+        const LatLng(40.7669476, -111.8405543),
+    'Grounds Storage Building (BLG GR)': const LatLng(40.7606638, -111.8412352),
     'Salt Lake City Reservoir': const LatLng(40.7592434, -111.8470646),
-    'George S. Eccles Student Life Center':
+    'George S. Eccles Student Life Center (GSESLC)':
         const LatLng(40.7650827, -111.838233),
     'Pumphouse #3': const LatLng(40.7626118, -111.8359859),
-    'North Campus Chiller Plant': const LatLng(40.7674303, -111.8427461),
-    'Joseph T. Kingsbury Hall': const LatLng(40.7661964, -111.8509428),
-    'Henry Eyring Chemistry Building': const LatLng(40.7623469, -111.8494898),
-    'V. Randall Turpin University Services Building':
+    'North Campus Chiller Plant (BLDG 149)':
+        const LatLng(40.7674303, -111.8427461),
+    'Joseph T. Kingsbury Hall (KH)': const LatLng(40.7661964, -111.8509428),
+    'Henry Eyring Chemistry Building (HEB)':
+        const LatLng(40.7623469, -111.8494898),
+    'V. Randall Turpin University Services Building (VRTUSB)':
         const LatLng(40.7613875, -111.8400721),
-    'Jon M. Huntsman Center': const LatLng(40.7620589, -111.8387518),
-    'Space Planning & Management': const LatLng(40.7687097, -111.8486904),
-    'Social & Behavioral Sciences': const LatLng(40.7614548, -111.8462603),
-    'Biology Building': const LatLng(40.7635123, -111.8495492),
-    'Alan W. Layton Engineering Building': const LatLng(40.7665156, -111.84548),
-    'Performing Arts Building': const LatLng(40.7639132, -111.8479817),
-    'Eccles House': const LatLng(40.7725992, -111.8437945),
+    'Jon M. Huntsman Center (JHC)': const LatLng(40.7620589, -111.8387518),
+    'Space Planning & Management (SPACE)':
+        const LatLng(40.7687097, -111.8486904),
+    'Social & Behavioral Sciences (BEH S)':
+        const LatLng(40.7614548, -111.8462603),
+    'Biology Building (BIOL)': const LatLng(40.7635123, -111.8495492),
+    'Alan W. Layton Engineering Building (LEB)':
+        const LatLng(40.7665156, -111.84548),
+    'Performing Arts Building (PAB)': const LatLng(40.7639132, -111.8479817),
+    'Eccles House (EH)': const LatLng(40.7725992, -111.8437945),
     'Soccer Field Ticket Office': const LatLng(40.7673491, -111.8409302),
     'Equipment Shed': const LatLng(40.7679182, -111.8417775),
-    'Dumke Family Softball Stadium': const LatLng(40.7677039, -111.8411626),
+    'Dumke Family Softball Stadium (DFSS)':
+        const LatLng(40.7677039, -111.8411626),
     'Field Storage Building': const LatLng(40.7681291, -111.8416951),
-    'Einar Nielsen Fieldhouse': const LatLng(40.7612137, -111.8488777),
+    'Einar Nielsen  (FLD H)': const LatLng(40.7612137, -111.8488777),
     'Transformer Building': const LatLng(40.7587237, -111.851231),
-    'William Stewart Building': const LatLng(40.7634326, -111.8509426),
-    'The Gary L. and Ann T. Crocker Science Center at the George Thomas Building':
+    'William Stewart Building (ST)': const LatLng(40.7634326, -111.8509426),
+    'The Gary L. and Ann T. Crocker Science Center at the George Thomas Building (CSC)':
         const LatLng(40.7640556, -111.8511161),
-    'HPER West': const LatLng(40.762922, -111.8406218),
-    'HPER East': const LatLng(40.7636929, -111.8391684),
-    'Kenneth P. Burbidge, Jr., Family Athletics Academic Center':
+    'HPER West (HPR W)': const LatLng(40.762922, -111.8406218),
+    'HPER East (HPR E)': const LatLng(40.7636929, -111.8391684),
+    'Kenneth P. Burbidge, Jr., Family Athletics Academic Center (KBAC)':
         const LatLng(40.7629723, -111.8396537),
-    'HPER North': const LatLng(40.7638422, -111.8403347),
-    'HPER Mechanical Building Southwest':
+    'HPER North (HPR N)': const LatLng(40.7638422, -111.8403347),
+    'HPER Mechanical Building Southwest (HPR SW)':
         const LatLng(40.7627283, -111.8396291),
-    'Central Garage': const LatLng(40.7616177, -111.8414221),
+    'Central Garage (CPG)': const LatLng(40.7616177, -111.8414221),
     'HTW Plant Cooling Tower': const LatLng(40.7607224, -111.8416042),
-    'Language & Communication Building': const LatLng(40.763612, -111.843649),
-    'Bldg 301': const LatLng(40.7599051, -111.8410001),
-    'Art Building': const LatLng(40.7608952, -111.8448774),
-    'Architecture Building': const LatLng(40.7611435, -111.8445216),
-    'A. Ray Olpin Union': const LatLng(40.7649585, -111.8460258),
-    'Carolyn Tanner Irish Humanities Building':
+    'Language & Communication Building (LNCO)':
+        const LatLng(40.763612, -111.843649),
+    'Bldg 301 (SAFETY)': const LatLng(40.7599051, -111.8410001),
+    'Art Building (ART)': const LatLng(40.7608952, -111.8448774),
+    'Architecture Building (ARCH)': const LatLng(40.7611435, -111.8445216),
+    'A. Ray Olpin Union (UNION)': const LatLng(40.7649585, -111.8460258),
+    'Carolyn Tanner Irish Humanities Building (CTIHB)':
         const LatLng(40.764559, -111.8429781),
     'Student Services Cooling Tower': const LatLng(40.7653175, -111.8484318),
-    'Student Services Building': const LatLng(40.7650099, -111.8480666),
-    'James C. Fletcher Building': const LatLng(40.7667215, -111.8504586),
+    'Student Services Building (SSB)': const LatLng(40.7650099, -111.8480666),
+    'James C. Fletcher Building (JFB)': const LatLng(40.7667215, -111.8504586),
     'Physics Maintenance Shed': const LatLng(40.7663155, -111.8497409),
-    'Voice & Opera Center': const LatLng(40.7668481, -111.8518531),
-    'Frederick Albert Sutton Building': const LatLng(40.7666686, -111.8477967),
-    'William C. Browning Building': const LatLng(40.7662422, -111.8477118),
+    'Voice & Opera Center (VOICE)': const LatLng(40.7668481, -111.8518531),
+    'Frederick Albert Sutton Building (FASB)':
+        const LatLng(40.7666686, -111.8477967),
+    'William C. Browning Building (WBB)':
+        const LatLng(40.7662422, -111.8477118),
     'SW Cooling Tower': const LatLng(40.7611313, -111.8480044),
-    'John A. Widtsoe Building': const LatLng(40.7659103, -111.8501467),
-    'J. Willard Marriott Library': const LatLng(40.7624564, -111.8462009),
-    'Film and Media Arts Building': const LatLng(40.7612975, -111.8454004),
-    'Business Classroom Building': const LatLng(40.7617724, -111.8441455),
+    'John A. Widtsoe Building (JWB)': const LatLng(40.7659103, -111.8501467),
+    'J. Willard Marriott Library (M LIB)':
+        const LatLng(40.7624564, -111.8462009),
+    'Film and Media Arts Building (FMAB)':
+        const LatLng(40.7612975, -111.8454004),
+    'Business Classroom Building (BU C)':
+        const LatLng(40.7617724, -111.8441455),
     'Pumphouse #8': const LatLng(40.76537, -111.8393343),
-    'Donna Garff Marriott Residential Scholars Community':
+    'Donna Garff Marriott Residential Scholars Community (MHC)':
         const LatLng(40.7638268, -111.8368582),
-    'Cleone Peterson Eccles Alumni House':
+    'Cleone Peterson Eccles Alumni House (ALUMNI)':
         const LatLng(40.7658899, -111.8436309),
-    'Rosenblatt House': const LatLng(40.7714816, -111.845167),
-    'Carolyn and Kem Gardner Commons': const LatLng(40.7633607, -111.8446581),
-    'HPER Mechanical Building Southeast':
+    'Rosenblatt House (ROSEN)': const LatLng(40.7714816, -111.845167),
+    'Carolyn and Kem Gardner Commons (GC)':
+        const LatLng(40.7633607, -111.8446581),
+    'HPER Mechanical Building Southeast (HPR SE)':
         const LatLng(40.7629181, -111.8392586),
-    'Jon M. and Karen Huntsman Basketball Facility':
+    'Jon M. and Karen Huntsman Basketball Facility (HBF)':
         const LatLng(40.7630993, -111.8387277),
-    'Northwest Garage': const LatLng(40.7665208, -111.8487329),
-    'Sterling Sill Center': const LatLng(40.7653351, -111.8436888),
-    'University Campus Store': const LatLng(40.7637118, -111.8475237),
+    'Northwest Garage (Northwest)': const LatLng(40.7665208, -111.8487329),
+    'Sterling Sill Center (SILL)': const LatLng(40.7653351, -111.8436888),
+    'University Campus Store (U CAMPSTOR)':
+        const LatLng(40.7637118, -111.8475237),
     'Physics Cooling Tower': const LatLng(40.7665293, -111.8498995),
     'SW Cooling Tower': const LatLng(40.7612905, -111.8480052),
-    'Physics Building': const LatLng(40.7663942, -111.8500583),
+    'Physics Building (PHYS)': const LatLng(40.7663942, -111.8500583),
     'Meldrum House': const LatLng(40.7649572948751, -111.853380680972),
-    'Building 72': const LatLng(40.7620302, -111.8514106),
-    'John & Marcia Price Theatre Arts Building':
+    'Building 72 (BLDG 72)': const LatLng(40.7620302, -111.8514106),
+    'John & Marcia Price Theatre Arts Building (PTAB)':
         const LatLng(40.7620336, -111.8518393),
-    'Impact Prosperity Epicenter Building':
+    'Impact Prosperity Epicenter Building (IPE)':
         const LatLng(40.7653564842492, -111.839022701725),
-    'Rio Tinto Kennecott Mechanical Engineering Building':
+    'Rio Tinto Kennecott Mechanical Engineering Building (MEK)':
         const LatLng(40.7674748, -111.8477638),
-    'Lassonde Studios': const LatLng(40.7645445, -111.8415405),
-    'Rice-Eccles Stadium': const LatLng(40.7600622, -111.8489259),
-    'Robert H. and Katharine B. Garff Executive Education Building':
+    'Lassonde Studios (LSND)': const LatLng(40.7645445, -111.8415405),
+    'Rice-Eccles Stadium (STAD)': const LatLng(40.7600622, -111.8489259),
+    'Robert H. and Katharine B. Garff Executive Education Building (Garff)':
         const LatLng(40.7621344, -111.8422519),
-    'Dolores Dore Eccles Broadcast Center':
+    'Dolores Dore Eccles Broadcast Center (EBC)':
         const LatLng(40.7673162, -111.8378598),
-    'Kahlert Village': const LatLng(40.7637771, -111.837987),
-    'Dumke Gymnastics Center': const LatLng(40.7643456, -111.8396279),
+    'Kahlert Village (KV)': const LatLng(40.7637771, -111.837987),
+    'Dumke Gymnastics Center (DGC)': const LatLng(40.7643456, -111.8396279),
   };
 
   final Map<String, LatLng> parking_locations = {
@@ -561,8 +585,9 @@ class CustomSearchDelegate extends SearchDelegate {
     final results = fuzzy.search(query);
     print(results);
 
-
-    List<String> filteredList = locations.keys.where((item) => item.toLowerCase().contains(query.toLowerCase())).toList();
+    List<String> filteredList = locations.keys
+        .where((item) => item.toLowerCase().contains(query.toLowerCase()))
+        .toList();
 
     // item.toLowerCase().contains(query.toLowerCase())).toList();
     // Extract the original location names from the search results.
@@ -733,12 +758,11 @@ Future<void> openMap(double lat, double long) async {
       "https://www.google.com/maps/search/?api=1&query=$lat,$long";
   String appleMapsUrl = "https://maps.apple.com/?q=$lat,$long";
   String geoUrl = "geo:$lat,$long";
-  _HomePageMapState.selectedDestination = LatLng(lat,long);
+  _HomePageMapState.selectedDestination = LatLng(lat, long);
   Uri mapUrl =
       Platform.isIOS ? Uri.parse(appleMapsUrl) : Uri.parse(googleMapsUrl);
 
-  try 
-  {
+  try {
     if (await canLaunchUrl(mapUrl)) {
       // Set the flag right before launching the maps app
       isReturningFromMaps = true;
@@ -750,12 +774,7 @@ Future<void> openMap(double lat, double long) async {
     } else {
       throw 'Could not launch map';
     }
-  }
-  catch(e)
-  {
-
-  }
-  
+  } catch (e) {}
 }
 
 class HistogramScreen extends StatefulWidget {
