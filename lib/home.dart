@@ -334,7 +334,7 @@ class CustomSearchDelegate extends SearchDelegate {
         const LatLng(40.7660466, -111.8447915),
     'John and Marva Warnock Engineering Building (WEB)':
         const LatLng(40.7677074, -111.845305),
-    'Alice Sheets Marriott Center for  (MCD)':
+    'Alice Sheets Marriott Center for Dance (MCD)':
         const LatLng(40.762399, -111.8485909),
     'Life Science Building (LS)': const LatLng(40.763534, -111.8501393),
     'Chemistry Cooling Tower': const LatLng(40.7623958, -111.8502781),
@@ -386,7 +386,7 @@ class CustomSearchDelegate extends SearchDelegate {
     'Cowles Cooling Tower': const LatLng(40.7661025, -111.8497673),
     'Sorenson Arts & Education Complex (SAEC)':
         const LatLng(40.7628492, -111.8415156),
-    'HPER  (HPRNAT)': const LatLng(40.7633309, -111.8398826),
+    'HPER (HPRNAT)': const LatLng(40.7633309, -111.8398826),
     'Skaggs Cooling Tower': const LatLng(40.7636082, -111.8482286),
     'Building 124 (BLDG 124)': const LatLng(40.7642739, -111.8491462),
     'Thatcher Chemistry (TBBC)': const LatLng(40.7617233, -111.849658),
@@ -428,7 +428,7 @@ class CustomSearchDelegate extends SearchDelegate {
     'Dumke Family Softball Stadium (DFSS)':
         const LatLng(40.7677039, -111.8411626),
     'Field Storage Building': const LatLng(40.7681291, -111.8416951),
-    'Einar Nielsen  (FLD H)': const LatLng(40.7612137, -111.8488777),
+    'Einar Nielsen (FLD H)': const LatLng(40.7612137, -111.8488777),
     'Transformer Building': const LatLng(40.7587237, -111.851231),
     'William Stewart Building (ST)': const LatLng(40.7634326, -111.8509426),
     'The Gary L. and Ann T. Crocker Science Center at the George Thomas Building (CSC)':

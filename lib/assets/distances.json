@@ -1,5 +1,5 @@
 {
-    "Campus Bike Shop": {
+    "Campus Bike Shop (BIKE)": {
         "Parking Lot 14": 61,
         "Parking Lot 7": 136,
         "Parking Lot 22": 166,
@@ -34,7 +34,7 @@
         "Parking Lot 31": 1110,
         "Parking Lot 17": 1111
     },
-    "S.J. Quinney College of Law": {
+    "S.J. Quinney College of Law (LAW)": {
         "Parking Lot 16": 110,
         "Parking Lot 4": 178,
         "Parking Lot 5": 238,
@@ -69,7 +69,7 @@
         "Parking Lot 13": 1261,
         "Parking Lot 32": 1341
     },
-    "Mineral Processing Lab": {
+    "Mineral Processing Lab (MPL)": {
         "Parking Lot 9": 13,
         "Parking Lot 12": 77,
         "Parking Lot 2": 81,
@@ -104,7 +104,7 @@
         "Parking Lot 8": 796,
         "Parking Lot 4": 924
     },
-    "Mining Systems Research Lab": {
+    "Mining Systems Research Lab (MSRL)": {
         "Parking Lot 9": 44,
         "Parking Lot 18": 74,
         "Parking Lot 12": 109,
@@ -139,7 +139,7 @@
         "Parking Lot 10": 814,
         "Parking Lot 4": 952
     },
-    "Experimental Studies Building": {
+    "Experimental Studies Building (ESB)": {
         "Parking Lot 9": 55,
         "Parking Lot 12": 72,
         "Parking Lot 2": 75,
@@ -209,7 +209,7 @@
         "Parking Lot 15": 918,
         "Parking Lot 4": 1019
     },
-    "Alice Sheets Marriott Center for Dance": {
+    "Alice Sheets Marriott Center for Dance (MCD)": {
         "Parking Lot 5": 63,
         "Parking Lot 6": 85,
         "Parking Lot 16": 167,
@@ -244,7 +244,7 @@
         "Parking Lot 31": 1013,
         "Parking Lot 32": 1074
     },
-    "Life Science Building": {
+    "Life Science Building (LS)": {
         "Parking Lot 21": 178,
         "Parking Lot 16": 190,
         "Parking Lot 5": 221,
@@ -314,7 +314,7 @@
         "Parking Lot 13": 1125,
         "Parking Lot 32": 1182
     },
-    "High Temperature Water Plant": {
+    "High Temperature Water Plant (HTW)": {
         "Parking Lot 14": 88,
         "Parking Lot 27": 128,
         "Parking Lot 22": 136,
@@ -384,7 +384,7 @@
         "Parking Lot 31": 1160,
         "Parking Lot 17": 1186
     },
-    "Buildings & Grounds Storage Shed #2": {
+    "Buildings & Grounds Storage Shed #2 (BLG GR)": {
         "Parking Lot 26": 85,
         "Parking Lot 27": 95,
         "Parking Lot 22": 172,
@@ -419,7 +419,7 @@
         "Parking Lot 11": 1180,
         "Parking Lot 17": 1207
     },
-    "Buildings & Grounds Storage Shed #1": {
+    "Buildings & Grounds Storage Shed #1 (BLG GR)": {
         "Parking Lot 27": 77,
         "Parking Lot 26": 85,
         "Parking Lot 22": 153,
@@ -489,7 +489,7 @@
         "Parking Lot 17": 1181,
         "Parking Lot 11": 1182
     },
-    "Motor Pool Building": {
+    "Motor Pool Building (MOTOR)": {
         "Parking Lot 26": 64,
         "Parking Lot 27": 72,
         "Parking Lot 24": 147,
@@ -559,7 +559,7 @@
         "Parking Lot 11": 1157,
         "Parking Lot 17": 1192
     },
-    "Physical Plant Services": {
+    "Physical Plant Services (PP SER)": {
         "Parking Lot 27": 52,
         "Parking Lot 22": 80,
         "Parking Lot 14": 113,
@@ -594,7 +594,7 @@
         "Parking Lot 31": 1082,
         "Parking Lot 17": 1116
     },
-    "Public Safety Storage Shed": {
+    "Public Safety Storage Shed (SAFETY)": {
         "Parking Lot 27": 125,
         "Parking Lot 26": 135,
         "Parking Lot 14": 187,
@@ -629,7 +629,7 @@
         "Parking Lot 31": 1188,
         "Parking Lot 17": 1222
     },
-    "George S. Eccles 2002 Legacy Bridge": {
+    "George S. Eccles 2002 Legacy Bridge (BRIDGE)": {
         "Parking Lot 13": 59,
         "Parking Lot 25": 211,
         "Parking Lot 28": 353,
@@ -664,7 +664,7 @@
         "Parking Lot 4": 1305,
         "Parking Lot 10": 1357
     },
-    "Joseph F. Merrill Engineering Building": {
+    "Joseph F. Merrill Engineering Building (MEB)": {
         "Parking Lot 20": 175,
         "Parking Lot 17": 188,
         "Parking Lot 19": 190,
@@ -699,7 +699,7 @@
         "Parking Lot 8": 1034,
         "Parking Lot 4": 1072
     },
-    "Floyd and Jeri Meldrum Civil Engineering Building": {
+    "Floyd and Jeri Meldrum Civil Engineering Building (MCE)": {
         "Parking Lot 9": 69,
         "Parking Lot 12": 99,
         "Parking Lot 2": 102,
@@ -734,7 +734,7 @@
         "Parking Lot 8": 872,
         "Parking Lot 4": 943
     },
-    "C. Roland Christensen Center": {
+    "C. Roland Christensen Center (CRCC)": {
         "Parking Lot 14": 117,
         "Parking Lot 7": 123,
         "Parking Lot 1": 180,
@@ -769,7 +769,7 @@
         "Parking Lot 17": 1015,
         "Parking Lot 31": 1034
     },
-    "Sculpture Building": {
+    "Sculpture Building (SCULPT)": {
         "Parking Lot 7": 33,
         "Parking Lot 1": 95,
         "Parking Lot 15": 160,
@@ -804,7 +804,7 @@
         "Parking Lot 17": 1098,
         "Parking Lot 31": 1133
     },
-    "Marcia & John Price Museum Building": {
+    "Utah Museum of Fine Arts (UMFA)": {
         "Parking Lot 7": 91,
         "Parking Lot 14": 113,
         "Parking Lot 1": 211,
@@ -839,7 +839,7 @@
         "Parking Lot 17": 1137,
         "Parking Lot 31": 1147
     },
-    "Social and Behavioral Science Lecture Hall": {
+    "Social and Behavioral Science Lecture Hall (S BEH)": {
         "Parking Lot 1": 60,
         "Parking Lot 7": 160,
         "Parking Lot 15": 170,
@@ -874,7 +874,7 @@
         "Parking Lot 32": 1056,
         "Parking Lot 31": 1088
     },
-    "College of Social Work": {
+    "College of Social Work (SW)": {
         "Parking Lot 1": 93,
         "Parking Lot 15": 173,
         "Parking Lot 6": 177,
@@ -944,7 +944,7 @@
         "Parking Lot 11": 1354,
         "Parking Lot 10": 1437
     },
-    "Roy W. & Elizabeth E. Simmons Pioneer Memorial Theatre": {
+    "Roy W. & Elizabeth E. Simmons Pioneer Memorial Theatre (PMT)": {
         "Parking Lot 16": 118,
         "Parking Lot 10": 196,
         "Parking Lot 5": 222,
@@ -979,7 +979,7 @@
         "Parking Lot 13": 1178,
         "Parking Lot 32": 1210
     },
-    "Office Building 44": {
+    "Office Building 44 (BLDG 44)": {
         "Parking Lot 6": 110,
         "Parking Lot 5": 145,
         "Parking Lot 16": 220,
@@ -1014,7 +1014,7 @@
         "Parking Lot 13": 954,
         "Parking Lot 32": 1011
     },
-    "Aline Wilmot Skaggs Biology Building": {
+    "Aline Wilmot Skaggs Biology Building (ASB)": {
         "Parking Lot 21": 167,
         "Parking Lot 6": 170,
         "Parking Lot 5": 204,
@@ -1049,7 +1049,7 @@
         "Parking Lot 13": 958,
         "Parking Lot 32": 987
     },
-    "Alfred C. Emery Building": {
+    "Alfred C. Emery Building (AEB)": {
         "Parking Lot 21": 112,
         "Parking Lot 29": 221,
         "Parking Lot 3": 261,
@@ -1154,7 +1154,7 @@
         "Parking Lot 10": 1258,
         "Parking Lot 4": 1309
     },
-    "Golf Pro Shop": {
+    "Golf Pro Shop (GLF SH)": {
         "Parking Lot 18": 137,
         "Parking Lot 19": 157,
         "Parking Lot 9": 223,
@@ -1189,7 +1189,7 @@
         "Parking Lot 10": 980,
         "Parking Lot 4": 1138
     },
-    "James LeVoy Sorenson Molecular Biotechnology Building - A USTAR Innovation Center": {
+    "Sorenson Molecular Biotechnology (SMBB)": {
         "Parking Lot 19": 173,
         "Parking Lot 31": 203,
         "Parking Lot 32": 233,
@@ -1224,7 +1224,7 @@
         "Parking Lot 10": 1119,
         "Parking Lot 4": 1279
     },
-    "Office of Sponsored Projects": {
+    "Office of Sponsored Projects (S PROJ)": {
         "Parking Lot 20": 64,
         "Parking Lot 23": 211,
         "Parking Lot 29": 255,
@@ -1259,7 +1259,7 @@
         "Parking Lot 26": 1123,
         "Parking Lot 8": 1157
     },
-    "Fine Arts West": {
+    "Fine Arts West (FAW)": {
         "Parking Lot 10": 41,
         "Parking Lot 16": 255,
         "Parking Lot 21": 354,
@@ -1294,7 +1294,7 @@
         "Parking Lot 32": 1313,
         "Parking Lot 13": 1315
     },
-    "Cauldron Legacy Plaza Visitors Center": {
+    "Cauldron Legacy Plaza Visitors Center (PLAZA)": {
         "Parking Lot 4": 141,
         "Parking Lot 15": 319,
         "Parking Lot 16": 339,
@@ -1329,7 +1329,7 @@
         "Parking Lot 31": 1415,
         "Parking Lot 32": 1436
     },
-    "David P. Gardner Hall": {
+    "David P. Gardner Hall (DGH)": {
         "Parking Lot 11": 69,
         "Parking Lot 29": 196,
         "Parking Lot 21": 229,
@@ -1364,7 +1364,7 @@
         "Parking Lot 25": 1255,
         "Parking Lot 8": 1257
     },
-    "James Talmage Building": {
+    "James Talmage Building (JTB)": {
         "Parking Lot 21": 69,
         "Parking Lot 29": 183,
         "Parking Lot 3": 202,
@@ -1434,7 +1434,7 @@
         "Parking Lot 25": 1094,
         "Parking Lot 8": 1103
     },
-    "Beverley Taylor Sorenson Arts & Education Complex": {
+    "Sorenson Arts & Education Complex (SAEC)": {
         "Parking Lot 22": 134,
         "Parking Lot 24": 141,
         "Parking Lot 27": 203,
@@ -1469,7 +1469,7 @@
         "Parking Lot 11": 946,
         "Parking Lot 10": 989
     },
-    "HPER Natatorium": {
+    "HPER (HPRNAT)": {
         "Parking Lot 24": 167,
         "Parking Lot 25": 210,
         "Parking Lot 22": 229,
@@ -1539,7 +1539,7 @@
         "Parking Lot 13": 923,
         "Parking Lot 32": 963
     },
-    "Building 124": {
+    "Building 124 (BLDG 124)": {
         "Parking Lot 21": 91,
         "Parking Lot 3": 192,
         "Parking Lot 29": 203,
@@ -1574,7 +1574,7 @@
         "Parking Lot 13": 985,
         "Parking Lot 25": 998
     },
-    "Thatcher Building for Biological & Biophysical Chemistry": {
+    "Thatcher Chemistry (TBBC)": {
         "Parking Lot 16": 66,
         "Parking Lot 5": 78,
         "Parking Lot 6": 190,
@@ -1609,7 +1609,7 @@
         "Parking Lot 31": 1122,
         "Parking Lot 32": 1191
     },
-    "Civil and Materials Engineering": {
+    "Civil and Materials Engineering (CME)": {
         "Parking Lot 2": 51,
         "Parking Lot 12": 51,
         "Parking Lot 9": 81,
@@ -1644,7 +1644,7 @@
         "Parking Lot 8": 863,
         "Parking Lot 4": 872
     },
-    "John R. Park Building": {
+    "Park Building (PARK)": {
         "Parking Lot 21": 58,
         "Parking Lot 3": 117,
         "Parking Lot 29": 131,
@@ -1679,7 +1679,7 @@
         "Parking Lot 8": 976,
         "Parking Lot 25": 982
     },
-    "Intermountain Network Scientific Computation Center": {
+    "Intermountain Network Scientific Computation Center (INSCC)": {
         "Parking Lot 23": 53,
         "Parking Lot 29": 60,
         "Parking Lot 3": 105,
@@ -1714,7 +1714,7 @@
         "Parking Lot 25": 1004,
         "Parking Lot 8": 1016
     },
-    "LeRoy E. Cowles Building": {
+    "LeRoy E. Cowles Building (LCB)": {
         "Parking Lot 29": 53,
         "Parking Lot 21": 63,
         "Parking Lot 23": 108,
@@ -1749,7 +1749,7 @@
         "Parking Lot 25": 1061,
         "Parking Lot 8": 1062
     },
-    "Naval Science Building": {
+    "Naval Science Building (NS)": {
         "Parking Lot 23": 59,
         "Parking Lot 29": 62,
         "Parking Lot 11": 176,
@@ -1784,7 +1784,7 @@
         "Parking Lot 25": 1083,
         "Parking Lot 8": 1105
     },
-    "Spencer Fox Eccles Business Building": {
+    "Spencer Fox Eccles Business Building (SFEBB)": {
         "Parking Lot 14": 100,
         "Parking Lot 22": 165,
         "Parking Lot 7": 187,
@@ -1819,7 +1819,7 @@
         "Parking Lot 17": 976,
         "Parking Lot 31": 983
     },
-    "Spence Eccles Ski Team Building": {
+    "Spence Eccles Ski Team Building (SKI)": {
         "Parking Lot 28": 87,
         "Parking Lot 33": 251,
         "Parking Lot 32": 256,
@@ -1854,7 +1854,7 @@
         "Parking Lot 10": 1137,
         "Parking Lot 4": 1200
     },
-    "Grounds Storage Building": {
+    "Grounds Storage Building (BLG GR)": {
         "Parking Lot 27": 72,
         "Parking Lot 22": 110,
         "Parking Lot 14": 120,
@@ -1924,7 +1924,7 @@
         "Parking Lot 32": 1270,
         "Parking Lot 31": 1299
     },
-    "George S. Eccles Student Life Center": {
+    "George S. Eccles Student Life Center (GSESLC)": {
         "Parking Lot 13": 71,
         "Parking Lot 25": 233,
         "Parking Lot 28": 298,
@@ -1994,7 +1994,7 @@
         "Parking Lot 11": 1384,
         "Parking Lot 10": 1456
     },
-    "North Campus Chiller Plant": {
+    "North Campus Chiller Plant (BLDG 149)": {
         "Parking Lot 18": 105,
         "Parking Lot 9": 218,
         "Parking Lot 19": 238,
@@ -2029,7 +2029,7 @@
         "Parking Lot 10": 989,
         "Parking Lot 4": 1113
     },
-    "Joseph T. Kingsbury Hall": {
+    "Joseph T. Kingsbury Hall (KH)": {
         "Parking Lot 11": 79,
         "Parking Lot 29": 130,
         "Parking Lot 21": 177,
@@ -2064,7 +2064,7 @@
         "Parking Lot 25": 1192,
         "Parking Lot 8": 1196
     },
-    "Henry Eyring Chemistry Building": {
+    "Henry Eyring Chemistry Building (HEB)": {
         "Parking Lot 5": 84,
         "Parking Lot 16": 97,
         "Parking Lot 6": 160,
@@ -2099,7 +2099,7 @@
         "Parking Lot 13": 1063,
         "Parking Lot 32": 1134
     },
-    "V. Randall Turpin University Services Building": {
+    "V. Randall Turpin University Services Building (VRTUSB)": {
         "Parking Lot 27": 56,
         "Parking Lot 24": 63,
         "Parking Lot 26": 75,
@@ -2134,7 +2134,7 @@
         "Parking Lot 10": 1132,
         "Parking Lot 11": 1132
     },
-    "Jon M. Huntsman Center": {
+    "Jon M. Huntsman Center (JHC)": {
         "Parking Lot 8": 81,
         "Parking Lot 24": 143,
         "Parking Lot 26": 155,
@@ -2169,7 +2169,7 @@
         "Parking Lot 11": 1193,
         "Parking Lot 10": 1229
     },
-    "Space Planning & Management": {
+    "Space Planning & Management (SPACE)": {
         "Parking Lot 20": 108,
         "Parking Lot 23": 258,
         "Parking Lot 17": 268,
@@ -2204,7 +2204,7 @@
         "Parking Lot 26": 1165,
         "Parking Lot 8": 1196
     },
-    "Social & Behavioral Sciences": {
+    "Social & Behavioral Sciences (BEH S)": {
         "Parking Lot 1": 116,
         "Parking Lot 6": 153,
         "Parking Lot 7": 211,
@@ -2239,7 +2239,7 @@
         "Parking Lot 32": 1027,
         "Parking Lot 31": 1044
     },
-    "Biology Building": {
+    "Biology Building (BIOL)": {
         "Parking Lot 21": 172,
         "Parking Lot 5": 197,
         "Parking Lot 16": 200,
@@ -2274,7 +2274,7 @@
         "Parking Lot 13": 1033,
         "Parking Lot 32": 1058
     },
-    "Alan W. Layton Engineering Building": {
+    "Alan W. Layton Engineering Building (LEB)": {
         "Parking Lot 9": 37,
         "Parking Lot 12": 46,
         "Parking Lot 2": 49,
@@ -2309,7 +2309,7 @@
         "Parking Lot 8": 832,
         "Parking Lot 4": 897
     },
-    "Performing Arts Building": {
+    "Performing Arts Building (PAB)": {
         "Parking Lot 6": 172,
         "Parking Lot 21": 179,
         "Parking Lot 3": 184,
@@ -2344,7 +2344,7 @@
         "Parking Lot 25": 895,
         "Parking Lot 32": 925
     },
-    "Eccles House": {
+    "Eccles House (EH)": {
         "Parking Lot 31": 232,
         "Parking Lot 17": 334,
         "Parking Lot 19": 368,
@@ -2449,7 +2449,7 @@
         "Parking Lot 10": 1086,
         "Parking Lot 4": 1207
     },
-    "Dumke Family Softball Stadium": {
+    "Dumke Family Softball Stadium (DFSS)": {
         "Parking Lot 28": 117,
         "Parking Lot 32": 215,
         "Parking Lot 18": 235,
@@ -2519,7 +2519,7 @@
         "Parking Lot 10": 1103,
         "Parking Lot 4": 1229
     },
-    "Einar Nielsen Fieldhouse": {
+    "Einar Nielsen (FLD H)": {
         "Parking Lot 5": 71,
         "Parking Lot 16": 148,
         "Parking Lot 6": 170,
@@ -2589,7 +2589,7 @@
         "Parking Lot 31": 1478,
         "Parking Lot 32": 1524
     },
-    "William Stewart Building": {
+    "William Stewart Building (ST)": {
         "Parking Lot 16": 183,
         "Parking Lot 10": 193,
         "Parking Lot 21": 219,
@@ -2624,7 +2624,7 @@
         "Parking Lot 13": 1150,
         "Parking Lot 32": 1160
     },
-    "The Gary L. and Ann T. Crocker Science Center at the George Thomas Building": {
+    "The Gary L. and Ann T. Crocker Science Center at the George Thomas Building (CSC)": {
         "Parking Lot 21": 177,
         "Parking Lot 10": 191,
         "Parking Lot 16": 253,
@@ -2659,7 +2659,7 @@
         "Parking Lot 13": 1153,
         "Parking Lot 25": 1160
     },
-    "HPER West": {
+    "'HPER West (HPR W)": {
         "Parking Lot 24": 116,
         "Parking Lot 22": 158,
         "Parking Lot 27": 197,
@@ -2694,7 +2694,7 @@
         "Parking Lot 11": 1009,
         "Parking Lot 10": 1064
     },
-    "HPER East": {
+    "HPER East (HPR E)": {
         "Parking Lot 25": 163,
         "Parking Lot 24": 227,
         "Parking Lot 13": 239,
@@ -2729,7 +2729,7 @@
         "Parking Lot 4": 1098,
         "Parking Lot 10": 1185
     },
-    "Kenneth P. Burbidge, Jr., Family Athletics Academic Center": {
+    "Kenneth P. Burbidge, Jr., Family Athletics Academic Center (KBAC)": {
         "Parking Lot 24": 137,
         "Parking Lot 25": 190,
         "Parking Lot 8": 208,
@@ -2764,7 +2764,7 @@
         "Parking Lot 11": 1082,
         "Parking Lot 10": 1145
     },
-    "HPER North": {
+    "HPER North (HPR N)": {
         "Parking Lot 33": 199,
         "Parking Lot 24": 218,
         "Parking Lot 22": 261,
@@ -2799,7 +2799,7 @@
         "Parking Lot 4": 1016,
         "Parking Lot 10": 1087
     },
-    "HPER Mechanical Building Southwest": {
+    "HPER Mechanical Building Southwest (HPR SW)": {
         "Parking Lot 24": 115,
         "Parking Lot 8": 186,
         "Parking Lot 25": 191,
@@ -2834,7 +2834,7 @@
         "Parking Lot 11": 1094,
         "Parking Lot 10": 1149
     },
-    "Central Garage": {
+    "Central Garage (CPG)": {
         "Parking Lot 22": 3,
         "Parking Lot 27": 83,
         "Parking Lot 24": 89,
@@ -2904,7 +2904,7 @@
         "Parking Lot 31": 1102,
         "Parking Lot 17": 1127
     },
-    "Language & Communication Building": {
+    "Language & Communication Building (LNCO)": {
         "Parking Lot 30": 167,
         "Parking Lot 33": 204,
         "Parking Lot 22": 288,
@@ -2939,7 +2939,7 @@
         "Parking Lot 31": 773,
         "Parking Lot 10": 808
     },
-    "Bldg 301": {
+    "Bldg 301 (SAFETY)": {
         "Parking Lot 27": 141,
         "Parking Lot 26": 156,
         "Parking Lot 14": 185,
@@ -2974,7 +2974,7 @@
         "Parking Lot 31": 1199,
         "Parking Lot 17": 1229
     },
-    "Art Building": {
+    "Art Building (ART)": {
         "Parking Lot 7": 87,
         "Parking Lot 1": 89,
         "Parking Lot 15": 187,
@@ -3009,7 +3009,7 @@
         "Parking Lot 17": 1044,
         "Parking Lot 31": 1083
     },
-    "Architecture Building": {
+    "Architecture Building (ARCH)": {
         "Parking Lot 7": 104,
         "Parking Lot 1": 129,
         "Parking Lot 14": 167,
@@ -3044,7 +3044,7 @@
         "Parking Lot 17": 1020,
         "Parking Lot 31": 1052
     },
-    "A. Ray Olpin Union": {
+    "A. Ray Olpin Union (UNION)": {
         "Parking Lot 2": 130,
         "Parking Lot 12": 134,
         "Parking Lot 30": 138,
@@ -3079,7 +3079,7 @@
         "Parking Lot 25": 755,
         "Parking Lot 8": 766
     },
-    "Carolyn Tanner Irish Humanities Building": {
+    "Carolyn Tanner Irish Humanities Building (CTIHB)": {
         "Parking Lot 33": 90,
         "Parking Lot 30": 129,
         "Parking Lot 18": 260,
@@ -3149,7 +3149,7 @@
         "Parking Lot 25": 961,
         "Parking Lot 8": 963
     },
-    "Student Services Building": {
+    "Student Services Building (SSB)": {
         "Parking Lot 3": 71,
         "Parking Lot 21": 119,
         "Parking Lot 29": 164,
@@ -3184,7 +3184,7 @@
         "Parking Lot 8": 921,
         "Parking Lot 25": 923
     },
-    "James C. Fletcher Building": {
+    "James C. Fletcher Building (JFB)": {
         "Parking Lot 11": 85,
         "Parking Lot 29": 113,
         "Parking Lot 23": 147,
@@ -3254,7 +3254,7 @@
         "Parking Lot 25": 1099,
         "Parking Lot 8": 1113
     },
-    "Voice & Opera Center": {
+    "Voice & Opera Center (VOICE)": {
         "Parking Lot 11": 33,
         "Parking Lot 29": 223,
         "Parking Lot 23": 265,
@@ -3289,7 +3289,7 @@
         "Parking Lot 25": 1287,
         "Parking Lot 8": 1297
     },
-    "Frederick Albert Sutton Building": {
+    "Frederick Albert Sutton Building (FASB)": {
         "Parking Lot 23": 88,
         "Parking Lot 3": 127,
         "Parking Lot 20": 136,
@@ -3324,7 +3324,7 @@
         "Parking Lot 25": 962,
         "Parking Lot 8": 995
     },
-    "William C. Browning Building": {
+    "William C. Browning Building (WBB)": {
         "Parking Lot 3": 79,
         "Parking Lot 23": 91,
         "Parking Lot 29": 144,
@@ -3394,7 +3394,7 @@
         "Parking Lot 31": 1106,
         "Parking Lot 32": 1130
     },
-    "John A. Widtsoe Building": {
+    "John A. Widtsoe Building (JWB)": {
         "Parking Lot 29": 65,
         "Parking Lot 21": 111,
         "Parking Lot 23": 128,
@@ -3429,7 +3429,7 @@
         "Parking Lot 25": 1118,
         "Parking Lot 8": 1122
     },
-    "J. Willard Marriott Library": {
+    "J. Willard Marriott Library (M LIB)": {
         "Parking Lot 6": 117,
         "Parking Lot 1": 223,
         "Parking Lot 5": 225,
@@ -3464,7 +3464,7 @@
         "Parking Lot 32": 934,
         "Parking Lot 31": 935
     },
-    "Film and Media Arts Building": {
+    "Film and Media Arts Building (FMAB)": {
         "Parking Lot 1": 97,
         "Parking Lot 7": 148,
         "Parking Lot 15": 211,
@@ -3499,7 +3499,7 @@
         "Parking Lot 32": 1002,
         "Parking Lot 31": 1046
     },
-    "Business Classroom Building": {
+    "Business Classroom Building (BU C)": {
         "Parking Lot 14": 155,
         "Parking Lot 7": 174,
         "Parking Lot 1": 199,
@@ -3569,7 +3569,7 @@
         "Parking Lot 4": 1174,
         "Parking Lot 10": 1190
     },
-    "Donna Garff Marriott Residential Scholars Community": {
+    "Donna Garff Marriott Residential Scholars Community (MHC)": {
         "Parking Lot 25": 95,
         "Parking Lot 13": 190,
         "Parking Lot 8": 286,
@@ -3604,7 +3604,7 @@
         "Parking Lot 4": 1283,
         "Parking Lot 10": 1380
     },
-    "Cleone Peterson Eccles Alumni House": {
+    "Cleone Peterson Eccles Alumni House (ALUMNI)": {
         "Parking Lot 18": 105,
         "Parking Lot 30": 117,
         "Parking Lot 9": 137,
@@ -3639,7 +3639,7 @@
         "Parking Lot 10": 854,
         "Parking Lot 4": 934
     },
-    "Rosenblatt House": {
+    "Rosenblatt House (ROSEN)": {
         "Parking Lot 17": 165,
         "Parking Lot 31": 193,
         "Parking Lot 19": 258,
@@ -3674,7 +3674,7 @@
         "Parking Lot 15": 1338,
         "Parking Lot 4": 1406
     },
-    "Carolyn and Kem Gardner Commons": {
+    "Carolyn and Kem Gardner Commons (GC)": {
         "Parking Lot 30": 184,
         "Parking Lot 6": 269,
         "Parking Lot 33": 283,
@@ -3709,7 +3709,7 @@
         "Parking Lot 32": 776,
         "Parking Lot 31": 809
     },
-    "HPER Mechanical Building Southeast": {
+    "HPER Mechanical Building Southeast (HPR SE)": {
         "Parking Lot 24": 151,
         "Parking Lot 25": 157,
         "Parking Lot 8": 185,
@@ -3744,7 +3744,7 @@
         "Parking Lot 11": 1115,
         "Parking Lot 10": 1179
     },
-    "Jon M. and Karen Huntsman Basketball Facility": {
+    "Jon M. and Karen Huntsman Basketball Facility (HBF)": {
         "Parking Lot 25": 111,
         "Parking Lot 8": 188,
         "Parking Lot 24": 197,
@@ -3779,7 +3779,7 @@
         "Parking Lot 11": 1149,
         "Parking Lot 10": 1222
     },
-    "Northwest Garage": {
+    "Northwest Garage (Northwest)": {
         "Parking Lot 23": 15,
         "Parking Lot 29": 75,
         "Parking Lot 3": 146,
@@ -3814,7 +3814,7 @@
         "Parking Lot 25": 1028,
         "Parking Lot 8": 1051
     },
-    "Sterling Sill Center": {
+    "Sterling Sill Center (SILL)": {
         "Parking Lot 30": 69,
         "Parking Lot 33": 137,
         "Parking Lot 18": 167,
@@ -3849,7 +3849,7 @@
         "Parking Lot 10": 831,
         "Parking Lot 4": 886
     },
-    "University Campus Store": {
+    "University Campus Store (U CAMPSTOR)": {
         "Parking Lot 6": 147,
         "Parking Lot 3": 203,
         "Parking Lot 21": 222,
@@ -3919,7 +3919,7 @@
         "Parking Lot 25": 1120,
         "Parking Lot 8": 1136
     },
-    "Physics Building": {
+    "Physics Building (PHYS)": {
         "Parking Lot 29": 65,
         "Parking Lot 23": 109,
         "Parking Lot 11": 126,
@@ -3989,7 +3989,7 @@
         "Parking Lot 8": 1337,
         "Parking Lot 25": 1361
     },
-    "Building 72": {
+    "Building 72 (BLDG 72)": {
         "Parking Lot 16": 85,
         "Parking Lot 10": 219,
         "Parking Lot 5": 225,
@@ -4024,7 +4024,7 @@
         "Parking Lot 13": 1228,
         "Parking Lot 32": 1282
     },
-    "John & Marcia Price Theatre Arts Building": {
+    "John & Marcia Price Theatre Arts Building (PTAB)": {
         "Parking Lot 16": 121,
         "Parking Lot 10": 195,
         "Parking Lot 5": 261,
@@ -4059,7 +4059,7 @@
         "Parking Lot 13": 1262,
         "Parking Lot 32": 1310
     },
-    "Impact Prosperity Epicenter Building": {
+    "Impact Prosperity Epicenter Building (IPE)": {
         "Parking Lot 13": 125,
         "Parking Lot 28": 246,
         "Parking Lot 33": 263,
@@ -4094,7 +4094,7 @@
         "Parking Lot 4": 1196,
         "Parking Lot 10": 1216
     },
-    "Rio Tinto Kennecott Mechanical Engineering Building": {
+    "Rio Tinto Kennecott Mechanical Engineering Building (MEK)": {
         "Parking Lot 20": 50,
         "Parking Lot 23": 147,
         "Parking Lot 29": 208,
@@ -4129,7 +4129,7 @@
         "Parking Lot 26": 1011,
         "Parking Lot 8": 1047
     },
-    "Lassonde Studios": {
+    "Lassonde Studios (LSND)": {
         "Parking Lot 33": 72,
         "Parking Lot 30": 245,
         "Parking Lot 24": 310,
@@ -4164,7 +4164,7 @@
         "Parking Lot 4": 969,
         "Parking Lot 10": 993
     },
-    "Rice-Eccles Stadium": {
+    "Rice-Eccles Stadium (STAD)": {
         "Parking Lot 4": 185,
         "Parking Lot 5": 199,
         "Parking Lot 16": 235,
@@ -4199,7 +4199,7 @@
         "Parking Lot 31": 1262,
         "Parking Lot 32": 1285
     },
-    "Robert H. and Katharine B. Garff Executive Education Building": {
+    "Robert H. and Katharine B. Garff Executive Education Building (Garff)": {
         "Parking Lot 22": 88,
         "Parking Lot 14": 119,
         "Parking Lot 24": 156,
@@ -4234,7 +4234,7 @@
         "Parking Lot 31": 940,
         "Parking Lot 17": 960
     },
-    "Dolores Dore Eccles Broadcast Center": {
+    "Dolores Dore Eccles Broadcast Center (EBC)": {
         "Parking Lot 28": 165,
         "Parking Lot 13": 208,
         "Parking Lot 32": 231,
@@ -4269,7 +4269,7 @@
         "Parking Lot 10": 1365,
         "Parking Lot 4": 1401
     },
-    "Kahlert Village": {
+    "Kahlert Village (KV)": {
         "Parking Lot 25": 92,
         "Parking Lot 13": 190,
         "Parking Lot 8": 258,
@@ -4304,7 +4304,7 @@
         "Parking Lot 4": 1193,
         "Parking Lot 10": 1285
     },
-    "Dumke Gymnastics Center": {
+    "Dumke Gymnastics Center (DGC)": {
         "Parking Lot 13": 214,
         "Parking Lot 33": 223,
         "Parking Lot 25": 234,
