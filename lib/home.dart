@@ -80,6 +80,9 @@ class HomePage extends StatelessWidget {
 class HomePageMap extends StatefulWidget {
   @override
   _HomePageMapState createState() => _HomePageMapState();
+
+  static void callStateScreen(Color newColor, String lotName, int listIndex, LatLng lotCoord) => _HomePageMapState.updateMarkersAfterSurvey(newColor, lotName, listIndex, lotCoord);
+
 }
 
 // Creates a dictionary (lotName (str) -> location (LatLng))
@@ -142,6 +145,8 @@ List<Marker> createMarkerList(MapController controller) {
           onTap: () {
             controller.moveAndRotate(parkingLot.value, 20, 0);
             openMap(parkingLot.value.latitude, parkingLot.value.longitude);
+            _HomePageMapState.selectedDestination = LatLng(parkingLot.value.latitude, parkingLot.value.longitude);
+
           },
           child: Icon(
             Icons.location_pin,
@@ -159,6 +164,7 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
   static final MapController controller = MapController();
   ValueNotifier<bool> isSheetExpanded = ValueNotifier(false);
   static bool isReturningFromGoogleMaps = false;
+  static _HomePageMapState? _currentInstance;
   LatLng latLng = const LatLng(40.76497, -111.84611);
   static List<Marker> my_markers = createMarkerList(controller);
   static Map<String, LatLng> lot_name_TO_coordinate = createLotLngDict();
@@ -219,11 +225,43 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
     }
   }
 
+  // updates the marker that corresponds to the parking lot that user navigated to based on the user feedback.
+  static void updateMarkersAfterSurvey(Color newColor, String lotName, int listIndex, LatLng lotCoord)
+  {
+    if (_currentInstance == null) return; 
+
+    Marker replaceMarker = Marker(
+            point: lotCoord,
+            width: 30,
+            height: 30,
+            alignment: Alignment.topCenter,
+            child: GestureDetector(
+              onTap: () {
+                _HomePageMapState.controller.moveAndRotate(lotCoord, 20, 0);
+                openMap(lotCoord.latitude, lotCoord.longitude);
+              },
+              child: Icon(
+                Icons.location_pin,
+                color: newColor,
+                size: 25,
+              ),
+            ));
+
+    _HomePageMapState.my_markers[listIndex] = replaceMarker;
+    // REFRESH THE PAGE HERE
+    _currentInstance!.refreshUI();
+  }
+
+  // refreshed the page
+  void refreshUI()
+  {
+    setState(() {});
+  }
+
   // Method that is being called every 'X' seconds/minutes to update the Map.
   void updateMap() {
     // CREATING DUMMY DATA TO TEST MARKER UPDATING EVERY X SECONDS
     List<String> parkingNames = createLotLngDict().keys.toList();
-    print("The length of the list is: ${parkingNames.length}");
     Random random = Random();
     List<int> randomOccupancy = List.generate(34, (_) => random.nextInt(101));
     Map<String, int> dummy_map =
@@ -238,7 +276,8 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this); // Register observer
-    timer = Timer.periodic(Duration(seconds: 5), (Timer t) => updateMap());
+    _currentInstance = this; // Set the current instance
+    timer = Timer.periodic(Duration(seconds: 180), (Timer t) => updateMap());
     // call updateMap every 5 seconds to update the markers.
   }
 
@@ -717,8 +756,10 @@ class CustomSearchDelegate extends SearchDelegate {
                           '${parkingLotEntry.key}: ${parkingLotEntry.value.toStringAsFixed(2)} meters'),
                       // When you want to show the HistogramScreen, pass the location parameter
                       onTap: () {
+                        
                         LatLng loc = parking_locations[parkingLotEntry
                             .key]!; // Get the location data for the selected parking lot
+                        _HomePageMapState.selectedDestination = loc;
                         showModalBottomSheet(
                           context: context,
                           isScrollControlled: true,
@@ -758,7 +799,7 @@ Future<void> openMap(double lat, double long) async {
       "https://www.google.com/maps/search/?api=1&query=$lat,$long";
   String appleMapsUrl = "https://maps.apple.com/?q=$lat,$long";
   String geoUrl = "geo:$lat,$long";
-  _HomePageMapState.selectedDestination = LatLng(lat, long);
+  // _HomePageMapState.selectedDestination = LatLng(lat, long);
   Uri mapUrl =
       Platform.isIOS ? Uri.parse(appleMapsUrl) : Uri.parse(googleMapsUrl);
 
