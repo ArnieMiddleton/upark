@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
@@ -15,6 +16,7 @@ import 'dart:developer' as developer;
 import 'package:fuzzy/fuzzy.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:csv/csv.dart';
 
 // Homepage
 class HomePage extends StatelessWidget {
@@ -807,7 +809,7 @@ Future<void> openMap(double lat, double long) async {
     if (await canLaunchUrl(mapUrl)) {
       // Set the flag right before launching the maps app
       isReturningFromMaps = true;
-      await launchUrl(mapUrl);
+      await launchUrl(mapUrl);ol
     } else if (await canLaunchUrl(Uri.parse(geoUrl))) {
       // Launch the default maps app
       isReturningFromMaps = true;
@@ -828,18 +830,42 @@ class HistogramScreen extends StatefulWidget {
   _HistogramScreenState createState() => _HistogramScreenState();
 }
 
+Future<List<dynamic>> loadPredictions(String day) async {
+  String jsonString =
+      await rootBundle.loadString('lib/assets/predictions.json');
+  Map<String, dynamic> preds = jsonDecode(jsonString);
+
+  if (day == "Mon") {
+    return preds["Monday"];
+  } else if (day == "Tue") {
+    return preds["Tuesday"];
+  } else if (day == "Wed") {
+    return preds["Wednesday"];
+  } else if (day == "Thu") {
+    return preds["Thursday"];
+  } else {
+    return preds["Friday"];
+  }
+}
+
 class _HistogramScreenState extends State<HistogramScreen> {
   late String selectedDay; // Default to Monday
-  final List<String> _days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+  final List<String> _days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
   // Placeholder data for the histogram
   List<ChartData> chartData = [
-    ChartData('6am', 5),
-    ChartData('9am', 10),
-    ChartData('12pm', 7),
-    ChartData('3pm', 15),
-    ChartData('6pm', 9),
-    // Add more data here
+    ChartData('7am', 20),
+    ChartData('8am', 30),
+    ChartData('9am', 45),
+    ChartData('10am', 70),
+    ChartData('11am', 65),
+    ChartData('12pm', 65),
+    ChartData('1pm', 65),
+    ChartData('2pm', 80),
+    ChartData('3pm', 80),
+    ChartData('4pm', 40),
+    ChartData('5pm', 20),
+    ChartData('6pm', 20)
   ];
 
   @override
@@ -848,7 +874,7 @@ class _HistogramScreenState extends State<HistogramScreen> {
     // Set the default day to today's weekday
     int currentWeekday = DateTime.now().weekday;
     // Dart's DateTime class defines Sunday as 7 instead of 0
-    selectedDay = _days[(currentWeekday % 7) - 1];
+    selectedDay = _days[currentWeekday % 7 == 0 ? 6 : currentWeekday - 1];
   }
 
   @override
@@ -864,87 +890,27 @@ class _HistogramScreenState extends State<HistogramScreen> {
           DropdownButton<String>(
             value: selectedDay,
             icon: const Icon(Icons.arrow_drop_down),
-            onChanged: (String? newValue) {
+            onChanged: (String? newValue) async {
               setState(() {
                 selectedDay = newValue!;
-                // Update your histogram data here based on the selectedDay
-                if (selectedDay == "Monday") {
-                  chartData = [
-                    ChartData('7am', 70),
-                    ChartData('8am', 20),
-                    ChartData('9am', 40),
-                    ChartData('10am', 40),
-                    ChartData('11am', 40),
-                    ChartData('12pm', 40),
-                    ChartData('1pm', 40),
-                    ChartData('2pm', 40),
-                    ChartData('3pm', 40),
-                    ChartData('4pm', 40),
-                    ChartData('5pm', 40),
-                    ChartData('6pm', 40)
-                  ];
-                } else if (selectedDay == "Tuesday") {
-                  chartData = [
-                    ChartData('7am', 20),
-                    ChartData('8am', 20),
-                    ChartData('9am', 20),
-                    ChartData('10am', 20),
-                    ChartData('11am', 40),
-                    ChartData('12pm', 40),
-                    ChartData('1pm', 40),
-                    ChartData('2pm', 40),
-                    ChartData('3pm', 40),
-                    ChartData('4pm', 40),
-                    ChartData('5pm', 40),
-                    ChartData('6pm', 40)
-                  ];
-                } else if (selectedDay == "Wednesday") {
-                  chartData = [
-                    ChartData('7am', 20),
-                    ChartData('8am', 18),
-                    ChartData('9am', 20),
-                    ChartData('10am', 20),
-                    ChartData('11am', 20),
-                    ChartData('12pm', 40),
-                    ChartData('1pm', 40),
-                    ChartData('2pm', 40),
-                    ChartData('3pm', 40),
-                    ChartData('4pm', 40),
-                    ChartData('5pm', 40),
-                    ChartData('6pm', 40)
-                  ];
-                } else if (selectedDay == "Thursday") {
-                  chartData = [
-                    ChartData('7am', 18),
-                    ChartData('8am', 20),
-                    ChartData('9am', 20),
-                    ChartData('10am', 20),
-                    ChartData('11am', 20),
-                    ChartData('12pm', 20),
-                    ChartData('1pm', 20),
-                    ChartData('2pm', 40),
-                    ChartData('3pm', 40),
-                    ChartData('4pm', 40),
-                    ChartData('5pm', 40),
-                    ChartData('6pm', 40)
-                  ];
-                } else {
-                  chartData = [
-                    ChartData('7am', 18),
-                    ChartData('8am', 20),
-                    ChartData('9am', 20),
-                    ChartData('10am', 20),
-                    ChartData('11am', 20),
-                    ChartData('12pm', 20),
-                    ChartData('1pm', 20),
-                    ChartData('2pm', 20),
-                    ChartData('3pm', 20),
-                    ChartData('4pm', 40),
-                    ChartData('5pm', 40),
-                    ChartData('6pm', 40)
-                  ];
-                }
               });
+              // Update your histogram data here based on the selectedDay
+              List<double> preds = loadPredictions(selectedDay) as List<double>;
+              chartData = [
+                ChartData('7am', preds[0]),
+                ChartData('8am', preds[1]),
+                ChartData('9am', preds[2]),
+                ChartData('10am', preds[3]),
+                ChartData('11am', preds[4]),
+                ChartData('12pm', preds[5]),
+                ChartData('1pm', preds[6]),
+                ChartData('2pm', preds[7]),
+                ChartData('3pm', preds[8]),
+                ChartData('4pm', preds[9]),
+                ChartData('5pm', preds[10]),
+                ChartData('6pm', preds[11])
+              ];
+              // });
             },
             items: _days.map<DropdownMenuItem<String>>((String day) {
               return DropdownMenuItem<String>(

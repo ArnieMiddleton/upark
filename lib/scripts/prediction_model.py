@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import Perceptron
-import csv
+import json
 
 FILE = 'upark\lib\data\dummydata.csv'
 MONFILE = 'upark\lib\data\dummyMonday.csv'
@@ -56,37 +56,55 @@ predWed = per.predict(testWed)
 predThur = per.predict(testThur)
 predFri = per.predict(testFri)
 
-with open('upark\lib\\assets\mondayPred.csv', 'w', newline='') as outfile:
-    fields = ['occupancy%']
-    writer = csv.DictWriter(outfile, fieldnames = fields)
-    writer.writeheader()
-    for id in range(0, 12):
-        writer.writerow({'occupancy%': predMon[id]})
+days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
 
-with open('upark\lib\\assets\\tuesdayPred.csv', 'w', newline='') as outfile:
-    fields = ['occupancy%']
-    writer = csv.DictWriter(outfile, fieldnames = fields)
-    writer.writeheader()
-    for id in range(0, 12):
-        writer.writerow({'occupancy%': predTue[id]})
+pred_data = {}
+for day in days:
+    if day == "Monday":
+        pred_data[day] = predMon.tolist()
+    elif day == "Tuesday":
+        pred_data[day] = predTue.tolist()
+    elif day == "Wednesday":
+        pred_data[day] = predWed.tolist()
+    elif day == "Thursday":
+        pred_data[day] = predThur.tolist()
+    else:
+        pred_data[day] = predFri.tolist()
 
-with open('upark\lib\\assets\wednesdayPred.csv', 'w', newline='') as outfile:
-    fields = ['occupancy%']
-    writer = csv.DictWriter(outfile, fieldnames = fields)
-    writer.writeheader()
-    for id in range(0, 12):
-        writer.writerow({'occupancy%': predWed[id]})
+with open('upark\lib\\assets\\predictions.json', 'w') as outfile:
+    json.dump(pred_data, outfile, indent=4)
 
-with open('upark\lib\\assets\\thursdayPred.csv', 'w', newline='') as outfile:
-    fields = ['occupancy%']
-    writer = csv.DictWriter(outfile, fieldnames = fields)
-    writer.writeheader()
-    for id in range(0, 12):
-        writer.writerow({'occupancy%': predThur[id]})
+# with open('upark\lib\\assets\mondayPred.csv', 'w', newline='') as outfile:
+#     fields = ['occupancy%']
+#     writer = csv.DictWriter(outfile, fieldnames = fields)
+#     writer.writeheader()
+#     for id in range(0, 12):
+#         writer.writerow({'occupancy%': predMon[id]})
 
-with open('upark\lib\\assets\\fridayPred.csv', 'w', newline='') as outfile:
-    fields = ['occupancy%']
-    writer = csv.DictWriter(outfile, fieldnames = fields)
-    writer.writeheader()
-    for id in range(0, 12):
-        writer.writerow({'occupancy%': predFri[id]})
+# with open('upark\lib\\assets\\tuesdayPred.csv', 'w', newline='') as outfile:
+#     fields = ['occupancy%']
+#     writer = csv.DictWriter(outfile, fieldnames = fields)
+#     writer.writeheader()
+#     for id in range(0, 12):
+#         writer.writerow({'occupancy%': predTue[id]})
+
+# with open('upark\lib\\assets\wednesdayPred.csv', 'w', newline='') as outfile:
+#     fields = ['occupancy%']
+#     writer = csv.DictWriter(outfile, fieldnames = fields)
+#     writer.writeheader()
+#     for id in range(0, 12):
+#         writer.writerow({'occupancy%': predWed[id]})
+
+# with open('upark\lib\\assets\\thursdayPred.csv', 'w', newline='') as outfile:
+#     fields = ['occupancy%']
+#     writer = csv.DictWriter(outfile, fieldnames = fields)
+#     writer.writeheader()
+#     for id in range(0, 12):
+#         writer.writerow({'occupancy%': predThur[id]})
+
+# with open('upark\lib\\assets\\fridayPred.csv', 'w', newline='') as outfile:
+#     fields = ['occupancy%']
+#     writer = csv.DictWriter(outfile, fieldnames = fields)
+#     writer.writeheader()
+#     for id in range(0, 12):
+#         writer.writerow({'occupancy%': predFri[id]})
