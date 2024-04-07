@@ -70,6 +70,7 @@ class _ParkingLotSurveyScreenState extends State<ParkingLotSurveyScreen> {
         // print("selected option is ");
         // print(_selectedOption);
         List<LatLng> valsList = parkinglotsLocation.values.toList();
+        print(widget.selectedLot);
         int listIndex = valsList.indexOf(widget.selectedLot);
         String lotName = parkinglotsLocation.keys.toList()[listIndex];
 

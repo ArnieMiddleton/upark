@@ -83,7 +83,7 @@ class HomePageMap extends StatefulWidget {
   @override
   _HomePageMapState createState() => _HomePageMapState();
 
-  static void callStateScreen(Color newColor, String lotName, int listIndex, LatLng lotCoord) => _HomePageMapState.updateMarkersAfterSurvey(newColor, lotName, listIndex, lotCoord);
+  static void callStateScreen(Color newColor, String lotName, int listIndex, LatLng lotCoord) => _HomePageMapState.updateMarkersAfterSurvey(newColor, lotName, listIndex, lotCoord,_HomePageMapState.contextPar);
 
 }
 
@@ -131,7 +131,7 @@ Map<String, LatLng> createLotLngDict() {
 }
 
 // Creates a list of markers that will be placed on the map from a Map (LotNames -> (Latitude, Longitude))
-List<Marker> createMarkerList(MapController controller) {
+List<Marker> createMarkerList(MapController controller, BuildContext context) {
   List<Marker> lotMarkers = [];
   //CREATING A DICTIONARY -> KEYS: PARKING LOT NAMES, VALUES: LATITUDE AND LONGITUDE FOR THE CORRESPONDING PARKING LOT
 
@@ -139,23 +139,44 @@ List<Marker> createMarkerList(MapController controller) {
 
   for (var parkingLot in parkinglotsLocation.entries) {
     Marker newMarker = Marker(
-        point: parkingLot.value,
-        width: 30,
-        height: 30,
-        alignment: Alignment.topCenter,
-        child: GestureDetector(
-          onTap: () {
-            controller.moveAndRotate(parkingLot.value, 20, 0);
-            openMap(parkingLot.value.latitude, parkingLot.value.longitude);
-            _HomePageMapState.selectedDestination = LatLng(parkingLot.value.latitude, parkingLot.value.longitude);
+      point: parkingLot.value,
+      width: 30,
+      height: 30,
+      alignment: Alignment.topCenter,
+      child: GestureDetector(
+        onTap: () {
+          controller.moveAndRotate(parkingLot.value, 20, 0);
+          _HomePageMapState.selectedDestination = LatLng(parkingLot.value.latitude, parkingLot.value.longitude);
 
-          },
-          child: Icon(
-            Icons.location_pin,
-            color: Colors.red.shade700,
-            size: 25,
-          ),
-        ));
+          // Show a pop-up dialog
+          showDialog(
+            context: context, // Ensure you have a BuildContext `context` available
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Parking Lot Info:'),
+                content: const Text('Allowed permits: U,A'),
+                actions: <Widget>[
+                  // Button in the pop-up
+                  TextButton(
+                    child: Text('Navigate'),
+                    onPressed: () {
+                      // Code to open the map goes here
+                      openMap(parkingLot.value.latitude, parkingLot.value.longitude);
+                      Navigator.of(context).pop(); // Close the pop-up
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        },
+        child: Icon(
+          Icons.location_pin,
+          color: Colors.red.shade700,
+          size: 25,
+        ),
+      ),
+    );
     lotMarkers.add(newMarker);
   }
 
@@ -167,14 +188,16 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
   ValueNotifier<bool> isSheetExpanded = ValueNotifier(false);
   static bool isReturningFromGoogleMaps = false;
   static _HomePageMapState? _currentInstance;
+  static late BuildContext contextPar;
   LatLng latLng = const LatLng(40.76497, -111.84611);
-  static List<Marker> my_markers = createMarkerList(controller);
+  static List<Marker> my_markers  = createMarkerList(controller, contextPar);
+
   static Map<String, LatLng> lot_name_TO_coordinate = createLotLngDict();
   static late LatLng selectedDestination;
   late Timer timer;
 
   // given a two dictionaries (lotName -> occupancy percentage) and (lotName -> Location) updates the color of the markers
-  static void updateMarker(Map<String, int> occupancyPerLot,
+  void updateMarker(Map<String, int> occupancyPerLot,
       Map<String, LatLng> parkinglotsLocation) {
     Color green = Colors.green;
     Color yellow = Colors.yellow.shade600;
@@ -207,47 +230,91 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
       LatLng coord = parkinglotsLocation[lotName]!;
       // Create a new marker that will be replaced with current one
       Marker replaceMarker = Marker(
-          point: coord,
-          width: 30,
-          height: 30,
-          alignment: Alignment.topCenter,
-          child: GestureDetector(
-            onTap: () {
-              controller.moveAndRotate(coord, 20, 0);
-              openMap(coord.latitude, coord.longitude);
+      point: coord,
+      width: 30,
+      height: 30,
+      alignment: Alignment.topCenter,
+      child: GestureDetector(
+        onTap: () {
+          controller.moveAndRotate(coord, 20, 0);
+
+          // Show a pop-up dialog
+          showDialog(
+            context: contextPar, // Ensure you have a BuildContext `context` available
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Parking Lot Info:'),
+                content: const Text('Allowed permits: U,A'),
+                actions: <Widget>[
+                  // Button in the pop-up
+                  TextButton(
+                    child: const Text('Navigate'),
+                    onPressed: () {
+                      // Code to open the map goes here
+                      openMap(coord.latitude, coord.longitude);
+                      Navigator.of(context).pop(); // Close the pop-up
+                    },
+                  ),
+                ],
+              );
             },
-            child: Icon(
-              Icons.location_pin,
-              color: newColor,
-              size: 25,
-            ),
-          ));
+          );
+        },
+        child: Icon(
+          Icons.location_pin,
+          color: newColor,
+          size: 25,
+        ),
+      ),
+    );
 
       my_markers[listIndex] = replaceMarker;
     }
   }
 
   // updates the marker that corresponds to the parking lot that user navigated to based on the user feedback.
-  static void updateMarkersAfterSurvey(Color newColor, String lotName, int listIndex, LatLng lotCoord)
+  static void updateMarkersAfterSurvey(Color newColor, String lotName, int listIndex, LatLng lotCoord, BuildContext context)
   {
     if (_currentInstance == null) return; 
 
     Marker replaceMarker = Marker(
-            point: lotCoord,
-            width: 30,
-            height: 30,
-            alignment: Alignment.topCenter,
-            child: GestureDetector(
-              onTap: () {
-                _HomePageMapState.controller.moveAndRotate(lotCoord, 20, 0);
-                openMap(lotCoord.latitude, lotCoord.longitude);
-              },
-              child: Icon(
-                Icons.location_pin,
-                color: newColor,
-                size: 25,
-              ),
-            ));
+      point: lotCoord,
+      width: 30,
+      height: 30,
+      alignment: Alignment.topCenter,
+      child: GestureDetector(
+        onTap: () {
+          controller.moveAndRotate(lotCoord, 20, 0);
+
+          // Show a pop-up dialog
+          showDialog(
+            context: context, // Ensure you have a BuildContext `context` available
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Parking Lot Info:'),
+                content: const Text('Allowed permits: U,A'),
+                actions: <Widget>[
+                  // Button in the pop-up
+                  TextButton(
+                    child: const Text('Navigate'),
+                    onPressed: () {
+                      // Code to open the map goes here
+                      openMap(lotCoord.latitude, lotCoord.longitude);
+                      Navigator.of(context).pop(); // Close the pop-up
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        },
+        child: Icon(
+          Icons.location_pin,
+          color: newColor,
+          size: 25,
+        ),
+      ),
+    );
 
     _HomePageMapState.my_markers[listIndex] = replaceMarker;
     // REFRESH THE PAGE HERE
@@ -279,7 +346,7 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
     super.initState();
     WidgetsBinding.instance.addObserver(this); // Register observer
     _currentInstance = this; // Set the current instance
-    timer = Timer.periodic(Duration(seconds: 180), (Timer t) => updateMap());
+    timer = Timer.periodic(Duration(seconds: 5), (Timer t) => updateMap());
     // call updateMap every 5 seconds to update the markers.
   }
 
@@ -318,6 +385,8 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    contextPar = context;
+    // my_markers = createMarkerList(controller, context);
     return FlutterMap(
       mapController: controller,
       options: MapOptions(
@@ -547,7 +616,7 @@ class CustomSearchDelegate extends SearchDelegate {
 
   final Map<String, LatLng> parking_locations = {
     'Parking Lot 1': const LatLng(40.76047615, -111.8457732),
-    'Parking Lot 2': const LatLng(40.76609893830639, -111.84567689958726),
+    'Parking Lot 2': const LatLng(40.76551563, -111.8464372),//const LatLng(40.76609893830639, -111.84567689958726),
     'Parking Lot 3': const LatLng(40.76553734, -111.8475873),
     'Parking Lot 4': const LatLng(40.75964557, -111.8510534),
     'Parking Lot 5': const LatLng(40.76184712, -111.8487463),
@@ -809,7 +878,7 @@ Future<void> openMap(double lat, double long) async {
     if (await canLaunchUrl(mapUrl)) {
       // Set the flag right before launching the maps app
       isReturningFromMaps = true;
-      await launchUrl(mapUrl);ol
+      await launchUrl(mapUrl); //ol
     } else if (await canLaunchUrl(Uri.parse(geoUrl))) {
       // Launch the default maps app
       isReturningFromMaps = true;
@@ -948,3 +1017,4 @@ class ChartData {
   final String time;
   final double value;
 }
+
