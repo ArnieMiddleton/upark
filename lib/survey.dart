@@ -70,11 +70,34 @@ class _ParkingLotSurveyScreenState extends State<ParkingLotSurveyScreen> {
         // print("selected option is ");
         // print(_selectedOption);
         List<LatLng> valsList = parkinglotsLocation.values.toList();
-        print(widget.selectedLot);
         int listIndex = valsList.indexOf(widget.selectedLot);
         String lotName = parkinglotsLocation.keys.toList()[listIndex];
 
-        HomePageMap.callStateScreen(Colors.black, lotName, listIndex, widget.selectedLot);
+        Color green = Colors.green;
+        Color yellow = Colors.yellow.shade600;
+        Color orange = Colors.orange.shade600;
+        Color red = Colors.red.shade700;
+        Color updatedColor;
+        if (_chosenIndex == 0 || _chosenIndex == 1)
+        {
+          updatedColor = red;
+        }
+        else if(_chosenIndex == 2)
+        {
+          updatedColor = orange;
+        }
+        else if(_chosenIndex == 3)
+        {
+          updatedColor = yellow;
+        }
+        else {
+          updatedColor = green;
+        }
+
+
+        // FOR TESTING/DEMOING 
+        // updatedColor = Colors.black;
+        HomePageMap.callStateScreen(updatedColor, lotName, listIndex, widget.selectedLot);
         
       });
 
