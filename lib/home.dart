@@ -84,37 +84,39 @@ class HomePage extends StatelessWidget {
   // }
 
   Widget build(BuildContext context) {
-  double leadingWidth = 100; // You may need to adjust this based on your icons' sizes
-  return Scaffold(
-    appBar: AppBar(
-      backgroundColor: Colors.red[700],
-      leadingWidth: leadingWidth, // Adjust this width to fit your icons comfortably
-      leading: Container(
-        width: leadingWidth,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space out icons evenly
-          children: [
-            IconButton(
-              icon: const Icon(Icons.settings),
-              color: Colors.white,
-              iconSize: 30.0,
-              onPressed: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => SettingsScreen()));
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.info_outline),
-              color: Colors.white,
-              iconSize: 30.0,
-              onPressed: () {
+    double leadingWidth =
+        100; // You may need to adjust this based on your icons' sizes
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.red[700],
+        leadingWidth:
+            leadingWidth, // Adjust this width to fit your icons comfortably
+        leading: Container(
+          width: leadingWidth,
+          child: Row(
+            mainAxisAlignment:
+                MainAxisAlignment.spaceBetween, // Space out icons evenly
+            children: [
+              IconButton(
+                icon: const Icon(Icons.settings),
+                color: Colors.white,
+                iconSize: 30.0,
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => SettingsScreen()));
+                },
+              ),
+              IconButton(
+                icon: const Icon(Icons.info_outline),
+                color: Colors.white,
+                iconSize: 30.0,
+                onPressed: () {
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
                       return Theme(
                         data: Theme.of(context).copyWith(
-                          dialogBackgroundColor: Colors.grey.shade400
-                        ),
+                            dialogBackgroundColor: Colors.grey.shade400),
                         child: AlertDialog(
                           title: const Text('Map Info:'),
                           content: Column(
@@ -131,7 +133,10 @@ class HomePage extends StatelessWidget {
                                     color: Colors.red.shade700,
                                   ),
                                   const SizedBox(width: 8),
-                                  const Text("80-100% Occupied ", style: TextStyle(fontSize: 16.0),),
+                                  const Text(
+                                    "80-100% Occupied ",
+                                    style: TextStyle(fontSize: 16.0),
+                                  ),
                                 ],
                               ),
                               Row(
@@ -145,7 +150,10 @@ class HomePage extends StatelessWidget {
                                     color: Colors.orange.shade600,
                                   ),
                                   const SizedBox(width: 8),
-                                  const Text("60-80% Occupied", style: TextStyle(fontSize: 16.0),),
+                                  const Text(
+                                    "60-80% Occupied",
+                                    style: TextStyle(fontSize: 16.0),
+                                  ),
                                 ],
                               ),
                               Row(
@@ -159,7 +167,10 @@ class HomePage extends StatelessWidget {
                                     color: Colors.yellow.shade600,
                                   ),
                                   const SizedBox(width: 8),
-                                  const Text("40-60% Occupied", style: TextStyle(fontSize: 16.0),),
+                                  const Text(
+                                    "40-60% Occupied",
+                                    style: TextStyle(fontSize: 16.0),
+                                  ),
                                 ],
                               ),
                               Row(
@@ -173,7 +184,10 @@ class HomePage extends StatelessWidget {
                                     color: Colors.green,
                                   ),
                                   const SizedBox(width: 8),
-                                  const Text("0-40% Occupied", style: TextStyle(fontSize: 16.0),),
+                                  const Text(
+                                    "0-40% Occupied",
+                                    style: TextStyle(fontSize: 16.0),
+                                  ),
                                 ],
                               ),
                               // Repeat the above for more colored boxes
@@ -196,37 +210,39 @@ class HomePage extends StatelessWidget {
             showSearch(context: context, delegate: CustomSearchDelegate());
           },
           child: Container(
-            height: 35,
-            width: 250,
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: const Color.fromARGB(255, 255, 255, 255),
-                width: 1.4,
-              ),
-              borderRadius: BorderRadius.circular(25),
-            ),
-            child: const Row(
-              mainAxisSize: MainAxisSize.min, // Ensure the row takes minimum space
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15.0),
-                  child: Icon(
-                    Icons.search,
-                    color: Colors.white,
-                  ),
+              height: 35,
+              width: 250,
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: const Color.fromARGB(255, 255, 255, 255),
+                  width: 1.4,
                 ),
-                Flexible( // Use Flexible to ensure the text fits the remaining space
-                  child: Text(
-                    'Search Buildings',
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 255, 255, 255),
-                      overflow: TextOverflow.ellipsis, // Use ellipsis for text overflow
+                borderRadius: BorderRadius.circular(25),
+              ),
+              child: const Row(
+                mainAxisSize:
+                    MainAxisSize.min, // Ensure the row takes minimum space
+                children: [
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 15.0),
+                    child: Icon(
+                      Icons.search,
+                      color: Colors.white,
                     ),
                   ),
-                ),
-              ],
-            )
-          ),
+                  Flexible(
+                    // Use Flexible to ensure the text fits the remaining space
+                    child: Text(
+                      'Search Buildings',
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 255, 255, 255),
+                        overflow: TextOverflow
+                            .ellipsis, // Use ellipsis for text overflow
+                      ),
+                    ),
+                  ),
+                ],
+              )),
         ),
       ),
       body: HomePageMap(),
@@ -287,9 +303,7 @@ Map<LatLng, String> createLotPermitDict() {
   return parkinglotsLocation;
 }
 
-
-Map<LatLng, String> createLotCountDict()
-{
+Map<LatLng, String> createLotCountDict() {
   Map<LatLng, String> parkinglotsCount = {
     const LatLng(40.76047615, -111.8457732): " 175",
     const LatLng(40.76551563, -111.8464372): " 103",
@@ -330,6 +344,7 @@ Map<LatLng, String> createLotCountDict()
 
   return parkinglotsCount;
 }
+
 // Creates a dictionary (lotName (str) -> location (LatLng))
 Future<Map<String, LatLng>> createLotLngDict() async {
   var lots = await fetchLots();
@@ -417,7 +432,12 @@ Future<List<Marker>> createMarkerList(MapController controller,
             builder: (BuildContext context) {
               return AlertDialog(
                 title: const Text('Parking Lot Info:'),
-                content: Text("Allowed Permits: " + permits! + "\n \nTotal Number of Slots: " + _HomePageMapState.lotToCount[LatLng(parkingLot.value.latitude, parkingLot.value.longitude)]!),
+                content: Text("Allowed Permits: " +
+                    permits! +
+                    "\n \nTotal Number of Slots: " +
+                    _HomePageMapState.lotToCount[LatLng(
+                        parkingLot.value.latitude,
+                        parkingLot.value.longitude)]!),
                 actions: <Widget>[
                   // Button in the pop-up
                   TextButton(
@@ -531,7 +551,10 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
               builder: (BuildContext context) {
                 return AlertDialog(
                   title: const Text('Parking Lot Info:'),
-                  content: Text("Allowed Permits: " + permits! + "\n \nTotal Number of Slots: " + lotToCount[coord]!),
+                  content: Text("Allowed Permits: " +
+                      permits! +
+                      "\n \nTotal Number of Slots: " +
+                      lotToCount[coord]!),
                   actions: <Widget>[
                     // Button in the pop-up
                     TextButton(
@@ -581,7 +604,10 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
             builder: (BuildContext context) {
               return AlertDialog(
                 title: const Text('Parking Lot Info:'),
-                content: Text("Allowed Permits: " + permits! + "\n \nTotal Number of Slots: " + lotToCount[LatLng(lotCoord.latitude, lotCoord.longitude)]!),
+                content: Text("Allowed Permits: " +
+                    permits! +
+                    "\n \nTotal Number of Slots: " +
+                    lotToCount[LatLng(lotCoord.latitude, lotCoord.longitude)]!),
                 actions: <Widget>[
                   // Button in the pop-up
                   TextButton(
