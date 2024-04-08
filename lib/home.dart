@@ -22,61 +22,216 @@ import 'package:csv/csv.dart';
 class HomePage extends StatelessWidget {
   HomePage({super.key});
 
-  @override
+  // @override
+  // Widget build(BuildContext context) {
+  //   return Scaffold(
+  //     appBar: AppBar(
+  //       backgroundColor: Colors.red[700],
+  //       leading: Row(
+  //         children: [
+  //           IconButton(
+  //             icon: const Icon(Icons.settings),
+  //             color: Colors.white,
+  //             onPressed: () {
+  //               Navigator.of(context).push(
+  //                   MaterialPageRoute(builder: (context) => SettingsScreen()));
+  //             },
+  //           ),
+  //           IconButton(
+  //             icon: const Icon(Icons.info_outline), 
+  //             color: Colors.white,
+  //             onPressed: () {  },
+  //           )
+  //         ],
+  //       ),
+  //       title: InkWell(
+  //         onTap: () {
+  //           showSearch(context: context, delegate: CustomSearchDelegate());
+  //         },
+  //         child: Container(
+  //             height: 35,
+  //             decoration: BoxDecoration(
+  //               border: Border.all(
+  //                 color: const Color.fromARGB(255, 255, 255, 255),
+  //                 width: 1.4,
+  //               ),
+  //               borderRadius: BorderRadius.circular(25),
+  //             ),
+  //             child: const Row(
+  //               children: [
+  //                 Row(
+  //                   children: [
+  //                     Padding(
+  //                       padding: EdgeInsets.symmetric(horizontal: 10.0),
+  //                       child: Icon(
+  //                         Icons.search,
+  //                         color: Colors.white,
+  //                       ),
+  //                     ),
+  //                     Text(
+  //                       'Search Buildings',
+  //                       style: TextStyle(
+  //                           color: Color.fromARGB(255, 255, 255, 255)),
+  //                     ),
+  //                   ],
+  //                 ),
+  //               ],
+  //             )),
+  //       ),
+  //     ),
+  //     body: HomePageMap(),
+  //   );
+  // }
+
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.red[700],
-        leading: Row(
+  double leadingWidth = 100; // You may need to adjust this based on your icons' sizes
+  return Scaffold(
+    appBar: AppBar(
+      backgroundColor: Colors.red[700],
+      leadingWidth: leadingWidth, // Adjust this width to fit your icons comfortably
+      leading: Container(
+        width: leadingWidth,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space out icons evenly
           children: [
             IconButton(
               icon: const Icon(Icons.settings),
               color: Colors.white,
+              iconSize: 30.0,
               onPressed: () {
                 Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => SettingsScreen()));
               },
             ),
+            IconButton(
+              icon: const Icon(Icons.info_outline),
+              color: Colors.white,
+              iconSize: 30.0,
+              onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                     return Theme(
+                      data: Theme.of(context).copyWith(
+                        dialogBackgroundColor: Colors.grey.shade400
+                      ),
+                       child: AlertDialog(
+                          title: const Text('Map Info:'),
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Container(
+                                    width: 10,
+                                    height: 10,
+                                    color: Colors.red.shade700,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  const Text("80-100% Occupied ", style: TextStyle(fontSize: 16.0),),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Container(
+                                    width: 10,
+                                    height: 10,
+                                    color: Colors.orange.shade600,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  const Text("60-80% Occupied", style: TextStyle(fontSize: 16.0),),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Container(
+                                    width: 10,
+                                    height: 10,
+                                    color: Colors.yellow.shade600,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  const Text("40-60% Occupied", style: TextStyle(fontSize: 16.0),),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Container(
+                                    width: 10,
+                                    height: 10,
+                                    color: Colors.green,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  const Text("0-40% Occupied", style: TextStyle(fontSize: 16.0),),
+                                ],
+                              ),
+                              // Repeat the above for more colored boxes
+                            ],
+                          ),
+                        ),
+                     );
+                  },
+                );
+              },
+            ),
           ],
         ),
-        title: InkWell(
-          onTap: () {
-            showSearch(context: context, delegate: CustomSearchDelegate());
-          },
-          child: Container(
-              height: 35,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: const Color.fromARGB(255, 255, 255, 255),
-                  width: 1.4,
+      ),
+      title: InkWell(
+        onTap: () {
+          showSearch(context: context, delegate: CustomSearchDelegate());
+        },
+        child: Container(
+          height: 50,
+          width: 250,
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: const Color.fromARGB(255, 255, 255, 255),
+              width: 1.4,
+            ),
+            borderRadius: BorderRadius.circular(25),
+          ),
+          child: const Row(
+            mainAxisSize: MainAxisSize.min, // Ensure the row takes minimum space
+            children: [
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15.0),
+                child: Icon(
+                  Icons.search,
+                  color: Colors.white,
                 ),
-                borderRadius: BorderRadius.circular(25),
               ),
-              child: const Row(
-                children: [
-                  Row(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Icon(
-                          Icons.search,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Text(
-                        'Search Buildings',
-                        style: TextStyle(
-                            color: Color.fromARGB(255, 255, 255, 255)),
-                      ),
-                    ],
+              Flexible( // Use Flexible to ensure the text fits the remaining space
+                child: Text(
+                  'Search Buildings',
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 255, 255, 255),
+                    overflow: TextOverflow.ellipsis, // Use ellipsis for text overflow
                   ),
-                ],
-              )),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
-      body: HomePageMap(),
-    );
-  }
+    ),
+    body: HomePageMap(),
+  );
+}
+
+  
+
 }
 
 class HomePageMap extends StatefulWidget {
@@ -92,77 +247,88 @@ class HomePageMap extends StatefulWidget {
 Map<LatLng, String> createLotPermitDict() {
   Map<LatLng, String> parkinglotsLocation = {
     const LatLng(40.76047615, -111.8457732): " ADA, A, Visitor,",
-
     const LatLng(40.76551563, -111.8464372): " ADA, A, Visitor, M",
-
     const LatLng(40.76553734, -111.8475873): " Visitor",
-
     const LatLng(40.75964557, -111.8510534): " ADA, A, U",
-
     const LatLng(40.76184712, -111.8487463): " ADA, A, Visitor, M",
-
     const LatLng(40.76239342, -111.847587): " ADA, Visitor",
-
     const LatLng(40.76021823, -111.8443649): " ADA, A, Visitor",
-
     const LatLng(40.76146288, -111.8381891): " ADA, A, Visitor",
-
     const LatLng(40.76650879, -111.8450367): " ADA, Visitor, EV",
-
     const LatLng(40.76343596, -111.8532355): " ADA, A, Visitor, EV",
-
     const LatLng(40.76679045, -111.8514649): " ADA, A",
-
     const LatLng(40.76612338, -111.8456363): " ADA, A",
-
     const LatLng(40.76545653, -111.8375496): " ADA, Visitor",
-
     const LatLng(40.76108824, -111.8425409): " ADA, Visitor",
-
     const LatLng(40.75947206, -111.8460659): " ADA, A, U, M",
-
     const LatLng(40.76183744, -111.850429): " ADA, A, Visitor, M, EV",
-
     const LatLng(40.77022927, -111.8462263): " ADA, A, U, Visitor, EV",
-
     const LatLng(40.766834, -111.8437108): " ADA, A, Visitor, M",
-
     const LatLng(40.76930197, -111.8441186): " ADA, A, U, Visitor, M, EV",
-
     const LatLng(40.7678793, -111.8480301): " ADA, A, Visitor",
-
     const LatLng(40.76505561, -111.849477): " M, Visitor",
-
     const LatLng(40.76164289, -111.8414329): " CA, HCU, CU",
     // Note: 'Central Garage' and 'Northwest Garage' are repeated with the same coordinates
     const LatLng(40.76639168, -111.8487693): " CA, HCU, CU",
-
     const LatLng(40.76188585, -111.8404306): " ADA, Visitor",
-
     const LatLng(40.76173022, -111.8467084): " ADA, Visitor",
-
     const LatLng(40.76307923, -111.8374067): " ADA, U",
-
     const LatLng(40.76081929, -111.8395905): " ADA, A, Visitor, M",
-
     const LatLng(40.7611466, -111.8406582): " ADA, A",
-
     const LatLng(40.76748713, -111.8398083): " ADA, U",
-
     const LatLng(40.76608434, -111.8494079): " ADA, A, M",
-
     const LatLng(40.765003, -111.8443877): " ADA, Visitor",
-
     const LatLng(40.77055754, -111.843232): " ADA, A, U, M, EV",
-
     const LatLng(40.76906066, -111.8393496): "ADA, A, U, Visitor, M",
-
     const LatLng(40.76502741, -111.8421128): " ADA, Visitor, EV",
   };
 
   return parkinglotsLocation;
 }
 
+
+Map<LatLng, String> createLotCountDict()
+{
+  Map<LatLng, String> parkinglotsCount = {
+    const LatLng(40.76047615, -111.8457732): " 175",
+    const LatLng(40.76551563, -111.8464372): " 103",
+    const LatLng(40.76553734, -111.8475873): " 77",
+    const LatLng(40.75964557, -111.8510534): " 887",
+    const LatLng(40.76184712, -111.8487463): " 94",
+    const LatLng(40.76239342, -111.847587): " 340",
+    const LatLng(40.76021823, -111.8443649): " 50",
+    const LatLng(40.76146288, -111.8381891): " 44",
+    const LatLng(40.76650879, -111.8450367): " 36",
+    const LatLng(40.76343596, -111.8532355): " 12",
+    const LatLng(40.76679045, -111.8514649): " 9",
+    const LatLng(40.76612338, -111.8456363): " 103",
+    const LatLng(40.76545653, -111.8375496): " 34",
+    const LatLng(40.76108824, -111.8425409): " 299",
+    const LatLng(40.75947206, -111.8460659): " 279",
+    const LatLng(40.76183744, -111.850429): " 341",
+    const LatLng(40.77022927, -111.8462263): " 1046",
+    const LatLng(40.766834, -111.8437108): " 269",
+    const LatLng(40.76930197, -111.8441186): " 514",
+    const LatLng(40.7678793, -111.8480301): " 175",
+    const LatLng(40.76505561, -111.849477): " 210",
+    const LatLng(40.76164289, -111.8414329): " 788",
+    // Note: 'Central Garage' and 'Northwest Garage' are repeated with the same coordinates
+    const LatLng(40.76639168, -111.8487693): " 317",
+    const LatLng(40.76188585, -111.8404306): " 71",
+    const LatLng(40.76173022, -111.8467084): " 49",
+    const LatLng(40.76307923, -111.8374067): " 345",
+    const LatLng(40.76081929, -111.8395905): " 108",
+    const LatLng(40.7611466, -111.8406582): " 135",
+    const LatLng(40.76748713, -111.8398083): " 220",
+    const LatLng(40.76608434, -111.8494079): " 68",
+    const LatLng(40.765003, -111.8443877): " 315",
+    const LatLng(40.77055754, -111.843232): " 222",
+    const LatLng(40.76906066, -111.8393496): " 812",
+    const LatLng(40.76502741, -111.8421128): " 230",
+  };
+
+  return parkinglotsCount;
+}
 // Creates a dictionary (lotName (str) -> location (LatLng))
 Map<String, LatLng> createLotLngDict() {
   Map<String, LatLng> parkinglotsLocation = {
@@ -235,7 +401,7 @@ List<Marker> createMarkerList(MapController controller, BuildContext context,
             builder: (BuildContext context) {
               return AlertDialog(
                 title: const Text('Parking Lot Info:'),
-                content: Text("Allowed Permits: " + permits!),
+                content: Text("Allowed Permits: " + permits! + "\n \nTotal Number of Slots: " + _HomePageMapState.lotToCount[LatLng(parkingLot.value.latitude, parkingLot.value.longitude)]!),
                 actions: <Widget>[
                   // Button in the pop-up
                   TextButton(
@@ -273,6 +439,7 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
   static late BuildContext contextPar;
   LatLng latLng = const LatLng(40.76497, -111.84611);
   static Map<LatLng, String> lotToPermit = createLotPermitDict();
+   static Map<LatLng, String> lotToCount = createLotCountDict();
   static List<Marker> my_markers =
       createMarkerList(controller, contextPar, lotToPermit);
 
@@ -331,7 +498,7 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
               builder: (BuildContext context) {
                 return AlertDialog(
                   title: const Text('Parking Lot Info:'),
-                  content: Text("Allowed Permits: " + permits!),
+                  content: Text("Allowed Permits: " + permits! + "\n \nTotal Number of Slots: " + lotToCount[coord]!),
                   actions: <Widget>[
                     // Button in the pop-up
                     TextButton(
@@ -381,7 +548,7 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
             builder: (BuildContext context) {
               return AlertDialog(
                 title: const Text('Parking Lot Info:'),
-                content: Text("Allowed Permits: " + permits!),
+                content: Text("Allowed Permits: " + permits! + "\n \nTotal Number of Slots: " + lotToCount[LatLng(lotCoord.latitude, lotCoord.longitude)]!),
                 actions: <Widget>[
                   // Button in the pop-up
                   TextButton(
