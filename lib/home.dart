@@ -1,8 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:ffi';
+// import 'dart:ffi';
 import 'dart:io';
-
 import 'package:flutter/services.dart';
 import 'dart:math';
 import 'package:flutter_map/flutter_map.dart';
@@ -12,11 +11,12 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'survey.dart';
 import 'package:latlong2/latlong.dart';
-import 'dart:developer' as developer;
+// import 'dart:developer' as developer;
 import 'package:fuzzy/fuzzy.dart';
-import 'package:fl_chart/fl_chart.dart';
+// import 'package:fl_chart/fl_chart.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:csv/csv.dart';
+// import 'package:csv/csv.dart';
+import 'package:upark/client.dart';
 
 // Homepage
 class HomePage extends StatelessWidget {
@@ -38,7 +38,7 @@ class HomePage extends StatelessWidget {
   //             },
   //           ),
   //           IconButton(
-  //             icon: const Icon(Icons.info_outline), 
+  //             icon: const Icon(Icons.info_outline),
   //             color: Colors.white,
   //             onPressed: () {  },
   //           )
@@ -111,11 +111,11 @@ class HomePage extends StatelessWidget {
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
-                     return Theme(
-                      data: Theme.of(context).copyWith(
-                        dialogBackgroundColor: Colors.grey.shade400
-                      ),
-                       child: AlertDialog(
+                      return Theme(
+                        data: Theme.of(context).copyWith(
+                          dialogBackgroundColor: Colors.grey.shade400
+                        ),
+                        child: AlertDialog(
                           title: const Text('Map Info:'),
                           content: Column(
                             mainAxisSize: MainAxisSize.min,
@@ -180,58 +180,58 @@ class HomePage extends StatelessWidget {
                             ],
                           ),
                         ),
-                     );
-                  },
-                );
-              },
-            ),
-          ],
-        ),
-      ),
-      title: InkWell(
-        onTap: () {
-          showSearch(context: context, delegate: CustomSearchDelegate());
-        },
-        child: Container(
-          height: 50,
-          width: 250,
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: const Color.fromARGB(255, 255, 255, 255),
-              width: 1.4,
-            ),
-            borderRadius: BorderRadius.circular(25),
-          ),
-          child: const Row(
-            mainAxisSize: MainAxisSize.min, // Ensure the row takes minimum space
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15.0),
-                child: Icon(
-                  Icons.search,
-                  color: Colors.white,
-                ),
-              ),
-              Flexible( // Use Flexible to ensure the text fits the remaining space
-                child: Text(
-                  'Search Buildings',
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 255, 255, 255),
-                    overflow: TextOverflow.ellipsis, // Use ellipsis for text overflow
-                  ),
-                ),
+                      );
+                    },
+                  );
+                },
               ),
             ],
           ),
         ),
+        title: InkWell(
+          onTap: () {
+            // print("----------");
+            // print(fetchLots()));
+            // print("----------");
+            showSearch(context: context, delegate: CustomSearchDelegate());
+          },
+          child: Container(
+            height: 35,
+            width: 250,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: const Color.fromARGB(255, 255, 255, 255),
+                width: 1.4,
+              ),
+              borderRadius: BorderRadius.circular(25),
+            ),
+            child: const Row(
+              mainAxisSize: MainAxisSize.min, // Ensure the row takes minimum space
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15.0),
+                  child: Icon(
+                    Icons.search,
+                    color: Colors.white,
+                  ),
+                ),
+                Flexible( // Use Flexible to ensure the text fits the remaining space
+                  child: Text(
+                    'Search Buildings',
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 255, 255, 255),
+                      overflow: TextOverflow.ellipsis, // Use ellipsis for text overflow
+                    ),
+                  ),
+                ),
+              ],
+            )
+          ),
+        ),
       ),
-    ),
-    body: HomePageMap(),
-  );
-}
-
-  
-
+      body: HomePageMap(),
+    );
+  }
 }
 
 class HomePageMap extends StatefulWidget {
@@ -258,6 +258,7 @@ Map<LatLng, String> createLotPermitDict() {
     const LatLng(40.76343596, -111.8532355): " ADA, A, Visitor, EV",
     const LatLng(40.76679045, -111.8514649): " ADA, A",
     const LatLng(40.76612338, -111.8456363): " ADA, A",
+
     const LatLng(40.76545653, -111.8375496): " ADA, Visitor",
     const LatLng(40.76108824, -111.8425409): " ADA, Visitor",
     const LatLng(40.75947206, -111.8460659): " ADA, A, U, M",
@@ -330,7 +331,21 @@ Map<LatLng, String> createLotCountDict()
   return parkinglotsCount;
 }
 // Creates a dictionary (lotName (str) -> location (LatLng))
-Map<String, LatLng> createLotLngDict() {
+Future<Map<String, LatLng>> createLotLngDict() async {
+  var lots = await fetchLots();
+
+  Map<String, LatLng> parkinglotsLocation = {};
+  for (Lot lot in lots) {
+    parkinglotsLocation[lot.name] = LatLng(lot.lattitude, lot.longitude);
+
+    print(lot.name +
+        " " +
+        lot.lattitude.toString() +
+        " " +
+        lot.longitude.toString());
+  }
+
+  /*
   Map<String, LatLng> parkinglotsLocation = {
     'Social Work': const LatLng(40.76047615, -111.8457732),
     'Union North': const LatLng(40.76551563, -111.8464372),
@@ -368,17 +383,18 @@ Map<String, LatLng> createLotLngDict() {
     'Broadcast Center': const LatLng(40.76906066, -111.8393496),
     'HPER Sports': const LatLng(40.76502741, -111.8421128),
   };
+  */
 
   return parkinglotsLocation;
 }
 
 // Creates a list of markers that will be placed on the map from a Map (LotNames -> (Latitude, Longitude))
-List<Marker> createMarkerList(MapController controller, BuildContext context,
-    Map<LatLng, String> lotToPermit) {
+Future<List<Marker>> createMarkerList(MapController controller,
+    BuildContext context, Map<LatLng, String> lotToPermit) async {
   List<Marker> lotMarkers = [];
   //CREATING A DICTIONARY -> KEYS: PARKING LOT NAMES, VALUES: LATITUDE AND LONGITUDE FOR THE CORRESPONDING PARKING LOT
-
-  Map<String, LatLng> parkinglotsLocation = createLotLngDict();
+  print('createMarkerList called');
+  Map<String, LatLng> parkinglotsLocation = await createLotLngDict();
 
   for (var parkingLot in parkinglotsLocation.entries) {
     String? permits = lotToPermit[
@@ -428,24 +444,41 @@ List<Marker> createMarkerList(MapController controller, BuildContext context,
     lotMarkers.add(newMarker);
   }
 
+  print('createMarkerList finished: $lotMarkers');
   return lotMarkers;
 }
 
 class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
   static final MapController controller = MapController();
   ValueNotifier<bool> isSheetExpanded = ValueNotifier(false);
-  static bool isReturningFromGoogleMaps = false;
+  // static bool isReturningFromGoogleMaps = false;
   static _HomePageMapState? _currentInstance;
   static late BuildContext contextPar;
   LatLng latLng = const LatLng(40.76497, -111.84611);
   static Map<LatLng, String> lotToPermit = createLotPermitDict();
-   static Map<LatLng, String> lotToCount = createLotCountDict();
-  static List<Marker> my_markers =
-      createMarkerList(controller, contextPar, lotToPermit);
+  // static List<Marker> my_markers = await createMarkerList(controller, contextPar, lotToPermit);
+  static Map<LatLng, String> lotToCount = createLotCountDict();
 
-  static Map<String, LatLng> lot_name_TO_coordinate = createLotLngDict();
+  // static Map<String, LatLng> lot_name_TO_coordinate = createLotLngDict();
   static late LatLng selectedDestination;
   late Timer timer;
+
+  static List<Marker> _myMarkers = [];
+
+  // Define the getter for my_markers
+  static List<Marker> get my_markers => _myMarkers;
+
+  // Fetch the markers data asynchronously
+  Future<void> fetchMarkers() async {
+    // Replace the following line with your actual data fetching logic
+    List<Marker> fetchedMarkers =
+        await createMarkerList(controller, contextPar, lotToPermit);
+
+    // Update the state of the widget with the fetched markers
+    setState(() {
+      _myMarkers = fetchedMarkers;
+    });
+  }
 
   // given a two dictionaries (lotName -> occupancy percentage) and (lotName -> Location) updates the color of the markers
   void updateMarker(Map<String, int> occupancyPerLot,
@@ -583,16 +616,17 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
   }
 
   // Method that is being called every 'X' seconds/minutes to update the Map.
-  void updateMap() {
+  void updateMap() async {
     // CREATING DUMMY DATA TO TEST MARKER UPDATING EVERY X SECONDS
-    List<String> parkingNames = createLotLngDict().keys.toList();
+    var latLngDict = await createLotLngDict();
+    List<String> parkingNames = latLngDict.keys.toList();
     Random random = Random();
     List<int> randomOccupancy = List.generate(34, (_) => random.nextInt(101));
     Map<String, int> dummy_map =
         Map.fromIterables(parkingNames, randomOccupancy);
 
     setState(() {
-      updateMarker(dummy_map, createLotLngDict());
+      updateMarker(dummy_map, latLngDict);
     });
   }
 
@@ -601,8 +635,9 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
     super.initState();
     WidgetsBinding.instance.addObserver(this); // Register observer
     _currentInstance = this; // Set the current instance
-    timer = Timer.periodic(Duration(seconds: 180), (Timer t) => updateMap());
+    timer = Timer.periodic(Duration(seconds: 5), (Timer t) => updateMap());
     // call updateMap every 5 seconds to update the markers.
+    fetchMarkers(); // Fetch the markers when the widget is initialized
   }
 
   @override
@@ -641,6 +676,38 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     contextPar = context;
+    return FutureBuilder(
+        future: createMarkerList(controller, context, lotToPermit),
+        builder: (context, AsyncSnapshot<List<Marker>> snapshot) {
+          if (snapshot.hasError) {
+            var error = snapshot.error;
+            print("Snapshot has error: $error");
+            return const Text("Error");
+          } else if (snapshot.hasData) {
+            var data = snapshot.data;
+            print("Snapshot has data: $data");
+            return FlutterMap(
+              mapController: controller,
+              options: MapOptions(
+                initialCenter: latLng,
+                initialZoom: 14,
+              ),
+              children: [
+                TileLayer(
+                    urlTemplate:
+                        "https://api.mapbox.com/styles/v1/notrh99/clt8xt1yy006l01r5g8j7dmxp/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoibm90cmg5OSIsImEiOiJjbHJremlxaHUwa205MmprZGJ3dWFzYWR3In0.R-PO20FWueN9Mzx9EwmeEA"),
+                MarkerLayer(
+                  markers: snapshot.data!,
+                ),
+              ],
+            );
+          } else {
+            print("Snapshot has no data");
+            return const CircularProgressIndicator();
+          }
+        });
+    /*
+    contextPar = context;
     // my_markers = createMarkerList(controller, context);
     return FlutterMap(
       mapController: controller,
@@ -658,6 +725,7 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
         ),
       ],
     );
+    */
   }
 }
 
@@ -849,7 +917,6 @@ class CustomSearchDelegate extends SearchDelegate {
     'University Campus Store (U CAMPSTOR)':
         const LatLng(40.7637118, -111.8475237),
     'Physics Cooling Tower': const LatLng(40.7665293, -111.8498995),
-    'SW Cooling Tower': const LatLng(40.7612905, -111.8480052),
     'Physics Building (PHYS)': const LatLng(40.7663942, -111.8500583),
     'Meldrum House': const LatLng(40.7649572948751, -111.853380680972),
     'Building 72 (BLDG 72)': const LatLng(40.7620302, -111.8514106),
