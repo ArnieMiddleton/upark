@@ -1,9 +1,10 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:upark/login.dart';
 
 import 'settings_pages/notifications.dart';
 import 'settings_pages/permits.dart';
-import 'package:flutter/material.dart';
 
 class SettingsScreen extends StatefulWidget {
   SettingsScreen({Key? key}) : super(key: key);
@@ -13,123 +14,141 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  // SettingsScreen({super.key});
-  bool val = true;
+  bool isColorBlindModeEnabled = false;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
+    return CupertinoPageScaffold(
+      navigationBar: const CupertinoNavigationBar(
+        middle: Text(
           'Settings',
           style: TextStyle(
-              fontSize: 30,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Quicksand'),
+            fontSize: 28, // Increased font size for the heading
+            fontWeight: FontWeight.w600,
+          ),
         ),
-        centerTitle: true,
+        backgroundColor: CupertinoColors.systemGroupedBackground,
+        border: Border(
+            bottom: BorderSide(color: CupertinoColors.systemGroupedBackground)),
       ),
-      body: ListView(
-        children: <Widget>[
-          ListTile(
-            leading: const Icon(
-              Icons.account_circle_outlined,
-              size: 30,
+      backgroundColor: CupertinoColors.systemGroupedBackground,
+      child: SafeArea(
+        child: ListView(
+          children: <Widget>[
+            const SizedBox(
+                height: 35), // Spacing at the top for the first section
+            _buildCupertinoSettingItem(
+              icon: CupertinoIcons.person_alt_circle,
+              title: 'Account',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfileScreen(
+                      actions: [
+                        SignedOutAction((context) {
+                          Navigator.of(context).pushAndRemoveUntil(
+                            MaterialPageRoute(
+                                builder: (context) => LogInPage()),
+                            (Route<dynamic> route) => false,
+                          );
+                        })
+                      ],
+                    ),
+                  ),
+                );
+              },
             ),
-            title: const Text(
-              'Account',
-              style: TextStyle(fontSize: 22, fontFamily: 'Quicksand'),
+            _buildCupertinoSettingItem(
+              icon: CupertinoIcons.bell,
+              title: 'Notifications',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const NotificationSettingsScreen(),
+                  ),
+                );
+              },
             ),
-            trailing: const Icon(Icons.arrow_forward_ios_rounded),
-            onTap: () {
-              // Navigate to AccountScreen or handle the tap as needed
-              Navigator.push(
-                context,
-                MaterialPageRoute<ProfileScreen>(
-                  builder: (context) => ProfileScreen(
-                    actions: [
-                      SignedOutAction((context) {
-                        // Navigator.of(context).pop();
-                        Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(builder: (context) => LogInPage()),
-                          (Route<dynamic> route) => false,
-                        );
-                      })
-                    ],
+            _buildCupertinoSettingItem(
+              icon: CupertinoIcons.doc_plaintext,
+              title: 'Permits',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const PermitsScreen(),
+                  ),
+                );
+              },
+            ),
+            const SizedBox(height: 35), // Spacing before the General section
+            _buildGeneralSection(context),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGeneralSection(BuildContext context) {
+    return CupertinoFormSection(
+      header: const Text(
+        'General',
+        style: TextStyle(
+          fontSize: 22, // Adjusted font size for section header
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      children: [
+        CupertinoFormRow(
+          prefix: const Text('ColorBlind Mode'),
+          child: CupertinoSwitch(
+            value: isColorBlindModeEnabled,
+            onChanged: (bool value) {
+              setState(() {
+                isColorBlindModeEnabled = value;
+              });
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCupertinoSettingItem({
+    required IconData icon,
+    required String title,
+    required VoidCallback onTap,
+  }) {
+    return CupertinoFormSection.insetGrouped(
+      header: Container(), // Empty container for aesthetics
+      children: [
+        CupertinoFormRow(
+          child: CupertinoButton(
+            onPressed: onTap,
+            padding: EdgeInsets.zero,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Icon(icon, size: 30),
+                const SizedBox(width: 10), // Space added between icon and text
+                Expanded(
+                  child: Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 20, // Adjusted font size for list items
+                      color: CupertinoColors.black,
+                    ),
                   ),
                 ),
-              );
-            },
+                const Icon(CupertinoIcons.forward,
+                    color: CupertinoColors.systemGrey),
+              ],
+            ),
           ),
-          ListTile(
-            leading: const Icon(
-              Icons.notifications_none,
-              size: 30,
-            ),
-            title: const Text(
-              'Notifications',
-              style: TextStyle(fontSize: 22, fontFamily: 'Quicksand'),
-            ),
-            trailing: const Icon(
-              Icons.arrow_forward_ios_rounded,
-            ),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const NotificationSettingsScreen(),
-                ),
-              );
-            },
-          ),
-          ListTile(
-            leading: const Icon(
-              Icons.description,
-              size: 30,
-            ),
-            title: const Text(
-              'Permits',
-              style: TextStyle(fontSize: 22, fontFamily: 'Quicksand'),
-            ),
-            trailing: const Icon(
-              Icons.arrow_forward_ios_rounded,
-            ),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const PermitsScreen(),
-                ),
-              );
-            },
-          ),
-          // SwitchListTile(
-          //   leading: const Icon(
-          //     Icons.remove_red_eye,
-          //     size: 30,
-          //   ),
-          //   title: const Text(
-          //     'ColorBlind',
-          //     style: TextStyle(fontSize: 22, fontFamily: 'Quicksand'),
-          //   ),
-          //   trailing: const Switch(
-          //     value: true,
-          //     activeColor: Colors.green,
-          //     onChanged: (bool value) {},
-          //   ),
-          // )
-          SwitchListTile(
-            title: Text('ColorBlind Mode'),
-            secondary: Icon(
-              Icons.remove_red_eye,
-              size: 30,
-            ),
-            value: val,
-            onChanged: (bool value) {
-              setState(() => val = value);
-            },
-          )
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
