@@ -87,6 +87,80 @@ class HomePageMap extends StatefulWidget {
 
 }
 
+Map<LatLng, String> createLotPermitDict() {
+  Map<LatLng, String> parkinglotsLocation = {
+     const LatLng(40.76047615, -111.8457732): " ADA, A, Visitor,",
+
+     const LatLng(40.76551563, -111.8464372): " ADA, A, Visitor, M",
+
+    const LatLng(40.76553734, -111.8475873): " Visitor",
+
+    const LatLng(40.75964557, -111.8510534): " ADA, A, U",
+
+    const LatLng(40.76184712, -111.8487463): " ADA, A, Visitor, M",
+
+    const LatLng(40.76239342, -111.847587): " ADA, Visitor",
+
+    const LatLng(40.76021823, -111.8443649): " ADA, A, Visitor",
+
+    const LatLng(40.76146288, -111.8381891): " ADA, A, Visitor",
+
+    const LatLng(40.76650879, -111.8450367): " ADA, Visitor, EV",
+
+    const LatLng(40.76343596, -111.8532355): " ADA, A, Visitor, EV",
+
+    const LatLng(40.76679045, -111.8514649): " ADA, A",
+
+    const LatLng(40.76612338, -111.8456363): " ADA, A",
+    
+    const LatLng(40.76545653, -111.8375496): " ADA, Visitor",
+
+    const LatLng(40.76108824, -111.8425409): " ADA, Visitor",
+
+    const LatLng(40.75947206, -111.8460659):" ADA, A, U, M",
+
+    const LatLng(40.76183744, -111.850429): " ADA, A, Visitor, M, EV",
+
+    const LatLng(40.77022927, -111.8462263): " ADA, A, U, Visitor, EV",
+
+    const LatLng(40.766834, -111.8437108): " ADA, A, Visitor, M",
+
+    const LatLng(40.76930197, -111.8441186): " ADA, A, U, Visitor, M, EV",
+
+    const LatLng(40.7678793, -111.8480301): " ADA, A, Visitor",
+
+    const LatLng(40.76505561, -111.849477): " M, Visitor",
+
+    const LatLng(40.76164289, -111.8414329): " CA, HCU, CU",
+    // Note: 'Central Garage' and 'Northwest Garage' are repeated with the same coordinates
+    const LatLng(40.76639168, -111.8487693): " CA, HCU, CU",
+
+    const LatLng(40.76188585, -111.8404306): " ADA, Visitor",
+
+    const LatLng(40.76173022, -111.8467084): " ADA, Visitor",
+
+    const LatLng(40.76307923, -111.8374067): " ADA, U",
+
+    const LatLng(40.76081929, -111.8395905): " ADA, A, Visitor, M",
+
+    const LatLng(40.7611466, -111.8406582): " ADA, A",
+
+    const LatLng(40.76748713, -111.8398083): " ADA, U",
+
+    const LatLng(40.76608434, -111.8494079) : " ADA, A, M",
+
+    const LatLng(40.765003, -111.8443877) : " ADA, Visitor",
+
+    const LatLng(40.77055754, -111.843232) : " ADA, A, U, M, EV",
+
+    const LatLng(40.76906066, -111.8393496): "ADA, A, U, Visitor, M",
+
+    const LatLng(40.76502741, -111.8421128): " ADA, Visitor, EV",
+  };
+
+  return parkinglotsLocation;
+}
+
 // Creates a dictionary (lotName (str) -> location (LatLng))
 Map<String, LatLng> createLotLngDict() {
   Map<String, LatLng> parkinglotsLocation = {
@@ -131,13 +205,14 @@ Map<String, LatLng> createLotLngDict() {
 }
 
 // Creates a list of markers that will be placed on the map from a Map (LotNames -> (Latitude, Longitude))
-List<Marker> createMarkerList(MapController controller, BuildContext context) {
+List<Marker> createMarkerList(MapController controller, BuildContext context, Map<LatLng, String> lotToPermit) {
   List<Marker> lotMarkers = [];
   //CREATING A DICTIONARY -> KEYS: PARKING LOT NAMES, VALUES: LATITUDE AND LONGITUDE FOR THE CORRESPONDING PARKING LOT
 
   Map<String, LatLng> parkinglotsLocation = createLotLngDict();
 
   for (var parkingLot in parkinglotsLocation.entries) {
+    String? permits = lotToPermit[LatLng(parkingLot.value.latitude, parkingLot.value.longitude)];
     Marker newMarker = Marker(
       point: parkingLot.value,
       width: 30,
@@ -154,7 +229,7 @@ List<Marker> createMarkerList(MapController controller, BuildContext context) {
             builder: (BuildContext context) {
               return AlertDialog(
                 title: const Text('Parking Lot Info:'),
-                content: const Text('Allowed permits: U,A'),
+                content: Text("Allowed Permits: " + permits!),
                 actions: <Widget>[
                   // Button in the pop-up
                   TextButton(
@@ -190,7 +265,8 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
   static _HomePageMapState? _currentInstance;
   static late BuildContext contextPar;
   LatLng latLng = const LatLng(40.76497, -111.84611);
-  static List<Marker> my_markers  = createMarkerList(controller, contextPar);
+  static Map<LatLng, String> lotToPermit = createLotPermitDict();
+  static List<Marker> my_markers  = createMarkerList(controller, contextPar, lotToPermit);
 
   static Map<String, LatLng> lot_name_TO_coordinate = createLotLngDict();
   static late LatLng selectedDestination;
@@ -229,6 +305,8 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
 
       LatLng coord = parkinglotsLocation[lotName]!;
       // Create a new marker that will be replaced with current one
+      String? permits = lotToPermit[coord];
+
       Marker replaceMarker = Marker(
       point: coord,
       width: 30,
@@ -244,7 +322,7 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
             builder: (BuildContext context) {
               return AlertDialog(
                 title: const Text('Parking Lot Info:'),
-                content: const Text('Allowed permits: U,A'),
+                content:  Text("Allowed Permits: " + permits!),
                 actions: <Widget>[
                   // Button in the pop-up
                   TextButton(
@@ -276,6 +354,7 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
   static void updateMarkersAfterSurvey(Color newColor, String lotName, int listIndex, LatLng lotCoord, BuildContext context)
   {
     if (_currentInstance == null) return; 
+    String? permits = lotToPermit[lotCoord];
 
     Marker replaceMarker = Marker(
       point: lotCoord,
@@ -292,7 +371,7 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
             builder: (BuildContext context) {
               return AlertDialog(
                 title: const Text('Parking Lot Info:'),
-                content: const Text('Allowed permits: U,A'),
+                content: Text("Allowed Permits: " + permits!),
                 actions: <Widget>[
                   // Button in the pop-up
                   TextButton(
@@ -346,7 +425,7 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
     super.initState();
     WidgetsBinding.instance.addObserver(this); // Register observer
     _currentInstance = this; // Set the current instance
-    timer = Timer.periodic(Duration(seconds: 5), (Timer t) => updateMap());
+    timer = Timer.periodic(Duration(seconds: 180), (Timer t) => updateMap());
     // call updateMap every 5 seconds to update the markers.
   }
 
