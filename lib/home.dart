@@ -33,8 +33,8 @@ class HomePage extends StatelessWidget {
               icon: const Icon(Icons.settings),
               color: Colors.white,
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const SettingsScreen()));
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => SettingsScreen()));
               },
             ),
           ],
@@ -83,15 +83,17 @@ class HomePageMap extends StatefulWidget {
   @override
   _HomePageMapState createState() => _HomePageMapState();
 
-  static void callStateScreen(Color newColor, String lotName, int listIndex, LatLng lotCoord) => _HomePageMapState.updateMarkersAfterSurvey(newColor, lotName, listIndex, lotCoord,_HomePageMapState.contextPar);
-
+  static void callStateScreen(
+          Color newColor, String lotName, int listIndex, LatLng lotCoord) =>
+      _HomePageMapState.updateMarkersAfterSurvey(
+          newColor, lotName, listIndex, lotCoord, _HomePageMapState.contextPar);
 }
 
 Map<LatLng, String> createLotPermitDict() {
   Map<LatLng, String> parkinglotsLocation = {
-     const LatLng(40.76047615, -111.8457732): " ADA, A, Visitor,",
+    const LatLng(40.76047615, -111.8457732): " ADA, A, Visitor,",
 
-     const LatLng(40.76551563, -111.8464372): " ADA, A, Visitor, M",
+    const LatLng(40.76551563, -111.8464372): " ADA, A, Visitor, M",
 
     const LatLng(40.76553734, -111.8475873): " Visitor",
 
@@ -112,12 +114,12 @@ Map<LatLng, String> createLotPermitDict() {
     const LatLng(40.76679045, -111.8514649): " ADA, A",
 
     const LatLng(40.76612338, -111.8456363): " ADA, A",
-    
+
     const LatLng(40.76545653, -111.8375496): " ADA, Visitor",
 
     const LatLng(40.76108824, -111.8425409): " ADA, Visitor",
 
-    const LatLng(40.75947206, -111.8460659):" ADA, A, U, M",
+    const LatLng(40.75947206, -111.8460659): " ADA, A, U, M",
 
     const LatLng(40.76183744, -111.850429): " ADA, A, Visitor, M, EV",
 
@@ -147,11 +149,11 @@ Map<LatLng, String> createLotPermitDict() {
 
     const LatLng(40.76748713, -111.8398083): " ADA, U",
 
-    const LatLng(40.76608434, -111.8494079) : " ADA, A, M",
+    const LatLng(40.76608434, -111.8494079): " ADA, A, M",
 
-    const LatLng(40.765003, -111.8443877) : " ADA, Visitor",
+    const LatLng(40.765003, -111.8443877): " ADA, Visitor",
 
-    const LatLng(40.77055754, -111.843232) : " ADA, A, U, M, EV",
+    const LatLng(40.77055754, -111.843232): " ADA, A, U, M, EV",
 
     const LatLng(40.76906066, -111.8393496): "ADA, A, U, Visitor, M",
 
@@ -205,14 +207,16 @@ Map<String, LatLng> createLotLngDict() {
 }
 
 // Creates a list of markers that will be placed on the map from a Map (LotNames -> (Latitude, Longitude))
-List<Marker> createMarkerList(MapController controller, BuildContext context, Map<LatLng, String> lotToPermit) {
+List<Marker> createMarkerList(MapController controller, BuildContext context,
+    Map<LatLng, String> lotToPermit) {
   List<Marker> lotMarkers = [];
   //CREATING A DICTIONARY -> KEYS: PARKING LOT NAMES, VALUES: LATITUDE AND LONGITUDE FOR THE CORRESPONDING PARKING LOT
 
   Map<String, LatLng> parkinglotsLocation = createLotLngDict();
 
   for (var parkingLot in parkinglotsLocation.entries) {
-    String? permits = lotToPermit[LatLng(parkingLot.value.latitude, parkingLot.value.longitude)];
+    String? permits = lotToPermit[
+        LatLng(parkingLot.value.latitude, parkingLot.value.longitude)];
     Marker newMarker = Marker(
       point: parkingLot.value,
       width: 30,
@@ -221,11 +225,13 @@ List<Marker> createMarkerList(MapController controller, BuildContext context, Ma
       child: GestureDetector(
         onTap: () {
           controller.moveAndRotate(parkingLot.value, 20, 0);
-          _HomePageMapState.selectedDestination = LatLng(parkingLot.value.latitude, parkingLot.value.longitude);
+          _HomePageMapState.selectedDestination =
+              LatLng(parkingLot.value.latitude, parkingLot.value.longitude);
 
           // Show a pop-up dialog
           showDialog(
-            context: context, // Ensure you have a BuildContext `context` available
+            context:
+                context, // Ensure you have a BuildContext `context` available
             builder: (BuildContext context) {
               return AlertDialog(
                 title: const Text('Parking Lot Info:'),
@@ -236,7 +242,8 @@ List<Marker> createMarkerList(MapController controller, BuildContext context, Ma
                     child: Text('Navigate'),
                     onPressed: () {
                       // Code to open the map goes here
-                      openMap(parkingLot.value.latitude, parkingLot.value.longitude);
+                      openMap(parkingLot.value.latitude,
+                          parkingLot.value.longitude);
                       Navigator.of(context).pop(); // Close the pop-up
                     },
                   ),
@@ -266,7 +273,8 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
   static late BuildContext contextPar;
   LatLng latLng = const LatLng(40.76497, -111.84611);
   static Map<LatLng, String> lotToPermit = createLotPermitDict();
-  static List<Marker> my_markers  = createMarkerList(controller, contextPar, lotToPermit);
+  static List<Marker> my_markers =
+      createMarkerList(controller, contextPar, lotToPermit);
 
   static Map<String, LatLng> lot_name_TO_coordinate = createLotLngDict();
   static late LatLng selectedDestination;
@@ -308,52 +316,53 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
       String? permits = lotToPermit[coord];
 
       Marker replaceMarker = Marker(
-      point: coord,
-      width: 30,
-      height: 30,
-      alignment: Alignment.topCenter,
-      child: GestureDetector(
-        onTap: () {
-          controller.moveAndRotate(coord, 20, 0);
+        point: coord,
+        width: 30,
+        height: 30,
+        alignment: Alignment.topCenter,
+        child: GestureDetector(
+          onTap: () {
+            controller.moveAndRotate(coord, 20, 0);
 
-          // Show a pop-up dialog
-          showDialog(
-            context: contextPar, // Ensure you have a BuildContext `context` available
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text('Parking Lot Info:'),
-                content:  Text("Allowed Permits: " + permits!),
-                actions: <Widget>[
-                  // Button in the pop-up
-                  TextButton(
-                    child: const Text('Navigate'),
-                    onPressed: () {
-                      // Code to open the map goes here
-                      openMap(coord.latitude, coord.longitude);
-                      Navigator.of(context).pop(); // Close the pop-up
-                    },
-                  ),
-                ],
-              );
-            },
-          );
-        },
-        child: Icon(
-          Icons.location_pin,
-          color: newColor,
-          size: 25,
+            // Show a pop-up dialog
+            showDialog(
+              context:
+                  contextPar, // Ensure you have a BuildContext `context` available
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text('Parking Lot Info:'),
+                  content: Text("Allowed Permits: " + permits!),
+                  actions: <Widget>[
+                    // Button in the pop-up
+                    TextButton(
+                      child: const Text('Navigate'),
+                      onPressed: () {
+                        // Code to open the map goes here
+                        openMap(coord.latitude, coord.longitude);
+                        Navigator.of(context).pop(); // Close the pop-up
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          },
+          child: Icon(
+            Icons.location_pin,
+            color: newColor,
+            size: 25,
+          ),
         ),
-      ),
-    );
+      );
 
       my_markers[listIndex] = replaceMarker;
     }
   }
 
   // updates the marker that corresponds to the parking lot that user navigated to based on the user feedback.
-  static void updateMarkersAfterSurvey(Color newColor, String lotName, int listIndex, LatLng lotCoord, BuildContext context)
-  {
-    if (_currentInstance == null) return; 
+  static void updateMarkersAfterSurvey(Color newColor, String lotName,
+      int listIndex, LatLng lotCoord, BuildContext context) {
+    if (_currentInstance == null) return;
     String? permits = lotToPermit[lotCoord];
 
     Marker replaceMarker = Marker(
@@ -367,7 +376,8 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
 
           // Show a pop-up dialog
           showDialog(
-            context: context, // Ensure you have a BuildContext `context` available
+            context:
+                context, // Ensure you have a BuildContext `context` available
             builder: (BuildContext context) {
               return AlertDialog(
                 title: const Text('Parking Lot Info:'),
@@ -401,8 +411,7 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
   }
 
   // refreshed the page
-  void refreshUI()
-  {
+  void refreshUI() {
     setState(() {});
   }
 
@@ -695,7 +704,8 @@ class CustomSearchDelegate extends SearchDelegate {
 
   final Map<String, LatLng> parking_locations = {
     'Parking Lot 1': const LatLng(40.76047615, -111.8457732),
-    'Parking Lot 2': const LatLng(40.76551563, -111.8464372),//const LatLng(40.76609893830639, -111.84567689958726),
+    'Parking Lot 2': const LatLng(40.76551563,
+        -111.8464372), //const LatLng(40.76609893830639, -111.84567689958726),
     'Parking Lot 3': const LatLng(40.76553734, -111.8475873),
     'Parking Lot 4': const LatLng(40.75964557, -111.8510534),
     'Parking Lot 5': const LatLng(40.76184712, -111.8487463),
@@ -906,7 +916,6 @@ class CustomSearchDelegate extends SearchDelegate {
                           '${parkingLotEntry.key}: ${parkingLotEntry.value.toStringAsFixed(2)} meters'),
                       // When you want to show the HistogramScreen, pass the location parameter
                       onTap: () {
-                        
                         LatLng loc = parking_locations[parkingLotEntry
                             .key]!; // Get the location data for the selected parking lot
                         _HomePageMapState.selectedDestination = loc;
@@ -1096,4 +1105,3 @@ class ChartData {
   final String time;
   final double value;
 }
-

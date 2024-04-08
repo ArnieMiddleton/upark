@@ -5,10 +5,16 @@ import 'settings_pages/notifications.dart';
 import 'settings_pages/permits.dart';
 import 'package:flutter/material.dart';
 
+class SettingsScreen extends StatefulWidget {
+  SettingsScreen({Key? key}) : super(key: key);
 
-class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({Key? key}) : super(key: key);
+  @override
+  _SettingsScreenState createState() => _SettingsScreenState();
+}
 
+class _SettingsScreenState extends State<SettingsScreen> {
+  // SettingsScreen({super.key});
+  bool val = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -96,20 +102,32 @@ class SettingsScreen extends StatelessWidget {
               );
             },
           ),
-          // ListTile(
+          // SwitchListTile(
           //   leading: const Icon(
-          //     Icons.exit_to_app,
+          //     Icons.remove_red_eye,
           //     size: 30,
           //   ),
-          //   iconColor: const Color.fromARGB(255, 255, 0, 0),
           //   title: const Text(
-          //     'Logout',
+          //     'ColorBlind',
           //     style: TextStyle(fontSize: 22, fontFamily: 'Quicksand'),
           //   ),
-          //   onTap: () {
-          //     // Handle logout
-          //   },
-          // ),
+          //   trailing: const Switch(
+          //     value: true,
+          //     activeColor: Colors.green,
+          //     onChanged: (bool value) {},
+          //   ),
+          // )
+          SwitchListTile(
+            title: Text('ColorBlind Mode'),
+            secondary: Icon(
+              Icons.remove_red_eye,
+              size: 30,
+            ),
+            value: val,
+            onChanged: (bool value) {
+              setState(() => val = value);
+            },
+          )
         ],
       ),
     );

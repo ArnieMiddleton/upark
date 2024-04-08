@@ -4,7 +4,6 @@ import 'package:upark/login.dart';
 import 'package:upark/settings.dart';
 import 'package:flutter/material.dart';
 
-
 // Sign Up Page
 class SignUpPage extends StatelessWidget {
   SignUpPage({super.key});
@@ -16,7 +15,7 @@ class SignUpPage extends StatelessWidget {
   // action that will happen once the Continue is clicked
   void continueClicked(BuildContext context) {
     Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const SettingsScreen()));
+        .push(MaterialPageRoute(builder: (context) => SettingsScreen()));
   }
 
   // action that will happen once the Continue is clicked
