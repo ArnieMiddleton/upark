@@ -13,32 +13,32 @@ String lotsToJson(List<Lot> data) =>
 
 class Lot {
   int lotId;
-  double lotLattitude;
-  double lotLongitude;
-  String lotName;
+  double lattitude;
+  double longitude;
+  String name;
   int stallCount;
 
   Lot({
     required this.lotId,
-    required this.lotLattitude,
-    required this.lotLongitude,
-    required this.lotName,
+    required this.lattitude,
+    required this.longitude,
+    required this.name,
     required this.stallCount,
   });
 
   factory Lot.fromJson(Map<String, dynamic> json) => Lot(
         lotId: json["lot_id"],
-        lotLattitude: json["lot_lattitude"],
-        lotLongitude: json["lot_longitude"],
-        lotName: json["lot_name"],
+        lattitude: double.parse(json["lot_lattitude"]),
+        longitude: double.parse(json["lot_longitude"]),
+        name: json["lot_name"],
         stallCount: json["stall_count"],
       );
 
   Map<String, dynamic> toJson() => {
         "lot_id": lotId,
-        "lot_lattitude": lotLattitude,
-        "lot_longitude": lotLongitude,
-        "lot_name": lotName,
+        "lot_lattitude": lattitude,
+        "lot_longitude": longitude,
+        "lot_name": name,
         "stall_count": stallCount,
       };
 }
@@ -66,7 +66,7 @@ class Report {
 
   factory Report.fromJson(Map<String, dynamic> json) {
     return Report(
-      estFullness: json['est_fullness'],
+      estFullness: double.parse(json['est_fullness']),
       lotId: json['lot_id'],
       reportId: json['report_id'],
       time: DateTime.parse(json['time']),
@@ -85,6 +85,32 @@ class Report {
 
 Future<List<Lot>> fetchLots() async {
   final response = await http.get(lotsUri);
+  if (response.statusCode == 200) {
+    print(response.body);
+    return lotsFromJson(response.body);
+  } else {
+    throw Exception('Failed to load lots');
+  }
+}
+
+Future<List<dynamic>> fetchListFromUri(Uri uri) async {
+  final response = await http.get(uri);
+  if (response.statusCode == 200) {
+    print(response.body);
+    print(json.decode(response.body));
+    return json.decode(response.body);
+  } else {
+    throw Exception('Failed to load data');
+  }
+}
+
+// Future<List<Lot>> fetchLots() async {
+//   List<Lot> lots = await (<List<Lot>>)fetchListFromUri(lotsUri);
+//   return lots;
+// }
+
+Future<List<Lot>> fetchReports() async {
+  final response = await http.get(reportsUri);
   if (response.statusCode == 200) {
     print(response.body);
     return lotsFromJson(response.body);
