@@ -59,10 +59,10 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDKGZWpssSLsyxYk9PSGCAOBqegdufHXXE',
-    appId: '1:301783896705:ios:e1807b01a79400e04fb380',
+    appId: '1:301783896705:ios:20a81855ba5f916b4fb380',
     messagingSenderId: '301783896705',
     projectId: 'upark-uofu-2024',
     storageBucket: 'upark-uofu-2024.appspot.com',
-    iosBundleId: 'com.example.upark',
+    iosBundleId: 'com.example.upark.RunnerTests',
   );
 }
