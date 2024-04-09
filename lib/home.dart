@@ -20,218 +20,176 @@ import 'package:csv/csv.dart';
 
 // Homepage
 class HomePage extends StatelessWidget {
-  HomePage({super.key});
+  const HomePage({super.key});
 
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     appBar: AppBar(
-  //       backgroundColor: Colors.red[700],
-  //       leading: Row(
-  //         children: [
-  //           IconButton(
-  //             icon: const Icon(Icons.settings),
-  //             color: Colors.white,
-  //             onPressed: () {
-  //               Navigator.of(context).push(
-  //                   MaterialPageRoute(builder: (context) => SettingsScreen()));
-  //             },
-  //           ),
-  //           IconButton(
-  //             icon: const Icon(Icons.info_outline), 
-  //             color: Colors.white,
-  //             onPressed: () {  },
-  //           )
-  //         ],
-  //       ),
-  //       title: InkWell(
-  //         onTap: () {
-  //           showSearch(context: context, delegate: CustomSearchDelegate());
-  //         },
-  //         child: Container(
-  //             height: 35,
-  //             decoration: BoxDecoration(
-  //               border: Border.all(
-  //                 color: const Color.fromARGB(255, 255, 255, 255),
-  //                 width: 1.4,
-  //               ),
-  //               borderRadius: BorderRadius.circular(25),
-  //             ),
-  //             child: const Row(
-  //               children: [
-  //                 Row(
-  //                   children: [
-  //                     Padding(
-  //                       padding: EdgeInsets.symmetric(horizontal: 10.0),
-  //                       child: Icon(
-  //                         Icons.search,
-  //                         color: Colors.white,
-  //                       ),
-  //                     ),
-  //                     Text(
-  //                       'Search Buildings',
-  //                       style: TextStyle(
-  //                           color: Color.fromARGB(255, 255, 255, 255)),
-  //                     ),
-  //                   ],
-  //                 ),
-  //               ],
-  //             )),
-  //       ),
-  //     ),
-  //     body: HomePageMap(),
-  //   );
-  // }
-
+  @override
   Widget build(BuildContext context) {
-  double leadingWidth = 100; // You may need to adjust this based on your icons' sizes
-  return Scaffold(
-    appBar: AppBar(
-      backgroundColor: Colors.red[700],
-      leadingWidth: leadingWidth, // Adjust this width to fit your icons comfortably
-      leading: Container(
-        width: leadingWidth,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space out icons evenly
-          children: [
-            IconButton(
-              icon: const Icon(Icons.settings),
-              color: Colors.white,
-              iconSize: 30.0,
-              onPressed: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => SettingsScreen()));
-              },
+    return Scaffold(
+      extendBodyBehindAppBar: true, // Necessary for the transparent AppBar
+      appBar: AppBar(
+        backgroundColor:
+            Colors.transparent, // Make AppBar background transparent
+        elevation: 0, // Removes shadow from the AppBar
+        title: InkWell(
+          onTap: () {
+            showSearch(context: context, delegate: CustomSearchDelegate());
+          },
+          child: Container(
+            height: 50,
+            width: MediaQuery.of(context).size.width *
+                0.7, // Adjust width as needed
+            decoration: BoxDecoration(
+              color: Colors.white
+                  .withOpacity(0.9), // Semi-transparent white for visibility
+              borderRadius: BorderRadius.circular(25),
             ),
-            IconButton(
-              icon: const Icon(Icons.info_outline),
-              color: Colors.white,
-              iconSize: 30.0,
-              onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                     return Theme(
-                      data: Theme.of(context).copyWith(
-                        dialogBackgroundColor: Colors.grey.shade400
-                      ),
-                       child: AlertDialog(
-                          title: const Text('Map Info:'),
-                          content: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Container(
-                                    width: 10,
-                                    height: 10,
-                                    color: Colors.red.shade700,
-                                  ),
-                                  const SizedBox(width: 8),
-                                  const Text("80-100% Occupied ", style: TextStyle(fontSize: 16.0),),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Container(
-                                    width: 10,
-                                    height: 10,
-                                    color: Colors.orange.shade600,
-                                  ),
-                                  const SizedBox(width: 8),
-                                  const Text("60-80% Occupied", style: TextStyle(fontSize: 16.0),),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Container(
-                                    width: 10,
-                                    height: 10,
-                                    color: Colors.yellow.shade600,
-                                  ),
-                                  const SizedBox(width: 8),
-                                  const Text("40-60% Occupied", style: TextStyle(fontSize: 16.0),),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Container(
-                                    width: 10,
-                                    height: 10,
-                                    color: Colors.green,
-                                  ),
-                                  const SizedBox(width: 8),
-                                  const Text("0-40% Occupied", style: TextStyle(fontSize: 16.0),),
-                                ],
-                              ),
-                              // Repeat the above for more colored boxes
-                            ],
-                          ),
-                        ),
-                     );
-                  },
-                );
-              },
-            ),
-          ],
-        ),
-      ),
-      title: InkWell(
-        onTap: () {
-          showSearch(context: context, delegate: CustomSearchDelegate());
-        },
-        child: Container(
-          height: 50,
-          width: 250,
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: const Color.fromARGB(255, 255, 255, 255),
-              width: 1.4,
-            ),
-            borderRadius: BorderRadius.circular(25),
-          ),
-          child: const Row(
-            mainAxisSize: MainAxisSize.min, // Ensure the row takes minimum space
-            children: [
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15.0),
-                child: Icon(
-                  Icons.search,
-                  color: Colors.white,
-                ),
-              ),
-              Flexible( // Use Flexible to ensure the text fits the remaining space
-                child: Text(
-                  'Search Buildings',
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 255, 255, 255),
-                    overflow: TextOverflow.ellipsis, // Use ellipsis for text overflow
+            child: const Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15.0),
+                  child: Icon(
+                    Icons.search,
+                    color: Colors.red, // Icon color red
                   ),
                 ),
-              ),
-            ],
+                Expanded(
+                  child: Text(
+                    'Search Buildings',
+                    style: TextStyle(
+                      color: Colors.red, // Text color red
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
+        actions: [
+          Container(
+            padding: const EdgeInsets.only(
+                right: 10), // Padding on the right for spacing
+            decoration: BoxDecoration(
+              color: Colors.white
+                  .withOpacity(0.9), // Semi-transparent white for visibility
+              borderRadius: BorderRadius.circular(25),
+            ),
+            child: Row(
+              mainAxisSize:
+                  MainAxisSize.min, // To take up as little space as possible
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.settings),
+                  color: Colors.red, // Change icon color to red
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => SettingsScreen(),
+                      ),
+                    );
+                  },
+                ),
+                IconButton(
+                  icon: const Icon(Icons.info_outline),
+                  color: Colors.red, // Change icon color to red
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Theme(
+                          data: Theme.of(context).copyWith(
+                              dialogBackgroundColor: Colors.grey.shade400),
+                          child: AlertDialog(
+                            title: const Text('Map Info:'),
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Container(
+                                      width: 10,
+                                      height: 10,
+                                      color: Colors.red.shade700,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    const Text(
+                                      "80-100% Occupied ",
+                                      style: TextStyle(fontSize: 16.0),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Container(
+                                      width: 10,
+                                      height: 10,
+                                      color: Colors.orange.shade600,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    const Text(
+                                      "60-80% Occupied",
+                                      style: TextStyle(fontSize: 16.0),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Container(
+                                      width: 10,
+                                      height: 10,
+                                      color: Colors.yellow.shade600,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    const Text(
+                                      "40-60% Occupied",
+                                      style: TextStyle(fontSize: 16.0),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Container(
+                                      width: 10,
+                                      height: 10,
+                                      color: Colors.green,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    const Text(
+                                      "0-40% Occupied",
+                                      style: TextStyle(fontSize: 16.0),
+                                    ),
+                                  ],
+                                ),
+                                // Repeat the above for more colored boxes
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        ],
+        centerTitle: true, // Center the title if required
       ),
-    ),
-    body: HomePageMap(),
-  );
-}
-
-  
-
+      body: HomePageMap(),
+    );
+  }
 }
 
 class HomePageMap extends StatefulWidget {
@@ -286,9 +244,7 @@ Map<LatLng, String> createLotPermitDict() {
   return parkinglotsLocation;
 }
 
-
-Map<LatLng, String> createLotCountDict()
-{
+Map<LatLng, String> createLotCountDict() {
   Map<LatLng, String> parkinglotsCount = {
     const LatLng(40.76047615, -111.8457732): " 175",
     const LatLng(40.76551563, -111.8464372): " 103",
@@ -329,6 +285,7 @@ Map<LatLng, String> createLotCountDict()
 
   return parkinglotsCount;
 }
+
 // Creates a dictionary (lotName (str) -> location (LatLng))
 Map<String, LatLng> createLotLngDict() {
   Map<String, LatLng> parkinglotsLocation = {
@@ -401,11 +358,16 @@ List<Marker> createMarkerList(MapController controller, BuildContext context,
             builder: (BuildContext context) {
               return AlertDialog(
                 title: const Text('Parking Lot Info:'),
-                content: Text("Allowed Permits: " + permits! + "\n \nTotal Number of Slots: " + _HomePageMapState.lotToCount[LatLng(parkingLot.value.latitude, parkingLot.value.longitude)]!),
+                content: Text("Allowed Permits: " +
+                    permits! +
+                    "\n \nTotal Number of Slots: " +
+                    _HomePageMapState.lotToCount[LatLng(
+                        parkingLot.value.latitude,
+                        parkingLot.value.longitude)]!),
                 actions: <Widget>[
                   // Button in the pop-up
                   TextButton(
-                    child: Text('Navigate'),
+                    child: const Text('Navigate'),
                     onPressed: () {
                       // Code to open the map goes here
                       openMap(parkingLot.value.latitude,
@@ -439,7 +401,7 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
   static late BuildContext contextPar;
   LatLng latLng = const LatLng(40.76497, -111.84611);
   static Map<LatLng, String> lotToPermit = createLotPermitDict();
-   static Map<LatLng, String> lotToCount = createLotCountDict();
+  static Map<LatLng, String> lotToCount = createLotCountDict();
   static List<Marker> my_markers =
       createMarkerList(controller, contextPar, lotToPermit);
 
@@ -498,7 +460,10 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
               builder: (BuildContext context) {
                 return AlertDialog(
                   title: const Text('Parking Lot Info:'),
-                  content: Text("Allowed Permits: " + permits! + "\n \nTotal Number of Slots: " + lotToCount[coord]!),
+                  content: Text("Allowed Permits: " +
+                      permits! +
+                      "\n \nTotal Number of Slots: " +
+                      lotToCount[coord]!),
                   actions: <Widget>[
                     // Button in the pop-up
                     TextButton(
@@ -548,7 +513,10 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
             builder: (BuildContext context) {
               return AlertDialog(
                 title: const Text('Parking Lot Info:'),
-                content: Text("Allowed Permits: " + permits! + "\n \nTotal Number of Slots: " + lotToCount[LatLng(lotCoord.latitude, lotCoord.longitude)]!),
+                content: Text("Allowed Permits: " +
+                    permits! +
+                    "\n \nTotal Number of Slots: " +
+                    lotToCount[LatLng(lotCoord.latitude, lotCoord.longitude)]!),
                 actions: <Widget>[
                   // Button in the pop-up
                   TextButton(
