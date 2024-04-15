@@ -1,8 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:upark/firebase_options.dart';
-import 'package:upark/login.dart';
 import 'package:upark/components/color_scheme.dart';
+import 'package:upark/authentication.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -10,22 +11,16 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  if (FirebaseAuth.instance.currentUser != null) {
+    print('UserID: ${FirebaseAuth.instance.currentUser?.uid}\n'
+        'User Email: ${FirebaseAuth.instance.currentUser?.email}\n'
+        'User Name: ${FirebaseAuth.instance.currentUser?.displayName}');
+  } else {
+    print('No user signed in');
+  }
+
   runApp(const MyApp());
 }
-
-const clientId = 'YOUR_CLIENT_ID';
-
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return  MaterialApp(
-//       title: 'Settings Screen',
-//       home: LogInPage(),
-//     );
-//   }
-// }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -36,7 +31,8 @@ class MyApp extends StatelessWidget {
         colorScheme: UtahColorScheme.colorScheme,
         useMaterial3: true,
       ),
-      home: LogInPage(),
+      // home: const LogInPage(),
+      home: const AuthenticationPage(),
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
-import 'package:upark/login.dart';
+import 'package:upark/authentication.dart';
 
 import 'settings_pages/notifications.dart';
 import 'settings_pages/permits.dart';
@@ -49,7 +49,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         SignedOutAction((context) {
                           Navigator.of(context).pushAndRemoveUntil(
                             MaterialPageRoute(
-                                builder: (context) => LogInPage()),
+                                builder: (context) => AuthenticationPage()),//LogInPage()),
                             (Route<dynamic> route) => false,
                           );
                         })

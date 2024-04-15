@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'dart:math';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:upark/authentication.dart';
 // import 'package:flutter_map/flutter_map.dart';
 import 'package:upark/settings.dart';
 import 'package:flutter/material.dart';
@@ -17,10 +18,11 @@ import 'package:fuzzy/fuzzy.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 // import 'package:csv/csv.dart';
 import 'package:upark/client.dart';
+import 'package:upark/campus.dart';
 
 // Homepage
 class HomePage extends StatelessWidget {
-  HomePage({super.key});
+  HomePage(Future<AppUser> user, {super.key});
 
   // @override
   // Widget build(BuildContext context) {
@@ -353,11 +355,7 @@ Future<Map<String, LatLng>> createLotLngDict() async {
   for (Lot lot in lots) {
     parkinglotsLocation[lot.name] = LatLng(lot.lattitude, lot.longitude);
 
-    print(lot.name +
-        " " +
-        lot.lattitude.toString() +
-        " " +
-        lot.longitude.toString());
+    // print("${lot.name} ${lot.lattitude.toString()} ${lot.longitude.toString()}");
   }
 
   /*
@@ -408,7 +406,7 @@ Future<List<Marker>> createMarkerList(MapController controller,
     BuildContext context, Map<LatLng, String> lotToPermit) async {
   List<Marker> lotMarkers = [];
   //CREATING A DICTIONARY -> KEYS: PARKING LOT NAMES, VALUES: LATITUDE AND LONGITUDE FOR THE CORRESPONDING PARKING LOT
-  print('createMarkerList called');
+  // print('createMarkerList called');
   Map<String, LatLng> parkinglotsLocation = await createLotLngDict();
 
   for (var parkingLot in parkinglotsLocation.entries) {
@@ -464,7 +462,7 @@ Future<List<Marker>> createMarkerList(MapController controller,
     lotMarkers.add(newMarker);
   }
 
-  print('createMarkerList finished: $lotMarkers');
+  // print('createMarkerList finished: $lotMarkers');
   return lotMarkers;
 }
 
@@ -483,10 +481,10 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
   static late LatLng selectedDestination;
   late Timer timer;
 
-  static List<Marker> _myMarkers = [];
+  static List<Marker> my_markers = [];
 
   // Define the getter for my_markers
-  static List<Marker> get my_markers => _myMarkers;
+  // static List<Marker> get my_markers => _myMarkers;
 
   // Fetch the markers data asynchronously
   Future<void> fetchMarkers() async {
@@ -496,7 +494,7 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
 
     // Update the state of the widget with the fetched markers
     setState(() {
-      _myMarkers = fetchedMarkers;
+      my_markers = fetchedMarkers;
     });
   }
 
@@ -604,10 +602,7 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
             builder: (BuildContext context) {
               return AlertDialog(
                 title: const Text('Parking Lot Info:'),
-                content: Text("Allowed Permits: " +
-                    permits! +
-                    "\n \nTotal Number of Slots: " +
-                    lotToCount[LatLng(lotCoord.latitude, lotCoord.longitude)]!),
+                content: Text("Allowed Permits: ${permits!} \n \nTotal Number of Slots: ${lotToCount[lotCoord]}"),
                 actions: <Widget>[
                   // Button in the pop-up
                   TextButton(
@@ -648,11 +643,11 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
     List<String> parkingNames = latLngDict.keys.toList();
     Random random = Random();
     List<int> randomOccupancy = List.generate(34, (_) => random.nextInt(101));
-    Map<String, int> dummy_map =
+    Map<String, int> dummyMap =
         Map.fromIterables(parkingNames, randomOccupancy);
 
     setState(() {
-      updateMarker(dummy_map, latLngDict);
+      updateMarker(dummyMap, latLngDict);
     });
   }
 
@@ -661,9 +656,8 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
     super.initState();
     WidgetsBinding.instance.addObserver(this); // Register observer
     _currentInstance = this; // Set the current instance
-    timer = Timer.periodic(Duration(seconds: 5), (Timer t) => updateMap());
+    timer = Timer.periodic(const Duration(seconds: 5), (Timer t) => updateMap());
     // call updateMap every 5 seconds to update the markers.
-    fetchMarkers(); // Fetch the markers when the widget is initialized
   }
 
   @override
@@ -702,6 +696,7 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     contextPar = context;
+    fetchMarkers(); // Fetch the markers when the widget is initialized
     return FutureBuilder(
         future: createMarkerList(controller, context, lotToPermit),
         builder: (context, AsyncSnapshot<List<Marker>> snapshot) {
@@ -711,7 +706,7 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
             return const Text("Error");
           } else if (snapshot.hasData) {
             var data = snapshot.data;
-            print("Snapshot has data: $data");
+            // print("Snapshot has data: $data");
             return FlutterMap(
               mapController: controller,
               options: MapOptions(
@@ -721,7 +716,7 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
               children: [
                 TileLayer(
                     urlTemplate:
-                        "https://api.mapbox.com/styles/v1/notrh99/clt8xt1yy006l01r5g8j7dmxp/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoibm90cmg5OSIsImEiOiJjbHJremlxaHUwa205MmprZGJ3dWFzYWR3In0.R-PO20FWueN9Mzx9EwmeEA"),
+                        "https://api.mapbox.com/styles/v1/notrh99/clt8xt1yy006l01r5g8j7dmxp/wmts?access_token=pk.eyJ1Ijoibm90cmg5OSIsImEiOiJjbHJremlxaHUwa205MmprZGJ3dWFzYWR3In0.R-PO20FWueN9Mzx9EwmeEA"),
                 MarkerLayer(
                   markers: snapshot.data!,
                 ),

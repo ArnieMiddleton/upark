@@ -20,6 +20,7 @@ class AppUser {
   });
 
   Future<AppUser> fromEmailAndPassword(String email, String password) async {
+    // FirebaseAuth.instance.signInAnonymously();
     FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password);
     this.userId = FirebaseAuth.instance.currentUser!.uid;
