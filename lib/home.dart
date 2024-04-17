@@ -17,10 +17,31 @@ import 'package:fuzzy/fuzzy.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:csv/csv.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // Homepage
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  HomePage({super.key});
+
+  Color full = Colors.red;
+  Color almFull = Colors.orange;
+  Color med = Colors.yellow;
+  Color empty = Colors.green;
+
+  Future<void> isColorBlindModeEnabled() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? colorBlind = prefs.getBool('colorBlindMode');
+    if (colorBlind == true) {
+      full = Colors.black;
+      almFull = Colors.brown;
+      empty = Colors.lightBlue;
+    } else {
+      full = Colors.red;
+      almFull = Colors.orange;
+      med = Colors.yellow;
+      empty = Colors.green;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,6 +114,7 @@ class HomePage extends StatelessWidget {
                   icon: const Icon(Icons.info_outline),
                   color: Colors.red, // Change icon color to red
                   onPressed: () {
+                    isColorBlindModeEnabled();
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -112,7 +134,7 @@ class HomePage extends StatelessWidget {
                                     Container(
                                       width: 10,
                                       height: 10,
-                                      color: Colors.red.shade700,
+                                      color: full,
                                     ),
                                     const SizedBox(width: 8),
                                     const Text(
@@ -129,7 +151,7 @@ class HomePage extends StatelessWidget {
                                     Container(
                                       width: 10,
                                       height: 10,
-                                      color: Colors.orange.shade600,
+                                      color: almFull,
                                     ),
                                     const SizedBox(width: 8),
                                     const Text(
@@ -146,7 +168,7 @@ class HomePage extends StatelessWidget {
                                     Container(
                                       width: 10,
                                       height: 10,
-                                      color: Colors.yellow.shade600,
+                                      color: med,
                                     ),
                                     const SizedBox(width: 8),
                                     const Text(
@@ -163,7 +185,7 @@ class HomePage extends StatelessWidget {
                                     Container(
                                       width: 10,
                                       height: 10,
-                                      color: Colors.green,
+                                      color: empty,
                                     ),
                                     const SizedBox(width: 8),
                                     const Text(
@@ -409,13 +431,30 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
   static late LatLng selectedDestination;
   late Timer timer;
 
+  Color full = Colors.red;
+  Color almFull = Colors.orange;
+  Color med = Colors.yellow;
+  Color empty = Colors.green;
+
+  Future<void> isColorBlindModeEnabled() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? colorBlind = prefs.getBool('colorBlindMode');
+    if (colorBlind == true) {
+      full = Colors.black;
+      almFull = Colors.brown;
+      empty = Colors.lightBlue;
+    } else {
+      full = Colors.red;
+      almFull = Colors.orange;
+      med = Colors.yellow;
+      empty = Colors.green;
+    }
+  }
+
   // given a two dictionaries (lotName -> occupancy percentage) and (lotName -> Location) updates the color of the markers
   void updateMarker(Map<String, int> occupancyPerLot,
       Map<String, LatLng> parkinglotsLocation) {
-    Color green = Colors.green;
-    Color yellow = Colors.yellow.shade600;
-    Color orange = Colors.orange.shade600;
-    Color red = Colors.red.shade700;
+    isColorBlindModeEnabled();
 
     for (var parkingLot in occupancyPerLot.entries) {
       String lotName = parkingLot.key;
@@ -431,13 +470,13 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
 
       // Find the new color for the marker based on occupancy.
       if (0 <= occupancy && occupancy <= 40) {
-        newColor = green;
+        newColor = full;
       } else if (40 < occupancy && occupancy <= 60) {
-        newColor = yellow;
+        newColor = almFull;
       } else if (60 < occupancy && occupancy <= 80) {
-        newColor = orange;
+        newColor = med;
       } else {
-        newColor = red;
+        newColor = empty;
       }
 
       LatLng coord = parkinglotsLocation[lotName]!;
@@ -569,7 +608,7 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
     super.initState();
     WidgetsBinding.instance.addObserver(this); // Register observer
     _currentInstance = this; // Set the current instance
-    timer = Timer.periodic(Duration(seconds: 180), (Timer t) => updateMap());
+    timer = Timer.periodic(Duration(seconds: 40), (Timer t) => updateMap());
     // call updateMap every 5 seconds to update the markers.
   }
 

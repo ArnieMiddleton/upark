@@ -2,19 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'home.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ParkingLotSurveyScreen extends StatefulWidget {
   final LatLng selectedLot;
 
-  const ParkingLotSurveyScreen({Key? key, required this.selectedLot}) : super(key: key);
+  const ParkingLotSurveyScreen({Key? key, required this.selectedLot})
+      : super(key: key);
 
   @override
   State<ParkingLotSurveyScreen> createState() => _ParkingLotSurveyScreenState();
 }
 
 class _ParkingLotSurveyScreenState extends State<ParkingLotSurveyScreen> {
-   Map<String, LatLng> parkinglotsLocation = {
+  Map<String, LatLng> parkinglotsLocation = {
     'Social Work': const LatLng(40.76047615, -111.8457732),
     'Union North': const LatLng(40.76551563, -111.8464372),
     'Student Services': const LatLng(40.76553734, -111.8475873),
@@ -60,50 +61,58 @@ class _ParkingLotSurveyScreenState extends State<ParkingLotSurveyScreen> {
     'Some Spots',
     'Plenty of Spots'
   ];
-  
+
+  Color full = Colors.red;
+  Color almFull = Colors.orange;
+  Color med = Colors.yellow;
+  Color empty = Colors.green;
+
+  Future<void> isColorBlindModeEnabled() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? colorBlind = prefs.getBool('colorBlindMode');
+    if (colorBlind == true) {
+      full = Colors.black;
+      almFull = Colors.brown;
+      empty = Colors.lightBlue;
+    } else {
+      full = Colors.red;
+      almFull = Colors.orange;
+      empty = Colors.green;
+    }
+  }
+
   void _submitSurvey() {
     if (_chosenIndex != null) {
       // Update the _selectedOption with the chosen option's text
+      isColorBlindModeEnabled();
       setState(() {
         _selectedOption = _options[_chosenIndex!];
 
         List<LatLng> valsList = parkinglotsLocation.values.toList();
         int listIndex = valsList.indexOf(widget.selectedLot);
         String lotName = parkinglotsLocation.keys.toList()[listIndex];
-
-        Color green = Colors.green;
-        Color yellow = Colors.yellow.shade600;
-        Color orange = Colors.orange.shade600;
-        Color red = Colors.red.shade700;
+        isColorBlindModeEnabled();
         Color updatedColor;
-        if (_chosenIndex == 0 || _chosenIndex == 1)
-        {
-          updatedColor = red;
-        }
-        else if(_chosenIndex == 2)
-        {
-          updatedColor = orange;
-        }
-        else if(_chosenIndex == 3)
-        {
-          updatedColor = yellow;
-        }
-        else {
-          updatedColor = green;
+        if (_chosenIndex == 0 || _chosenIndex == 1) {
+          updatedColor = full;
+        } else if (_chosenIndex == 2) {
+          updatedColor = almFull;
+        } else if (_chosenIndex == 3) {
+          updatedColor = med;
+        } else {
+          updatedColor = empty;
         }
 
-
-        // FOR TESTING/DEMOING 
+        // FOR TESTING/DEMOING
         // updatedColor = Colors.black;
-        HomePageMap.callStateScreen(updatedColor, lotName, listIndex, widget.selectedLot);
-        
+        HomePageMap.callStateScreen(
+            updatedColor, lotName, listIndex, widget.selectedLot);
       });
 
       Navigator.of(context).popUntil((route) => route.isFirst);
     }
   }
 
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -172,7 +181,9 @@ class _ParkingLotSurveyScreenState extends State<ParkingLotSurveyScreen> {
             const SizedBox(
                 height: 20), // Spacing between buttons and the submit button
             ElevatedButton(
-              onPressed: _chosenIndex != null ? _submitSurvey : null,
+              onPressed: () {
+                _chosenIndex != null ? _submitSurvey() : null;
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor:
                     _chosenIndex != null ? Colors.green : Colors.grey,

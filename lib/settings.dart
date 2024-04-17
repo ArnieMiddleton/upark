@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:upark/login.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'settings_pages/notifications.dart';
 import 'settings_pages/permits.dart';
 
@@ -15,6 +15,26 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   bool isColorBlindModeEnabled = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadColorBlindMode();
+  }
+
+  _setColorBlindMode(bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setBool('colorBlindMode', value);
+  }
+
+  // Load ColorBlind Mode state from SharedPreferences
+  _loadColorBlindMode() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      // Use 'getBool' to load the value, default to false if not set
+      isColorBlindModeEnabled = prefs.getBool('colorBlindMode') ?? false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -109,6 +129,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               setState(() {
                 isColorBlindModeEnabled = value;
               });
+              _setColorBlindMode(value);
             },
           ),
         ),
