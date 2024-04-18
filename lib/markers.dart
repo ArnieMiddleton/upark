@@ -21,7 +21,7 @@ Future<List<Marker>> createLotMarkerList(
 }
 
 Marker createLotMarker(Lot lot, Widget widget) {
-  return createMarker(lot.lattitude, lot.longitude, widget);
+  return createMarker(lot.latitude, lot.longitude, widget);
 }
 
 Marker createMarker(double lattitude, double longitude, Widget markerChild) {

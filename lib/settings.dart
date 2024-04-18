@@ -7,7 +7,7 @@ import 'settings_pages/notifications.dart';
 import 'settings_pages/permits.dart';
 
 class SettingsScreen extends StatefulWidget {
-  SettingsScreen({Key? key}) : super(key: key);
+  const SettingsScreen({super.key});
 
   @override
   _SettingsScreenState createState() => _SettingsScreenState();
@@ -44,17 +44,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ProfileScreen(
-                      actions: [
-                        SignedOutAction((context) {
-                          Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                                builder: (context) => AuthenticationPage()),//LogInPage()),
-                            (Route<dynamic> route) => false,
-                          );
-                        })
-                      ],
-                    ),
+                    builder: (context) => const AccountPage(),
                   ),
                 );
               },

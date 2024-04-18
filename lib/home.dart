@@ -353,7 +353,7 @@ Future<Map<String, LatLng>> createLotLngDict() async {
 
   Map<String, LatLng> parkinglotsLocation = {};
   for (Lot lot in lots) {
-    parkinglotsLocation[lot.name] = LatLng(lot.lattitude, lot.longitude);
+    parkinglotsLocation[lot.name] = LatLng(lot.latitude, lot.longitude);
 
     // print("${lot.name} ${lot.lattitude.toString()} ${lot.longitude.toString()}");
   }
@@ -1247,16 +1247,19 @@ Future<List<dynamic>> loadPredictions(String day) async {
       await rootBundle.loadString('lib/assets/predictions.json');
   Map<String, dynamic> preds = jsonDecode(jsonString);
 
-  if (day == "Mon") {
-    return preds["Monday"];
-  } else if (day == "Tue") {
-    return preds["Tuesday"];
-  } else if (day == "Wed") {
-    return preds["Wednesday"];
-  } else if (day == "Thu") {
-    return preds["Thursday"];
-  } else {
-    return preds["Friday"];
+  switch (day) {
+    case "Mon":
+      return preds["Monday"];
+    case "Tue":
+      return preds["Tuesday"];
+    case "Wed":
+      return preds["Wednesday"];
+    case "Thu":
+      return preds["Thursday"];
+    case "Fri":
+      return preds["Friday"];
+    default:
+      return preds["Monday"];
   }
 }
 
