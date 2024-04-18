@@ -7,7 +7,6 @@ import 'package:upark/home.dart';
 import 'package:flutter/material.dart';
 import 'package:upark/settings.dart';
 
-
 class AppUser {
   String userId;
   String email;
@@ -49,54 +48,53 @@ class AuthenticationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final providers = [EmailAuthProvider()];
     return MaterialApp(
-      initialRoute:
-          FirebaseAuth.instance.currentUser == null ? '/login' : '/home',
-      routes: {
-        '/login': (context) => SignInScreen(
-              providers: providers,
-              showAuthActionSwitch: true,
-              showPasswordVisibilityToggle: true,
-              headerBuilder: (context, constraints, shrinkOffset) {
-                return Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: AspectRatio(
-                      aspectRatio: 2,
-                      child: Image.asset('lib/images/UPark_Logo.png'),
-                    ));
-              },
-              subtitleBuilder: (context, action) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: action == AuthAction.signIn
-                      ? const Text('Welcome to UPark, please sign in!')
-                      : const Text('Welcome to UPark, please sign up!'),
-                );
-              },
-              footerBuilder: (context, action) {
-                return Text(
-                    "UPark Capstone Project WIP${action == AuthAction.signIn ? '' : '\nYour email will not be share with anyone!'}",
-                    textAlign: TextAlign.center);
-              },
-              actions: [
-                AuthStateChangeAction<SignedIn>((context, state) {
-                  var user =
-                      fetchUserFromId(FirebaseAuth.instance.currentUser!.uid);
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => HomePage(user)));
-                }),
-              ],
-            ),
-        '/profile': (context) => const ProfileScreen(),
-        '/settings': (context) => const SettingsScreen(),
-        '/home': (context) => HomePage(
-              fetchUserFromId(FirebaseAuth.instance.currentUser!.uid),
-            ),
-      });
+        initialRoute:
+            FirebaseAuth.instance.currentUser == null ? '/login' : '/home',
+        routes: {
+          '/login': (context) => SignInScreen(
+                providers: providers,
+                showAuthActionSwitch: true,
+                showPasswordVisibilityToggle: true,
+                headerBuilder: (context, constraints, shrinkOffset) {
+                  return Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: AspectRatio(
+                        aspectRatio: 2,
+                        child: Image.asset('lib/images/UPark_Logo.png'),
+                      ));
+                },
+                subtitleBuilder: (context, action) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: action == AuthAction.signIn
+                        ? const Text('Welcome to UPark, please sign in!')
+                        : const Text('Welcome to UPark, please sign up!'),
+                  );
+                },
+                footerBuilder: (context, action) {
+                  return Text(
+                      "UPark Capstone Project WIP${action == AuthAction.signIn ? '' : '\nYour email will not be share with anyone!'}",
+                      textAlign: TextAlign.center);
+                },
+                actions: [
+                  AuthStateChangeAction<SignedIn>((context, state) {
+                    var user =
+                        fetchUserFromId(FirebaseAuth.instance.currentUser!.uid);
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => HomePage(user)));
+                  }),
+                ],
+              ),
+          '/profile': (context) => const ProfileScreen(),
+          '/settings': (context) => const SettingsScreen(),
+          '/home': (context) => HomePage(
+                fetchUserFromId(FirebaseAuth.instance.currentUser!.uid),
+              ),
+        });
   }
 }
-
 
 class AccountPage extends StatelessWidget {
   const AccountPage({super.key});
@@ -115,20 +113,18 @@ class AccountPage extends StatelessWidget {
         SignedOutAction((context) {
           // TODO: Set AppUser to null?
           Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-                builder: (context) => const AuthenticationPage()),
+            MaterialPageRoute(builder: (context) => const AuthenticationPage()),
             (Route<dynamic> route) => false,
           );
         }),
         AccountDeletedAction((context, user) {
           // TODO: Delete user from database
           Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-                builder: (context) => const AuthenticationPage()),
+            MaterialPageRoute(builder: (context) => const AuthenticationPage()),
             (Route<dynamic> route) => false,
           );
         })
       ],
-    )
+    );
   }
 }
