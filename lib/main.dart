@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -12,18 +14,16 @@ void main() async {
   );
 
   if (FirebaseAuth.instance.currentUser != null) {
-    print('UserID: ${FirebaseAuth.instance.currentUser?.uid}\n'
-        'User Email: ${FirebaseAuth.instance.currentUser?.email}\n'
-        'User Name: ${FirebaseAuth.instance.currentUser?.displayName}');
+    log("user ${FirebaseAuth.instance.currentUser?.uid} is signed in.", name: 'main');
   } else {
-    print('No user signed in');
+    log('No user signed in', name: 'main');
   }
 
-  runApp(const MyApp());
+  runApp(const App());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class App extends StatelessWidget {
+  const App({super.key});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -31,7 +31,6 @@ class MyApp extends StatelessWidget {
         colorScheme: UtahColorScheme.colorScheme,
         useMaterial3: true,
       ),
-      // home: const LogInPage(),
       home: const AuthenticationPage(),
     );
   }

@@ -6,14 +6,14 @@ import 'package:upark/authentication.dart';
 import 'settings_pages/notifications.dart';
 import 'settings_pages/permits.dart';
 
-class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({super.key});
+class SettingsPage extends StatefulWidget {
+  const SettingsPage({super.key});
 
   @override
-  _SettingsScreenState createState() => _SettingsScreenState();
+  SettingsPageState createState() => SettingsPageState();
 }
 
-class _SettingsScreenState extends State<SettingsScreen> {
+class SettingsPageState extends State<SettingsPage> {
   bool isColorBlindModeEnabled = false;
 
   @override

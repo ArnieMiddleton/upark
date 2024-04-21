@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:upark/campus.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:upark/client.dart';
-import 'package:upark/home.dart';
+import 'package:upark/new_home.dart';
 import 'package:flutter/material.dart';
 import 'package:upark/settings.dart';
 
@@ -78,17 +78,12 @@ class AuthenticationPage extends StatelessWidget {
                 },
                 actions: [
                   AuthStateChangeAction<SignedIn>((context, state) {
-                    var user =
-                        fetchUserFromId(FirebaseAuth.instance.currentUser!.uid);
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => HomePage(user)));
+                    Navigator.pushReplacementNamed(context, '/home');
                   }),
                 ],
               ),
           '/profile': (context) => const ProfileScreen(),
-          '/settings': (context) => const SettingsScreen(),
+          '/settings': (context) => const SettingsPage(),
           '/home': (context) => HomePage(
                 fetchUserFromId(FirebaseAuth.instance.currentUser!.uid),
               ),
@@ -111,7 +106,6 @@ class AccountPage extends StatelessWidget {
       ),
       actions: [
         SignedOutAction((context) {
-          // TODO: Set AppUser to null?
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => const AuthenticationPage()),
             (Route<dynamic> route) => false,
@@ -124,6 +118,7 @@ class AccountPage extends StatelessWidget {
             (Route<dynamic> route) => false,
           );
         })
+
       ],
     );
   }

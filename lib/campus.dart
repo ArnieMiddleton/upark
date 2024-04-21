@@ -41,6 +41,7 @@ enum Permit {
   @override
   String toString() => name;
 }
+
 class Lot {
   int id;
   double latitude;
@@ -50,7 +51,7 @@ class Lot {
   int stallCount;
   int carCount;
   bool enabled;
-  List<StallType> stalls = [];
+  List<StallType> stalls = [StallType.V];
 
   Lot({
     required this.id,
@@ -69,7 +70,7 @@ class Lot {
         name: json["name"],
         stallCount: json["stall_count"],
         carCount: json["car_count"],
-        enabled: json["enabled"],
+        enabled: json["enabled"] == 1 ? true : false,
       );
 
   Map<String, dynamic> toJson() => {
@@ -85,24 +86,28 @@ class Lot {
 
 class Building {
   int id;
-  String latitude;
-  String longitude;
+  double latitude;
+  double longitude;
+  LatLng get location => LatLng(latitude, longitude);
   String name;
-  String streetAddress;
+  String? code;
+  String? streetAddress;
 
   Building({
     required this.id,
     required this.latitude,
     required this.longitude,
     required this.name,
-    required this.streetAddress,
+    this.code,
+    this.streetAddress,
   });
 
   factory Building.fromJson(Map<String, dynamic> json) => Building(
         id: json["id"],
-        latitude: json["latitude"],
-        longitude: json["longitude"],
+        latitude: double.parse(json["latitude"]),
+        longitude: double.parse(json["longitude"]),
         name: json["name"],
+        code: json["code"],
         streetAddress: json["street_address"],
       );
 
@@ -111,10 +116,10 @@ class Building {
         "latitude": latitude,
         "longitude": longitude,
         "name": name,
+        "code": code,
         "street_address": streetAddress,
       };
 }
-
 
 class Report {
   int id;
@@ -156,23 +161,64 @@ class Report {
       };
 }
 
-
 class Campus {
   String name = "University of Utah";
-  List<Lot> parkingLots = [];
+  List<Lot> lots = [];
   List<Building> buildings = [];
+  Map<Building, Map<Lot, double>> buildingToLotDistances =
+      {}; // Building -> Lot -> Distance in meters
+  Map<Building, List<(Lot lot, double distance)>> buildingToClosestLots =
+      {}; // Building -> List of sorted closest lots and their distances in meters
+  // TODO: Add changing of units
+  var unit = LengthUnit.Meter;
 
   Campus({
     required this.name,
-    required this.parkingLots,
+    required this.lots,
     required this.buildings,
   });
 
+  Map<Building, Map<Lot, double>> calculateDistances(
+      List<Building> buildings, List<Lot> lots) {
+    Map<Building, Map<Lot, double>> distances = {};
+    Distance distance = const Distance();
+
+    for (var building in buildings) {
+      Map<Lot, double> buildingDistances = {};
+      for (var lot in lots) {
+        var distanceBetween =
+            distance.as(unit, building.location, lot.location);
+        buildingDistances[lot] = distanceBetween;
+      }
+      distances[building] = buildingDistances;
+    }
+    buildingToLotDistances = distances;
+    return distances;
+  }
+
+  Map<Building, List<(Lot lot, double distance)>> calculateClosestLots(
+      Map<Building, Map<Lot, double>> distances) {
+    Map<Building, List<(Lot lot, double distance)>> closestLots = {};
+    for (var building in distances.keys) {
+      var buildingDistancesMap = distances[building]!;
+      List<(Lot lot, double distance)> buildingClosestLots = [];
+      for (var lot in buildingDistancesMap.keys) {
+        buildingClosestLots.add((lot, buildingDistancesMap[lot]!));
+      }
+      buildingClosestLots.sort((a, b) => a.$2.compareTo(b.$2));
+      closestLots[building] = buildingClosestLots;
+    }
+    buildingToClosestLots = closestLots;
+    return closestLots;
+  }
+
   static Future<Campus> getFromApi() async {
+    var newLots = await fetchLots();
+    var newBuildings = await fetchBuildings();
     return Campus(
       name: "University of Utah",
-      parkingLots: await fetchLots(),
-      buildings: await fetchBuildings(),
+      lots: newLots,
+      buildings: newBuildings,
     );
   }
 }

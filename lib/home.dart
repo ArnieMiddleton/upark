@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'dart:math';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:upark/authentication.dart';
+import 'package:upark/search.dart';
 // import 'package:flutter_map/flutter_map.dart';
 import 'package:upark/settings.dart';
 import 'package:flutter/material.dart';
@@ -19,72 +20,13 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 // import 'package:csv/csv.dart';
 import 'package:upark/client.dart';
 import 'package:upark/campus.dart';
+import 'package:upark/map.dart';
 
 // Homepage
 class HomePage extends StatelessWidget {
-  HomePage(Future<AppUser> user, {super.key});
+  const HomePage(Future<AppUser> user, {super.key});
 
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     appBar: AppBar(
-  //       backgroundColor: Colors.red[700],
-  //       leading: Row(
-  //         children: [
-  //           IconButton(
-  //             icon: const Icon(Icons.settings),
-  //             color: Colors.white,
-  //             onPressed: () {
-  //               Navigator.of(context).push(
-  //                   MaterialPageRoute(builder: (context) => SettingsScreen()));
-  //             },
-  //           ),
-  //           IconButton(
-  //             icon: const Icon(Icons.info_outline),
-  //             color: Colors.white,
-  //             onPressed: () {  },
-  //           )
-  //         ],
-  //       ),
-  //       title: InkWell(
-  //         onTap: () {
-  //           showSearch(context: context, delegate: CustomSearchDelegate());
-  //         },
-  //         child: Container(
-  //             height: 35,
-  //             decoration: BoxDecoration(
-  //               border: Border.all(
-  //                 color: const Color.fromARGB(255, 255, 255, 255),
-  //                 width: 1.4,
-  //               ),
-  //               borderRadius: BorderRadius.circular(25),
-  //             ),
-  //             child: const Row(
-  //               children: [
-  //                 Row(
-  //                   children: [
-  //                     Padding(
-  //                       padding: EdgeInsets.symmetric(horizontal: 10.0),
-  //                       child: Icon(
-  //                         Icons.search,
-  //                         color: Colors.white,
-  //                       ),
-  //                     ),
-  //                     Text(
-  //                       'Search Buildings',
-  //                       style: TextStyle(
-  //                           color: Color.fromARGB(255, 255, 255, 255)),
-  //                     ),
-  //                   ],
-  //                 ),
-  //               ],
-  //             )),
-  //       ),
-  //     ),
-  //     body: HomePageMap(),
-  //   );
-  // }
-
+  @override
   Widget build(BuildContext context) {
     double leadingWidth =
         100; // You may need to adjust this based on your icons' sizes
@@ -105,7 +47,7 @@ class HomePage extends StatelessWidget {
                 iconSize: 30.0,
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => SettingsScreen()));
+                      builder: (context) => SettingsPage()));
                 },
               ),
               IconButton(
@@ -209,7 +151,8 @@ class HomePage extends StatelessWidget {
             // print("----------");
             // print(fetchLots()));
             // print("----------");
-            showSearch(context: context, delegate: CustomSearchDelegate());
+            // showSearch(context: context, delegate: CustomSearchDelegate());
+            showSearch(context: context, delegate: SearchBarDelegate());
           },
           child: Container(
               height: 35,
@@ -247,11 +190,13 @@ class HomePage extends StatelessWidget {
               )),
         ),
       ),
-      body: HomePageMap(),
+      body: const Text("Map Placeholder")
+      // body: const MapPage(),
     );
   }
 }
 
+/*
 class HomePageMap extends StatefulWidget {
   @override
   _HomePageMapState createState() => _HomePageMapState();
@@ -467,24 +412,23 @@ Future<List<Marker>> createMarkerList(MapController controller,
 }
 
 class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
-  static final MapController controller = MapController();
-  ValueNotifier<bool> isSheetExpanded = ValueNotifier(false);
+  static final MapController controller = MapController(); // mapConstroller
+  ValueNotifier<bool> isSheetExpanded = ValueNotifier(false); // Removed
   // static bool isReturningFromGoogleMaps = false;
-  static _HomePageMapState? _currentInstance;
+  static _HomePageMapState? _currentInstance; // currentMapStateInstance
   static late BuildContext contextPar;
-  LatLng latLng = const LatLng(40.76497, -111.84611);
+  LatLng latLng = const LatLng(40.76497, -111.84611); // mapInitLocation
   static Map<LatLng, String> lotToPermit = createLotPermitDict();
   // static List<Marker> my_markers = await createMarkerList(controller, contextPar, lotToPermit);
   static Map<LatLng, String> lotToCount = createLotCountDict();
 
   // static Map<String, LatLng> lot_name_TO_coordinate = createLotLngDict();
-  static late LatLng selectedDestination;
+  static late LatLng selectedDestination; // currentLocation
   late Timer timer;
-
-  static List<Marker> my_markers = [];
+  // static Future<List<Marker>> myMarkers;
 
   // Define the getter for my_markers
-  // static List<Marker> get my_markers => _myMarkers;
+  static late List<Marker> my_markers;
 
   // Fetch the markers data asynchronously
   Future<void> fetchMarkers() async {
@@ -602,7 +546,8 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
             builder: (BuildContext context) {
               return AlertDialog(
                 title: const Text('Parking Lot Info:'),
-                content: Text("Allowed Permits: ${permits!} \n \nTotal Number of Slots: ${lotToCount[lotCoord]}"),
+                content: Text(
+                    "Allowed Permits: ${permits!} \n \nTotal Number of Slots: ${lotToCount[lotCoord]}"),
                 actions: <Widget>[
                   // Button in the pop-up
                   TextButton(
@@ -656,7 +601,8 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
     super.initState();
     WidgetsBinding.instance.addObserver(this); // Register observer
     _currentInstance = this; // Set the current instance
-    timer = Timer.periodic(const Duration(seconds: 5), (Timer t) => updateMap());
+    timer =
+        Timer.periodic(const Duration(seconds: 5), (Timer t) => updateMap());
     // call updateMap every 5 seconds to update the markers.
   }
 
@@ -675,28 +621,27 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
       isReturningFromMaps = false;
 
       // Now navigate to the survey screen if we're not already on it
-      if (Navigator.of(context).canPop()) {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-              builder: (context) => ParkingLotSurveyScreen(
-                    selectedLot: selectedDestination,
-                  )),
-        );
-      } else {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-              builder: (context) => ParkingLotSurveyScreen(
-                    selectedLot: selectedDestination,
-                  )),
-        );
-      }
+      // if (Navigator.of(context).canPop()) {
+      //   Navigator.of(context).push(
+      //     MaterialPageRoute(
+      //         builder: (context) => ParkingLotSurveyScreen(
+      //               selectedLot: selectedDestination,
+      //             )),
+      //   );
+      // } else {
+      //   Navigator.of(context).push(
+      //     MaterialPageRoute(
+      //         builder: (context) => ParkingLotSurveyScreen(
+      //               selectedLot: selectedDestination,
+      //             )),
+      //   );
+      // }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     contextPar = context;
-    fetchMarkers(); // Fetch the markers when the widget is initialized
     return FutureBuilder(
         future: createMarkerList(controller, context, lotToPermit),
         builder: (context, AsyncSnapshot<List<Marker>> snapshot) {
@@ -749,6 +694,10 @@ class _HomePageMapState extends State<HomePageMap> with WidgetsBindingObserver {
     */
   }
 }
+*/
+
+/*
+
 
 Future<Map<String, List<MapEntry<String, double>>>> loadParkingData() async {
   // Load the JSON data
@@ -1232,134 +1181,4 @@ Future<void> openMap(double lat, double long) async {
   } catch (e) {}
 }
 
-class HistogramScreen extends StatefulWidget {
-  final LatLng location;
-
-  // Updated constructor using super parameter for 'key'
-  const HistogramScreen({super.key, required this.location});
-
-  @override
-  _HistogramScreenState createState() => _HistogramScreenState();
-}
-
-Future<List<dynamic>> loadPredictions(String day) async {
-  String jsonString =
-      await rootBundle.loadString('lib/assets/predictions.json');
-  Map<String, dynamic> preds = jsonDecode(jsonString);
-
-  switch (day) {
-    case "Mon":
-      return preds["Monday"];
-    case "Tue":
-      return preds["Tuesday"];
-    case "Wed":
-      return preds["Wednesday"];
-    case "Thu":
-      return preds["Thursday"];
-    case "Fri":
-      return preds["Friday"];
-    default:
-      return preds["Monday"];
-  }
-}
-
-class _HistogramScreenState extends State<HistogramScreen> {
-  late String selectedDay; // Default to Monday
-  final List<String> _days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-
-  // Placeholder data for the histogram
-  List<ChartData> chartData = [
-    ChartData('7am', 20),
-    ChartData('8am', 30),
-    ChartData('9am', 45),
-    ChartData('10am', 70),
-    ChartData('11am', 65),
-    ChartData('12pm', 65),
-    ChartData('1pm', 65),
-    ChartData('2pm', 80),
-    ChartData('3pm', 80),
-    ChartData('4pm', 40),
-    ChartData('5pm', 20),
-    ChartData('6pm', 20)
-  ];
-
-  @override
-  void initState() {
-    super.initState();
-    // Set the default day to today's weekday
-    int currentWeekday = DateTime.now().weekday;
-    // Dart's DateTime class defines Sunday as 7 instead of 0
-    selectedDay = _days[currentWeekday % 7 == 0 ? 6 : currentWeekday - 1];
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Histogram Data'),
-        leading: IconButton(
-          icon: const Icon(Icons.close),
-          onPressed: () => Navigator.pop(context), // Close the screen
-        ),
-        actions: <Widget>[
-          DropdownButton<String>(
-            value: selectedDay,
-            icon: const Icon(Icons.arrow_drop_down),
-            onChanged: (String? newValue) async {
-              setState(() {
-                selectedDay = newValue!;
-              });
-              // Update your histogram data here based on the selectedDay
-              List<double> preds = loadPredictions(selectedDay) as List<double>;
-              chartData = [
-                ChartData('7am', preds[0]),
-                ChartData('8am', preds[1]),
-                ChartData('9am', preds[2]),
-                ChartData('10am', preds[3]),
-                ChartData('11am', preds[4]),
-                ChartData('12pm', preds[5]),
-                ChartData('1pm', preds[6]),
-                ChartData('2pm', preds[7]),
-                ChartData('3pm', preds[8]),
-                ChartData('4pm', preds[9]),
-                ChartData('5pm', preds[10]),
-                ChartData('6pm', preds[11])
-              ];
-              // });
-            },
-            items: _days.map<DropdownMenuItem<String>>((String day) {
-              return DropdownMenuItem<String>(
-                value: day,
-                child: Text(day),
-              );
-            }).toList(),
-          ),
-          IconButton(
-            icon: const Icon(Icons.arrow_forward_outlined),
-            onPressed: () {
-              // Use the location data to open Google Maps
-              openMap(widget.location.latitude, widget.location.longitude);
-            },
-          ),
-        ],
-      ),
-      body: SfCartesianChart(
-        // Configure the axes and series as needed
-        primaryXAxis: const CategoryAxis(),
-        series: <ColumnSeries<ChartData, String>>[
-          ColumnSeries<ChartData, String>(
-            dataSource: chartData,
-            xValueMapper: (ChartData data, _) => data.time,
-            yValueMapper: (ChartData data, _) => data.value,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class ChartData {
-  ChartData(this.time, this.value);
-  final String time;
-  final double value;
-}
+*/

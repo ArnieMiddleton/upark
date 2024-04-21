@@ -29,9 +29,9 @@ Future<List<Lot>> fetchLots() async {
 // Lots
 
 List<Building> buildingsFromJson(String str) =>
-    List<Building>.from(json.decode(str).map((x) => Lot.fromJson(x)));
+    List<Building>.from(json.decode(str).map((x) => Building.fromJson(x)));
 
-String buildingsToJson(List<Lot> data) =>
+String buildingsToJson(List<Building> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 Future<List<Building>> fetchBuildings() async {

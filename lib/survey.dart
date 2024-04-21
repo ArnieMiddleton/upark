@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:upark/campus.dart';
 import 'home.dart';
 
 
 class ParkingLotSurveyScreen extends StatefulWidget {
-  final LatLng selectedLot;
+  final Lot selectedLot;
 
   const ParkingLotSurveyScreen({Key? key, required this.selectedLot}) : super(key: key);
 
@@ -60,7 +61,7 @@ class _ParkingLotSurveyScreenState extends State<ParkingLotSurveyScreen> {
     'Some Spots',
     'Plenty of Spots'
   ];
-  
+
   void _submitSurvey() {
     if (_chosenIndex != null) {
       // Update the _selectedOption with the chosen option's text
@@ -68,7 +69,7 @@ class _ParkingLotSurveyScreenState extends State<ParkingLotSurveyScreen> {
         _selectedOption = _options[_chosenIndex!];
 
         List<LatLng> valsList = parkinglotsLocation.values.toList();
-        int listIndex = valsList.indexOf(widget.selectedLot);
+        int listIndex = valsList.indexOf(widget.selectedLot.location);
         String lotName = parkinglotsLocation.keys.toList()[listIndex];
 
         Color green = Colors.green;
@@ -93,17 +94,17 @@ class _ParkingLotSurveyScreenState extends State<ParkingLotSurveyScreen> {
         }
 
 
-        // FOR TESTING/DEMOING 
+        // FOR TESTING/DEMOING
         // updatedColor = Colors.black;
-        HomePageMap.callStateScreen(updatedColor, lotName, listIndex, widget.selectedLot);
-        
+        // HomePageMap.callStateScreen(updatedColor, lotName, listIndex, widget.selectedLot.location);
+
       });
 
       Navigator.of(context).popUntil((route) => route.isFirst);
     }
   }
 
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
