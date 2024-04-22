@@ -63,16 +63,14 @@ class MapPageState extends State<MapPage> with WidgetsBindingObserver {
   static Color lotMarkerColor(double fullness, bool colorblind) {
     if (colorblind) {
       return gradientColor(
-        colors: UtahColorScheme.lotColorsColorblind,
-        value: fullness,
-        stops: [0.0, 0.7, 1.0]
-      );
+          colors: UtahColorScheme.lotColorsColorblind,
+          value: fullness,
+          stops: [0.0, 0.7, 1.0]);
     } else {
       return gradientColor(
-        colors: UtahColorScheme.lotColors,
-        value: fullness,
-        stops: [0.0, 0.7, 1.0]
-      );
+          colors: UtahColorScheme.lotColors,
+          value: fullness,
+          stops: [0.0, 0.7, 1.0]);
     }
   }
 
@@ -319,13 +317,30 @@ class MapPageState extends State<MapPage> with WidgetsBindingObserver {
         if (snapshot.hasData) {
           var campusData = snapshot.data!;
           markers = markersFromCampus(
-              campusData, const Icon(Icons.local_parking), mapController);
-          return const Text("Hello World!");
+              campusData, const Icon(Icons.location_pin), mapController);
+          return FlutterMap(
+            mapController: mapController,
+            options: MapOptions(
+              initialCenter: mapInitLocation,
+              initialZoom: 14,
+            ),
+            children: [
+              TileLayer(
+                urlTemplate:
+                      "https://api.mapbox.com/styles/v1/notrh99/clt8xt1yy006l01r5g8j7dmxp/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoibm90cmg5OSIsImEiOiJjbHJremlxaHUwa205MmprZGJ3dWFzYWR3In0.R-PO20FWueN9Mzx9EwmeEA"
+              ),
+              MarkerLayer(
+                markers: markers,
+              ),
+            ]
+          );
         } else if (snapshot.hasError) {
-          return Text('${snapshot.error}');
+          log("Error loading campus data",
+              error: snapshot.error, name: "MapPageState.build");
+          return Center(child: Text('Error: ${snapshot.error}'));
         }
         // TODO: Show something while loading
-        return const CircularProgressIndicator();
+        return const Center(child: CircularProgressIndicator());
       },
     );
   }

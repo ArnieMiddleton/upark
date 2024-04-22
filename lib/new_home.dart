@@ -25,7 +25,7 @@ class HomePage extends StatelessWidget {
                   children: [
                     IconButton(
                         icon: const Icon(Icons.settings),
-                        color: UtahColorScheme.surface,
+                        color: UtahColorScheme.onBackground,
                         iconSize: 30.0,
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
@@ -33,7 +33,7 @@ class HomePage extends StatelessWidget {
                         }),
                     IconButton(
                         icon: const Icon(Icons.info_outline),
-                        color: UtahColorScheme.surface,
+                        color: UtahColorScheme.onBackground,
                         iconSize: 30.0,
                         onPressed: () {
                           showDialog(
@@ -56,7 +56,7 @@ class HomePage extends StatelessWidget {
                   width: 250,
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: const Color.fromARGB(255, 255, 255, 255),
+                      color: UtahColorScheme.onBackground,
                       width: 1.4,
                     ),
                     borderRadius: BorderRadius.circular(25),
@@ -68,7 +68,7 @@ class HomePage extends StatelessWidget {
                         padding: EdgeInsets.symmetric(horizontal: 15.0),
                         child: Icon(
                           Icons.search,
-                          color: Colors.white,
+                          color: UtahColorScheme.onBackground,
                         ),
                       ),
                       Flexible(
@@ -76,7 +76,7 @@ class HomePage extends StatelessWidget {
                         child: Text(
                           'Search Buildings',
                           style: TextStyle(
-                            color: Color.fromARGB(255, 255, 255, 255),
+                            color: UtahColorScheme.onBackground,
                             overflow: TextOverflow
                                 .ellipsis, // Use ellipsis for text overflow
                           ),

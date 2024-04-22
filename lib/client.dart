@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'constants.dart';
 import 'package:upark/campus.dart';
 import 'package:upark/authentication.dart';
@@ -6,7 +7,6 @@ import 'package:http/http.dart' as http;
 
 var lotsUri = Uri.parse(ApiConstants.baseUrl + ApiConstants.lotsEndpoint);
 var reportsUri = Uri.parse(ApiConstants.baseUrl + ApiConstants.reportsEndpoint);
-
 
 // Lots
 
@@ -16,10 +16,16 @@ List<Lot> lotsFromJson(String str) =>
 String lotsToJson(List<Lot> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-Future<List<Lot>> fetchLots() async {
-  final response = await http.get(lotsUri);
+Future<List<Lot>> fetchLots({int maxRetries = 5}) async {
+  int retryCount = 0;
+  var response = await http.get(lotsUri);
+  while (response.statusCode != 200 && retryCount < maxRetries) {
+    retryCount++;
+    await Future.delayed(const Duration(seconds: 1));
+    response = await http.get(lotsUri);
+    log('Failed to fetch lots $retryCount times with response: ${response.body}. Attempting again...');
+  }
   if (response.statusCode == 200) {
-    // print(response.body);
     return lotsFromJson(response.body);
   } else {
     throw Exception('Failed to load lots');
@@ -34,10 +40,16 @@ List<Building> buildingsFromJson(String str) =>
 String buildingsToJson(List<Building> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-Future<List<Building>> fetchBuildings() async {
-  final response = await http.get(lotsUri);
+Future<List<Building>> fetchBuildings({int maxRetries = 5}) async {
+  int retryCount = 0;
+  var response = await http.get(lotsUri);
+  while (response.statusCode != 200 && retryCount < maxRetries) {
+    retryCount++;
+    await Future.delayed(const Duration(seconds: 1));
+    response = await http.get(lotsUri);
+    log('Failed to fetch lots $retryCount times with response: ${response.body}. Attempting again...');
+  }
   if (response.statusCode == 200) {
-    // print(response.body);
     return buildingsFromJson(response.body);
   } else {
     throw Exception('Failed to load lots');
@@ -52,10 +64,16 @@ List<Report> reportsFromJson(String str) =>
 String reportsToJson(List<Report> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-Future<List<Lot>> fetchReports() async {
-  final response = await http.get(reportsUri);
+Future<List<Lot>> fetchReports({int maxRetries = 5}) async {
+  int retryCount = 0;
+  var response = await http.get(reportsUri);
+  while (response.statusCode != 200 && retryCount < maxRetries) {
+    retryCount++;
+    await Future.delayed(const Duration(seconds: 1));
+    response = await http.get(reportsUri);
+    log('Failed to fetch reports $retryCount times with response: ${response.body}. Attempting again...');
+  }
   if (response.statusCode == 200) {
-    // print(response.body);
     return lotsFromJson(response.body);
   } else {
     throw Exception('Failed to load lots');
@@ -64,10 +82,18 @@ Future<List<Lot>> fetchReports() async {
 
 // User
 
-Future<AppUser> fetchUserFromId(String userId) async {
-  final response = await http.get(Uri.parse('${ApiConstants.baseUrl}${ApiConstants.userEndpoint}/$userId'));
+Future<AppUser> fetchUserFromId(String userId, {int maxRetries = 5}) async {
+  int retryCount = 0;
+  var response = await http.get(
+      Uri.parse('${ApiConstants.baseUrl}${ApiConstants.userEndpoint}/$userId'));
+  while (response.statusCode != 200 && retryCount < maxRetries) {
+    retryCount++;
+    await Future.delayed(const Duration(seconds: 1));
+    response = await http.get(Uri.parse(
+        '${ApiConstants.baseUrl}${ApiConstants.userEndpoint}/$userId'));
+    log('Failed to fetch users $retryCount times with response: ${response.body}. Attempting again...');
+  }
   if (response.statusCode == 200) {
-    print(response.body);
     return AppUser.fromJson(json.decode(response.body));
   } else {
     throw Exception('Failed to load user');

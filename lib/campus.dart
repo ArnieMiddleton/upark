@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:latlong2/latlong.dart';
 import 'package:upark/client.dart';
 
@@ -213,8 +215,19 @@ class Campus {
   }
 
   static Future<Campus> getFromApi() async {
-    var newLots = await fetchLots();
-    var newBuildings = await fetchBuildings();
+    List<Lot> newLots = [];
+    List<Building> newBuildings = [];
+    try {
+      newLots = await fetchLots();
+    } catch (e) {
+      log('Failed to fetch lots with error: $e');
+    }
+    try {
+      newBuildings = await fetchBuildings();
+    } catch (e) {
+      log('Failed to fetch buildings with error: $e');
+    }
+
     return Campus(
       name: "University of Utah",
       lots: newLots,
