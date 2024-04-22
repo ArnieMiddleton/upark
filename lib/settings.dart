@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:upark/authentication.dart';
-
 import 'settings_pages/notifications.dart';
 import 'settings_pages/permits.dart';
 

@@ -10,24 +10,6 @@ import 'package:upark/components/color_scheme.dart';
 import 'package:upark/survey.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-/// Generates a list of markers from a given campus.
-///
-/// This function takes a [Campus] object, a [markerWidget], and a [mapController]
-/// as input and returns a list of [Marker] objects. Each marker represents a parking lot
-/// on the campus. The [markerWidget] is used as the child widget for each marker.
-List<Marker> markersFromCampus(
-    Campus campus, Widget markerWidget, MapController mapController) {
-  List<Marker> markers = [];
-  for (var lot in campus.lots) {
-    Marker marker = Marker(
-        point: lot.location,
-        alignment: Alignment.topCenter,
-        child: markerWidget);
-    markers.add(marker);
-  }
-  return markers;
-}
-
 class MapPage extends StatefulWidget {
   final Future<AppUser> user;
   const MapPage(this.user, {super.key});
@@ -224,7 +206,7 @@ class MapPageState extends State<MapPage> with WidgetsBindingObserver {
   ///
   /// This method takes a [Lot] object and an optional [Color] object as parameters.
   /// It returns a [Widget] representing the child widget for a marker on the map.
-  Widget markerChild(Lot lot, Color? markerColor, bool colorblind) {
+  Widget markerChild(Lot lot, bool colorblind, {Color? markerColor}) {
     markerColor ??= lotMarkerColor(lot.carCount / lot.stallCount, colorblind);
     return GestureDetector(
         onTap: () {
@@ -273,6 +255,34 @@ class MapPageState extends State<MapPage> with WidgetsBindingObserver {
         child: Icon(Icons.location_pin, color: markerColor, size: 25));
   }
 
+  /// Generates a list of markers from a given campus.
+  ///
+  /// This function takes a [Campus] object, a [markerWidget], and a [mapController]
+  /// as input and returns a list of [Marker] objects. Each marker represents a parking lot
+  /// on the campus. The [markerWidget] is used as the child widget for each marker.
+  List<Marker> markersFromCampus(Campus campus, MapController mapController) {
+    List<Marker> markers = [];
+    for (var lot in campus.lots) {
+      Marker marker = Marker(
+          width: 30,
+          height: 30,
+          point: lot.location,
+          alignment: Alignment.topCenter,
+          child: FutureBuilder<AppUser>(
+              future: user,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  var data = snapshot.data!;
+                  return markerChild(lot, data.colorblind);
+                } else {
+                  return markerChild(lot, false);
+                }
+              }));
+      markers.add(marker);
+    }
+    return markers;
+  }
+
   /// Shows the information for a building and its parking lots.
   ///
   /// This method takes a [Building] object and a list of [Lot] objects as parameters.
@@ -316,24 +326,21 @@ class MapPageState extends State<MapPage> with WidgetsBindingObserver {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           var campusData = snapshot.data!;
-          markers = markersFromCampus(
-              campusData, const Icon(Icons.location_pin), mapController);
+          markers = markersFromCampus(campusData, mapController);
           return FlutterMap(
-            mapController: mapController,
-            options: MapOptions(
-              initialCenter: mapInitLocation,
-              initialZoom: 14,
-            ),
-            children: [
-              TileLayer(
-                urlTemplate:
-                      "https://api.mapbox.com/styles/v1/notrh99/clt8xt1yy006l01r5g8j7dmxp/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoibm90cmg5OSIsImEiOiJjbHJremlxaHUwa205MmprZGJ3dWFzYWR3In0.R-PO20FWueN9Mzx9EwmeEA"
+              mapController: mapController,
+              options: MapOptions(
+                initialCenter: mapInitLocation,
+                initialZoom: 14,
               ),
-              MarkerLayer(
-                markers: markers,
-              ),
-            ]
-          );
+              children: [
+                TileLayer(
+                    urlTemplate:
+                        "https://api.mapbox.com/styles/v1/notrh99/clt8xt1yy006l01r5g8j7dmxp/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1Ijoibm90cmg5OSIsImEiOiJjbHJremlxaHUwa205MmprZGJ3dWFzYWR3In0.R-PO20FWueN9Mzx9EwmeEA"),
+                MarkerLayer(
+                  markers: markers,
+                ),
+              ]);
         } else if (snapshot.hasError) {
           log("Error loading campus data",
               error: snapshot.error, name: "MapPageState.build");

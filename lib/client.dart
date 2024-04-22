@@ -26,6 +26,7 @@ Future<List<Lot>> fetchLots({int maxRetries = 5}) async {
     log('Failed to fetch lots $retryCount times with response: ${response.body}. Attempting again...');
   }
   if (response.statusCode == 200) {
+    print("Fetched lots: ${response.contentLength} bytes");
     return lotsFromJson(response.body);
   } else {
     throw Exception('Failed to load lots');

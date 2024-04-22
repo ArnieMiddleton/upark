@@ -48,8 +48,10 @@ Widget mapInfoDialog(
           );
         } else {
           return const AlertDialog(
-            backgroundColor: UtahColorScheme.secondary,
+            backgroundColor: UtahColorScheme.error,
             title: Text('Loading...'),
+            titleTextStyle: TextStyle(
+                color: UtahColorScheme.onError),
             content: CircularProgressIndicator(),
           );
         }
