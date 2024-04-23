@@ -220,12 +220,84 @@ class MapPageState extends State<MapPage> with WidgetsBindingObserver {
             context: currentContext,
             builder: (context) {
               return AlertDialog(
-                  title: Text('Parking Lot ${lot.name} info:'),
-                  content: Column(children: [
-                    Text('Stall Count: ${lot.stallCount}'),
-                    Text('Estimated Car Count: ${lot.carCount}'),
-                    Text('Permit Types: ${lot.stalls}'),
-                  ]),
+                  title: Text('${lot.name} Lot info:'),
+                  titleTextStyle: const TextStyle(
+                    color: UtahColorScheme.onBackground,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                  alignment: Alignment.center,
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          RichText(
+                            text: TextSpan(
+                              text: 'Stalls: ',
+                              style: const TextStyle(
+                                color: UtahColorScheme.onBackground,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: '${lot.stallCount}',
+                                  style: const TextStyle(
+                                    color: UtahColorScheme.onBackground,
+                                    fontWeight: FontWeight.normal,
+                                  ),
+                                )
+                              ]
+                            ),
+                          ),
+                          RichText(
+                            text: TextSpan(
+                                text: 'Capacity: ',
+                                style: const TextStyle(
+                                  color: UtahColorScheme.onBackground,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    text: '${(lot.carCount / lot.stallCount * 100).floor()}%',
+                                    style: const TextStyle(
+                                      color: UtahColorScheme.onBackground,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                  )
+                                ]),
+                          )
+                        ],
+                      ),
+                      Container(
+                        padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                        child: Column(
+                          children: [
+                            const Text(
+                              'Permit Types',
+                              style: TextStyle(color: UtahColorScheme.onBackground, fontWeight: FontWeight.bold, fontSize: 16)
+                            ),
+                            const Divider(
+                              color: UtahColorScheme.onBackground,
+                              thickness: 1.5,
+                              indent: 10,
+                              endIndent: 10,
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                ...lot.stalls.map((stall) => stall.name).map((stallName) => Text(stallName))
+                              ]
+                            )
+                          ]
+                        )
+                      )
+                    ],
+                  ),
                   actions: [
                     TextButton(
                         child: const Text('Navigate'),

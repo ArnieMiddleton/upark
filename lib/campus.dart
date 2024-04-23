@@ -3,8 +3,36 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:upark/client.dart';
 
+enum StallType {
 // ignore: constant_identifier_names
-enum StallType { ADA, A, CA, U, M, EV, CU, HU, HCU, SHU, V }
+  ADA(name: 'Disabled Parking'),
+// ignore: constant_identifier_names
+  A(name: 'A Permit'),
+// ignore: constant_identifier_names
+  CA(name: 'Central Garage A Permit'),
+// ignore: constant_identifier_names
+  U(name: 'U Permit'),
+// ignore: constant_identifier_names
+  M(name: 'Motorcycle Permit'),
+// ignore: constant_identifier_names
+  EV(name: 'Electric Vehicle Permit'),
+// ignore: constant_identifier_names
+  CU(name: 'Central Garage U Permit'),
+// ignore: constant_identifier_names
+  HU(name: 'Housing U Permit'),
+// ignore: constant_identifier_names
+  HCU(name: 'Housing Central Garage U Permit'),
+// ignore: constant_identifier_names
+  SHU(name: 'Shoreline Garage U Permit'),
+// ignore: constant_identifier_names
+  V(name: 'Visitor Parking');
+
+  final String name;
+
+  const StallType({
+    required this.name,
+  });
+}
 
 enum Permit {
   // ignore: constant_identifier_names
@@ -53,7 +81,7 @@ class Lot {
   int stallCount;
   int carCount;
   bool enabled;
-  List<StallType> stalls = [StallType.V];
+  List<StallType> stalls = [StallType.V, StallType.U, StallType.ADA];
 
   Lot({
     required this.id,
@@ -139,16 +167,16 @@ class AppUser {
   });
 
   factory AppUser.fromJson(Map<String, dynamic> json) => AppUser(
-      colorblind: json["colorblind"] == 1 ? true : false,
-      id: json["id"],
-      name: json["name"],
-    );
+        colorblind: json["colorblind"] == 1 ? true : false,
+        id: json["id"],
+        name: json["name"],
+      );
 
   Map<String, dynamic> toJson() => {
-      "colorblind": colorblind,
-      "id": id,
-      "name": name,
-    };
+        "colorblind": colorblind,
+        "id": id,
+        "name": name,
+      };
 }
 
 class Report {
@@ -160,6 +188,7 @@ class Report {
     latitude = location.latitude;
     longitude = location.longitude;
   }
+
   int lotId;
   DateTime time;
   double approxFullness;
