@@ -1,21 +1,201 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
+import 'package:http/http.dart';
 import 'package:upark/campus.dart';
-import 'home.dart';
+import 'package:upark/client.dart';
+import 'package:upark/components/color_scheme.dart';
+
+class ParkingLotSurveyPage extends StatefulWidget {
+  final Future<Campus> campusFuture;
+  final Lot selectedLot;
+
+  const ParkingLotSurveyPage(
+      {super.key, required this.selectedLot, required this.campusFuture});
+
+  @override
+  State<StatefulWidget> createState() => ParkingLotSurveyPageState();
+}
+
+class ParkingLotSurveyPageState extends State<ParkingLotSurveyPage> {
+  late Future<Campus> campusFuture = widget.campusFuture;
+  late Lot selectedLot = widget.selectedLot;
+  String? chosenOption;
+  Map<String, double> surveyOptions = {
+    'Full': 1.0,
+    'Almost Full': 0.9,
+    'A few spots': 0.8,
+    'Some Spots': 0.6,
+    'Plenty of Spots': 0.4,
+    'Almost Empty': 0.2,
+    'Empty': 0.0,
+    'Unknown': -1.0,
+  };
+
+  Future<Response?> submitSurvey(
+      BuildContext context, Lot chosenLot, Future<Campus> campus, String? chosenOption) async {
+    if (chosenOption == null) {
+      showNoAnswerDialog(context);
+      log('No answer selected. Not sure how this happened.');
+      return null;
+    } else {
+      // Create a new report
+      Report report = Report(
+        lotId: chosenLot.id,
+        approxFullness: surveyOptions[chosenOption]!,
+        time: DateTime.now(),
+        weight: 1,
+        latitude: chosenLot.location.latitude,
+        longitude: chosenLot.location.longitude,
+      );
+
+      // Close the survey page
+      Navigator.of(context).popUntil((route) => route.isFirst);
+      // TODO: This might not work as expected
+
+      // Get the user
+      var user = await campus.then((campus) => campus.user);
+
+      // Send the report to the server
+      return postReport(report, user);;
+    }
+  }
+
+  void showNoAnswerDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('No Answer Selected'),
+            content: const Text(
+                'Please select an answer before submitting the survey.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            'Parking Lot Survey',
+            style: TextStyle(
+              color: UtahColorScheme.onBackground,
+              fontWeight: FontWeight.bold,
+              fontSize: 30,
+              fontFamily: 'Quicksand',
+            ),
+          ),
+          backgroundColor: UtahColorScheme.background,
+          centerTitle: true,
+        ),
+        body: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    'How full is ${selectedLot.name}?',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      color: UtahColorScheme.onBackground,
+                      fontSize: 22,
+                      fontFamily: 'Quicksand',
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  ...surveyOptions.entries.map((entry) {
+                    String option = entry.key;
+                    double value = entry.value;
+                    return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 4.0),
+                        child: ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                chosenOption = option;
+                              });
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: chosenOption == option
+                                  ? UtahColorScheme.primary
+                                  : UtahColorScheme.background,
+                              foregroundColor: chosenOption == option
+                                  ? UtahColorScheme.onPrimary
+                                  : UtahColorScheme.onBackground,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                                side: BorderSide(
+                                  color: chosenOption == option
+                                      ? UtahColorScheme.primary
+                                      : UtahColorScheme.onBackground,
+                                ),
+                              ),
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 10.0),
+                            ),
+                            child: Text(
+                              option,
+                              style: const TextStyle(
+                                fontFamily: 'Quicksand',
+                                fontSize: 22,
+                              ),
+                            )));
+                  }),
+                  const SizedBox(
+                      height:
+                          20), // Spacing between buttons and the submit button
+                  ElevatedButton(
+                      onPressed: () {
+                        if (chosenOption == null) {
+                          showNoAnswerDialog(context);
+                        } else {
+                          submitSurvey(
+                              context, selectedLot, campusFuture, chosenOption);
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: chosenOption != null
+                            ? UtahColorScheme.primary
+                            : UtahColorScheme.secondary,
+                        foregroundColor: UtahColorScheme.onPrimary,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 20.0),
+                      ),
+                      child: const Text(
+                        'Submit Survey',
+                        style: TextStyle(
+                          fontFamily: 'Quicksand',
+                          fontSize: 22,
+                        ),
+                      ))
+                ])));
+  }
+}
 
 
+/*
 class ParkingLotSurveyScreen extends StatefulWidget {
   final Lot selectedLot;
 
-  const ParkingLotSurveyScreen({Key? key, required this.selectedLot}) : super(key: key);
+  const ParkingLotSurveyScreen({Key? key, required this.selectedLot})
+      : super(key: key);
 
   @override
   State<ParkingLotSurveyScreen> createState() => _ParkingLotSurveyScreenState();
 }
 
 class _ParkingLotSurveyScreenState extends State<ParkingLotSurveyScreen> {
-   Map<String, LatLng> parkinglotsLocation = {
+  Map<String, LatLng> parkinglotsLocation = {
     'Social Work': const LatLng(40.76047615, -111.8457732),
     'Union North': const LatLng(40.76551563, -111.8464372),
     'Student Services': const LatLng(40.76553734, -111.8475873),
@@ -77,33 +257,24 @@ class _ParkingLotSurveyScreenState extends State<ParkingLotSurveyScreen> {
         Color orange = Colors.orange.shade600;
         Color red = Colors.red.shade700;
         Color updatedColor;
-        if (_chosenIndex == 0 || _chosenIndex == 1)
-        {
+        if (_chosenIndex == 0 || _chosenIndex == 1) {
           updatedColor = red;
-        }
-        else if(_chosenIndex == 2)
-        {
+        } else if (_chosenIndex == 2) {
           updatedColor = orange;
-        }
-        else if(_chosenIndex == 3)
-        {
+        } else if (_chosenIndex == 3) {
           updatedColor = yellow;
-        }
-        else {
+        } else {
           updatedColor = green;
         }
-
 
         // FOR TESTING/DEMOING
         // updatedColor = Colors.black;
         // HomePageMap.callStateScreen(updatedColor, lotName, listIndex, widget.selectedLot.location);
-
       });
 
       Navigator.of(context).popUntil((route) => route.isFirst);
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -198,3 +369,5 @@ class _ParkingLotSurveyScreenState extends State<ParkingLotSurveyScreen> {
     );
   }
 }
+
+*/

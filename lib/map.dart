@@ -240,8 +240,8 @@ class MapPageState extends State<MapPage> with WidgetsBindingObserver {
                             // Open Survey
                             MaterialPageRoute(
                               builder: (context) {
-                                return ParkingLotSurveyScreen(
-                                    selectedLot: selectedLot);
+                                return ParkingLotSurveyPage(
+                                    selectedLot: selectedLot, campusFuture: campus);
                               },
                             ),
                           );
@@ -373,7 +373,7 @@ class MapPageState extends State<MapPage> with WidgetsBindingObserver {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) {
-            return ParkingLotSurveyScreen(selectedLot: selectedLot);
+            return ParkingLotSurveyPage(selectedLot: selectedLot, campusFuture: campus);
           },
         ),
       );

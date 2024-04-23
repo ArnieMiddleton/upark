@@ -152,42 +152,46 @@ class AppUser {
 }
 
 class Report {
-  int id;
-  String? latitude;
-  String? longitude;
+  int? id;
+  double? latitude;
+  double? longitude;
+  LatLng get location => LatLng(latitude!, longitude!);
+  set location(LatLng location) {
+    latitude = location.latitude;
+    longitude = location.longitude;
+  }
   int lotId;
   DateTime time;
-  String approxFullness;
+  double approxFullness;
   int weight;
 
   Report({
     required this.approxFullness,
-    required this.id,
     required this.lotId,
     required this.time,
     required this.weight,
+    this.id,
     this.latitude,
     this.longitude,
   });
 
   factory Report.fromJson(Map<String, dynamic> json) => Report(
-        approxFullness: json["approx_fullness"],
+        approxFullness: double.parse(json["approx_fullness"]),
         id: json["id"],
-        latitude: json["latitude"],
-        longitude: json["longitude"],
+        latitude: double.parse(json["latitude"]),
+        longitude: double.parse(json["longitude"]),
         lotId: json["lot_id"],
         time: DateTime.parse(json["time"]),
         weight: json["weight"],
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson(AppUser user) => {
         "approx_fullness": approxFullness,
-        "id": id,
+        "lot_id": lotId,
+        "user_id": user.id,
+        "time": time.toIso8601String(),
         "latitude": latitude,
         "longitude": longitude,
-        "lot_id": lotId,
-        "time": time,
-        "weight": weight,
       };
 }
 

@@ -1,11 +1,14 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:http/http.dart';
 import 'constants.dart';
 import 'package:upark/campus.dart';
 import 'package:http/http.dart' as http;
 
 var lotsUri = Uri.parse(ApiConstants.baseUrl + ApiConstants.lotsEndpoint);
 var reportsUri = Uri.parse(ApiConstants.baseUrl + ApiConstants.reportsEndpoint);
+var postReportUri =
+    Uri.parse(ApiConstants.baseUrl + ApiConstants.postReportEndpoint);
 
 // Lots
 
@@ -62,8 +65,8 @@ Future<List<Building>> fetchBuildings({int maxRetries = 5}) async {
 List<Report> reportsFromJson(String str) =>
     List<Report>.from(json.decode(str).map((x) => Report.fromJson(x)));
 
-String reportsToJson(List<Report> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String reportsToJson(List<Report> data, AppUser user) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson(user))));
 
 Future<List<Lot>> fetchReports({int maxRetries = 5}) async {
   int retryCount = 0;
@@ -79,6 +82,27 @@ Future<List<Lot>> fetchReports({int maxRetries = 5}) async {
     return lotsFromJson(response.body);
   } else {
     throw Exception('Failed to load lots');
+  }
+}
+
+Report reportFromJson(String str) => Report.fromJson(json.decode(str));
+
+String reportToJson(Report data, AppUser user) => json.encode(data.toJson(user));
+
+Future<Response> postReport(Report report, AppUser user) async {
+  var reportJson = reportToJson(report, user);
+  print("Posting report: $reportJson");
+  var response = await http.post(postReportUri,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: reportJson);
+  print("Report Response: ${response.body}");
+  if (response.statusCode == 201 || response.statusCode == 200) {
+    print("Posted report: ${response.body}");
+    return response;
+  } else {
+    throw Exception('Failed to post report');
   }
 }
 
