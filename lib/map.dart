@@ -300,26 +300,38 @@ class MapPageState extends State<MapPage> with WidgetsBindingObserver {
                   ),
                   actions: [
                     TextButton(
-                        child: const Text('Navigate'),
-                        onPressed: () {
-                          navigated = true;
-                          openMapAppToLot(selectedLot);
-                          Navigator.of(context).pop(); // Close Dialog
-                        }),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(UtahColorScheme.primary),
+                        foregroundColor: MaterialStateProperty.all(UtahColorScheme.onPrimary),
+                      ),
+                      child: const Text('Navigate'),
+                      onPressed: () {
+                        navigated = true;
+                        openMapAppToLot(selectedLot);
+                        Navigator.of(context).pop(); // Close Dialog
+                      }
+                    ),
                     TextButton(
-                        child: const Text('Fullness Survey'),
-                        onPressed: () {
-                          Navigator.of(context).pop(); // Close Dialog
-                          Navigator.of(context).push(
-                            // Open Survey
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return ParkingLotSurveyPage(
-                                    selectedLot: selectedLot, campusFuture: campus);
-                              },
-                            ),
-                          );
-                        })
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                            UtahColorScheme.primary),
+                        foregroundColor: MaterialStateProperty.all(
+                            UtahColorScheme.onPrimary),
+                      ),
+                      child: const Text('Fullness Survey'),
+                      onPressed: () {
+                        Navigator.of(context).pop(); // Close Dialog
+                        Navigator.of(context).push(
+                          // Open Survey
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return ParkingLotSurveyPage(
+                                  selectedLot: selectedLot, campusFuture: campus);
+                            },
+                          ),
+                        );
+                      }
+                    )
                   ]);
             },
           );
