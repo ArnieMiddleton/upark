@@ -4,15 +4,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:upark/authentication.dart';
 import 'package:upark/campus.dart';
 import 'package:upark/components/color_scheme.dart';
 import 'package:upark/survey.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MapPage extends StatefulWidget {
-  final Future<AppUser> user;
-  const MapPage(this.user, {super.key});
+  final Future<Campus> campus;
+  const MapPage(this.campus, {super.key});
 
   @override
   MapPageState createState() {
@@ -27,13 +26,12 @@ class MapPage extends StatefulWidget {
 class MapPageState extends State<MapPage> with WidgetsBindingObserver {
   static late BuildContext currentContext;
   static MapPageState? currentMapStateInstance;
-  late final Future<AppUser> user = widget.user;
+  late Future<Campus> campus = widget.campus;
   static final MapController mapController = MapController();
   var mapInitLocation = const LatLng(40.76497, -111.84611);
   late Lot selectedLot;
   bool navigated = false;
   static late LatLng currentLocation;
-  static late Future<Campus> campus;
   static late List<Marker> markers;
   static late Timer markerUpdateTimer;
 
@@ -261,23 +259,18 @@ class MapPageState extends State<MapPage> with WidgetsBindingObserver {
   /// as input and returns a list of [Marker] objects. Each marker represents a parking lot
   /// on the campus. The [markerWidget] is used as the child widget for each marker.
   List<Marker> markersFromCampus(Campus campus, MapController mapController) {
+    print("Generating markers from campus data");
+    print(
+        "User data: {name: ${campus.user.name}, colorblind: ${campus.user.colorblind}, id: ${campus.user.id}}");
     List<Marker> markers = [];
     for (var lot in campus.lots) {
       Marker marker = Marker(
-          width: 30,
-          height: 30,
-          point: lot.location,
-          alignment: Alignment.topCenter,
-          child: FutureBuilder<AppUser>(
-              future: user,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  var data = snapshot.data!;
-                  return markerChild(lot, data.colorblind);
-                } else {
-                  return markerChild(lot, false);
-                }
-              }));
+        width: 30,
+        height: 30,
+        point: lot.location,
+        alignment: Alignment.topCenter,
+        child: markerChild(lot, campus.user.colorblind),
+      );
       markers.add(marker);
     }
     return markers;
@@ -357,7 +350,7 @@ class MapPageState extends State<MapPage> with WidgetsBindingObserver {
     super.initState();
     currentMapStateInstance = this;
     currentLocation = mapInitLocation;
-    campus = Campus.getFromApi();
+    // campus = Campus.getFromApi();
     WidgetsBinding.instance.addObserver(this);
     markerUpdateTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
       campus = Campus.getFromApi();
@@ -367,7 +360,7 @@ class MapPageState extends State<MapPage> with WidgetsBindingObserver {
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    // Stop Timer
+    markerUpdateTimer.cancel();
     super.dispose();
   }
 

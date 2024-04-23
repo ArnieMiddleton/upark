@@ -1,5 +1,5 @@
 import 'dart:developer';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:upark/client.dart';
 
@@ -123,6 +123,34 @@ class Building {
       };
 }
 
+class AppUser {
+  String id;
+  String email;
+  String name;
+  Permit permit;
+  bool colorblind;
+
+  AppUser({
+    required this.id,
+    this.email = '',
+    this.name = '',
+    this.permit = Permit.Visitor,
+    this.colorblind = false,
+  });
+
+  factory AppUser.fromJson(Map<String, dynamic> json) => AppUser(
+      colorblind: json["colorblind"] == 1 ? true : false,
+      id: json["id"],
+      name: json["name"],
+    );
+
+  Map<String, dynamic> toJson() => {
+      "colorblind": colorblind,
+      "id": id,
+      "name": name,
+    };
+}
+
 class Report {
   int id;
   String? latitude;
@@ -165,8 +193,9 @@ class Report {
 
 class Campus {
   String name = "University of Utah";
-  List<Lot> lots = [];
-  List<Building> buildings = [];
+  AppUser user; // = AppUser(userId: '');
+  List<Lot> lots; // = [];
+  List<Building> buildings; // = [];
   Map<Building, Map<Lot, double>> buildingToLotDistances =
       {}; // Building -> Lot -> Distance in meters
   Map<Building, List<(Lot lot, double distance)>> buildingToClosestLots =
@@ -176,6 +205,7 @@ class Campus {
 
   Campus({
     required this.name,
+    required this.user,
     required this.lots,
     required this.buildings,
   });
@@ -217,6 +247,7 @@ class Campus {
   static Future<Campus> getFromApi() async {
     List<Lot> newLots = [];
     List<Building> newBuildings = [];
+    AppUser newUser = AppUser(id: '');
     try {
       newLots = await fetchLots();
     } catch (e) {
@@ -227,9 +258,19 @@ class Campus {
     } catch (e) {
       log('Failed to fetch buildings with error: $e');
     }
+    try {
+      var authUser = FirebaseAuth.instance.currentUser;
+      if (authUser != null) {
+        newUser = await fetchUserFromId(authUser.uid);
+      }
+    } catch (e) {
+      print('Failed to fetch user with error: $e');
+      log('Failed to fetch user with error: $e');
+    }
 
     return Campus(
       name: "University of Utah",
+      user: newUser,
       lots: newLots,
       buildings: newBuildings,
     );

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:upark/authentication.dart';
+import 'package:upark/campus.dart';
 import 'package:upark/components/color_scheme.dart';
 import 'package:upark/map.dart';
 import 'package:upark/map_info.dart';
@@ -7,9 +7,9 @@ import 'package:upark/search.dart';
 import 'package:upark/settings.dart';
 
 class HomePage extends StatelessWidget {
-  final Future<AppUser> user;
+  final Future<Campus> campus;
 
-  const HomePage(this.user, {super.key});
+  const HomePage(this.campus, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +42,7 @@ class HomePage extends StatelessWidget {
                                 return mapInfoDialog(
                                     [0.0, 0.2, 0.4, 0.6, 0.8, 1.0],
                                     MapPageState.lotMarkerColor,
-                                    user);
+                                    campus);
                               });
                         })
                   ],
@@ -85,6 +85,6 @@ class HomePage extends StatelessWidget {
                     ],
                   )),
             )),
-        body: MapPage(user));
+        body: MapPage(campus));
   }
 }

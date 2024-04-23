@@ -2,44 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 import 'package:flutter/cupertino.dart';
 import 'package:upark/campus.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
-import 'package:upark/client.dart';
 import 'package:upark/new_home.dart';
 import 'package:flutter/material.dart';
 import 'package:upark/settings.dart';
-
-class AppUser {
-  String userId;
-  String email;
-  Permit permit;
-  bool colorblind;
-
-  AppUser({
-    required this.userId,
-    this.email = '',
-    this.permit = Permit.Visitor,
-    this.colorblind = false,
-  });
-
-  Future<AppUser> fromEmailAndPassword(String email, String password) async {
-    // FirebaseAuth.instance.signInAnonymously();
-    FirebaseAuth.instance
-        .signInWithEmailAndPassword(email: email, password: password);
-    userId = FirebaseAuth.instance.currentUser!.uid;
-    this.email = FirebaseAuth.instance.currentUser!.email!;
-    var tempUser = await fetchUserFromId(userId);
-    permit = tempUser.permit;
-    colorblind = tempUser.colorblind;
-    return this;
-  }
-
-  factory AppUser.fromJson(Map<String, dynamic> json) {
-    return AppUser(
-      userId: json['user_id'],
-      permit: Permit.values[json['permit']],
-      colorblind: json['colorblind'],
-    );
-  }
-}
 
 class AuthenticationPage extends StatelessWidget {
   const AuthenticationPage({super.key});
@@ -84,9 +49,7 @@ class AuthenticationPage extends StatelessWidget {
               ),
           '/profile': (context) => const ProfileScreen(),
           '/settings': (context) => const SettingsPage(),
-          '/home': (context) => HomePage(
-                fetchUserFromId(FirebaseAuth.instance.currentUser!.uid),
-              ),
+          '/home': (context) => HomePage(Campus.getFromApi()),
         });
   }
 }
@@ -111,6 +74,10 @@ class AccountPage extends StatelessWidget {
             (Route<dynamic> route) => false,
           );
         }),
+        AuthStateChangeAction((context, user) {
+          // var state = AuthState.of(context);
+          // TODO: Complete this implementation
+        }),
         AccountDeletedAction((context, user) {
           // TODO: Delete user from database
           Navigator.of(context).pushAndRemoveUntil(
@@ -118,7 +85,6 @@ class AccountPage extends StatelessWidget {
             (Route<dynamic> route) => false,
           );
         })
-
       ],
     );
   }

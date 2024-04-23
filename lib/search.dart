@@ -50,8 +50,8 @@ class SearchBarDelegate extends SearchDelegate {
     return results.map((result) => result.item).toList();
   }
 
-  List<Building> getSearchedBuildings(Campus campusData, String query) {
-    var buildings = campusData.buildings;
+  List<Building> getSearchedBuildings(Campus campus, String query) {
+    var buildings = campus.buildings;
 
     var fuzzy = Fuzzy<Building>(buildings,
         options: FuzzyOptions(
@@ -85,7 +85,7 @@ class SearchBarDelegate extends SearchDelegate {
   @override
   Widget buildResults(BuildContext context) {
     return FutureBuilder<Campus>(
-      future: MapPageState.campus,
+      future: mapState.campus,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           final campusData = snapshot.data!;
@@ -96,7 +96,7 @@ class SearchBarDelegate extends SearchDelegate {
             itemBuilder: (context, index) {
               final building = buildings[index];
               List<Lot> buildingParkingLots =
-                  []; // TODO: Get building parking lots by lcoation
+                  []; // TODO: Get building parking lots by location
               return ListTile(
                 title: Text(building.name),
                 subtitle: Text(building.code ?? ''),
