@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:fuzzy/fuzzy.dart';
 import 'package:upark/campus.dart';
+import 'package:upark/components/color_scheme.dart';
 import 'package:upark/map.dart';
 
 class SearchBarDelegate extends SearchDelegate {
@@ -52,11 +54,10 @@ class SearchBarDelegate extends SearchDelegate {
 
   List<Building> getSearchedBuildings(Campus campus, String query) {
     var buildings = campus.buildings;
-
     var fuzzy = Fuzzy<Building>(buildings,
         options: FuzzyOptions(
             findAllMatches: true,
-            isCaseSensitive: true,
+            isCaseSensitive: false,
             shouldSort: true,
             tokenize: true,
             tokenSeparator: ' ',
@@ -90,16 +91,28 @@ class SearchBarDelegate extends SearchDelegate {
         if (snapshot.hasData) {
           final campusData = snapshot.data!;
           final buildings = getSearchedBuildings(campusData, query);
+          print(
+              "Searched buildings: ${buildings.map((b) => '${b.name} (${b.code})').join('\n')}");
 
           return ListView.builder(
+            controller: ScrollController(),
+            itemExtent: 45,
             itemCount: buildings.length,
             itemBuilder: (context, index) {
               final building = buildings[index];
               List<Lot> buildingParkingLots =
                   []; // TODO: Get building parking lots by location
               return ListTile(
-                title: Text(building.name),
-                subtitle: Text(building.code ?? ''),
+                dense: true,
+                isThreeLine: false,
+                title: Text(building.name,
+                        style: const TextStyle(
+                          color: UtahColorScheme.onBackground,
+                          decoration: TextDecoration.underline,
+                        )),
+                subtitle: Text(building.streetAddress ?? ''),
+                leading: const Icon(Icons.location_on, color: UtahColorScheme.primary),
+                trailing: Text(building.code ?? ''),
                 onTap: () {
                   // TODO: Update the markers on the map
                   // Mark building with blue marker

@@ -11,16 +11,22 @@ Widget mapInfoDialog(
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           var campusData = snapshot.data!;
-          return AlertDialog(
-              backgroundColor: UtahColorScheme.secondary,
-              title: const Text('Map Legend:'),
-              content: Column(
+          return SimpleDialog(
+            backgroundColor: UtahColorScheme.secondary,
+            elevation: 10,
+            shadowColor: Colors.black,
+            contentPadding: const EdgeInsets.all(30),
+            title: const Text('Map Legend:', style: TextStyle(color: UtahColorScheme.onSecondary)),
+            children: [
+              Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   for (var percentage in legendPercentages)
                     Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Container(
                           width: 10,
@@ -29,15 +35,15 @@ Widget mapInfoDialog(
                               percentage, campusData.user.colorblind),
                         ),
                         const SizedBox(width: 8),
-                        Text(
-                          '${percentage * 100}%',
-                          style: const TextStyle(
-                              color: UtahColorScheme.onSecondary),
-                        )
+                        Text('${(percentage * 100).floor()}%',
+                            style: const TextStyle(
+                                color: UtahColorScheme.onSecondary))
                       ],
                     ),
                 ],
-              ));
+              ),
+            ]
+          );
         } else if (snapshot.hasError) {
           return AlertDialog(
             backgroundColor: UtahColorScheme.error,

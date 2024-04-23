@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class UtahColorScheme {
   static const Color primary = Color.fromARGB(255, 134, 31, 31);
-  static const Color secondary = Color.fromARGB(200, 80, 80, 80);
+  static const Color secondary = Color.fromARGB(230, 80, 80, 80);
   static const Color surface = Color(0xFFFFFFFF);
   static const Color background = Color(0xFFFFFFFF);
   static const Color error = Color(0xFFB00020);

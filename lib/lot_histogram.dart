@@ -20,12 +20,19 @@ class HistogramScreen extends StatefulWidget {
 
 enum DayOfWeek {
   // Weekdays start at 0 (Monday) and end at 6 (Sunday) to match Dart's DateTime class
+  // ignore: constant_identifier_names
   Monday(name: "Monday", abbreviation: "Mon"),
+  // ignore: constant_identifier_names
   Tuesday(name: "Tuesday", abbreviation: "Tue"),
+  // ignore: constant_identifier_names
   Wednesday(name: "Wednesday", abbreviation: "Wed"),
+  // ignore: constant_identifier_names
   Thursday(name: "Thursday", abbreviation: "Thu"),
+  // ignore: constant_identifier_names
   Friday(name: "Friday", abbreviation: "Fri"),
+  // ignore: constant_identifier_names
   Saturday(name: "Saturday", abbreviation: "Sat"),
+  // ignore: constant_identifier_names
   Sunday(name: "Sunday", abbreviation: "Sun");
 
   final String name;

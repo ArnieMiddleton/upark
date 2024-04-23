@@ -6,6 +6,7 @@ import 'package:upark/campus.dart';
 import 'package:http/http.dart' as http;
 
 var lotsUri = Uri.parse(ApiConstants.baseUrl + ApiConstants.lotsEndpoint);
+var buildingsUri = Uri.parse(ApiConstants.baseUrl + ApiConstants.buildingsEndpoint);
 var reportsUri = Uri.parse(ApiConstants.baseUrl + ApiConstants.reportsEndpoint);
 var postReportUri =
     Uri.parse(ApiConstants.baseUrl + ApiConstants.postReportEndpoint);
@@ -45,7 +46,7 @@ String buildingsToJson(List<Building> data) =>
 
 Future<List<Building>> fetchBuildings({int maxRetries = 5}) async {
   int retryCount = 0;
-  var response = await http.get(lotsUri);
+  var response = await http.get(buildingsUri);
   while (response.statusCode != 200 && retryCount < maxRetries) {
     retryCount++;
     await Future.delayed(const Duration(seconds: 1));
@@ -87,7 +88,8 @@ Future<List<Lot>> fetchReports({int maxRetries = 5}) async {
 
 Report reportFromJson(String str) => Report.fromJson(json.decode(str));
 
-String reportToJson(Report data, AppUser user) => json.encode(data.toJson(user));
+String reportToJson(Report data, AppUser user) =>
+    json.encode(data.toJson(user));
 
 Future<Response> postReport(Report report, AppUser user) async {
   var reportJson = reportToJson(report, user);
