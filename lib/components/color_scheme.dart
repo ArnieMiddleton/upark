@@ -34,8 +34,9 @@ class UtahColorScheme {
   ];
 
   static const List<Color> lotColorsColorblind = [
-    Color.fromARGB(255, 255, 0, 255),
-    Color.fromARGB(255, 0, 255, 127),
+    Color.fromARGB(255, 0, 0, 0),
+    Color.fromARGB(255, 128, 80, 0),
+    Color.fromARGB(255, 0, 255, 255),
     Color.fromARGB(255, 255, 255, 0),
   ];
 }

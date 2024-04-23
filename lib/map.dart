@@ -45,12 +45,14 @@ class MapPageState extends State<MapPage> with WidgetsBindingObserver {
       return gradientColor(
           colors: UtahColorScheme.lotColorsColorblind,
           value: fullness,
-          stops: [0.0, 0.7, 1.0]);
+          // stops: [0.0, 0.7, 1.0]
+        );
     } else {
       return gradientColor(
           colors: UtahColorScheme.lotColors,
           value: fullness,
-          stops: [0.0, 0.7, 1.0]);
+          // stops: [0.0, 0.7, 1.0]
+        );
     }
   }
 
