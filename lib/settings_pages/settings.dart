@@ -1,20 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_ui_auth/firebase_ui_auth.dart';
-import 'package:upark/login.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'settings_pages/notifications.dart';
-import 'settings_pages/permits.dart';
+import 'package:upark/authentication.dart';
+import 'package:upark/campus.dart';
+import 'package:upark/settings_pages/notifications.dart';
+import 'package:upark/settings_pages/permits.dart';
 
-class SettingsScreen extends StatefulWidget {
-  SettingsScreen({Key? key}) : super(key: key);
+class SettingsPage extends StatefulWidget {
+  final Future<Campus> campus;
+  const SettingsPage(this.campus, {super.key});
 
   @override
-  _SettingsScreenState createState() => _SettingsScreenState();
+  SettingsPageState createState() => SettingsPageState();
 }
 
-class _SettingsScreenState extends State<SettingsScreen> {
-  bool isColorBlindModeEnabled = false;
+class SettingsPageState extends State<SettingsPage> {
+  late Future<Campus> campus = widget.campus;
 
   @override
   void initState() {
@@ -64,17 +64,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ProfileScreen(
-                      actions: [
-                        SignedOutAction((context) {
-                          Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                                builder: (context) => LogInPage()),
-                            (Route<dynamic> route) => false,
-                          );
-                        })
-                      ],
-                    ),
+                    builder: (context) => const AccountPage(),
                   ),
                 );
               },
@@ -123,16 +113,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
       children: [
         CupertinoFormRow(
           prefix: const Text('ColorBlind Mode'),
-          child: CupertinoSwitch(
-            value: isColorBlindModeEnabled,
-            onChanged: (bool value) {
-              setState(() {
-                isColorBlindModeEnabled = value;
-              });
-              _setColorBlindMode(value);
+          child: FutureBuilder<Campus>(
+            future: campus,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                var campusData = snapshot.data!;
+                return CupertinoSwitch(
+                    value: campusData.user.colorblind,
+                    onChanged: (bool value) {
+                      campusData.user.setColorblind(value);
+                      setState(() {});
+                    });
+              } else {
+                return const CupertinoActivityIndicator();
+              }
             },
           ),
-        ),
+        )
       ],
     );
   }

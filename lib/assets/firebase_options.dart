@@ -50,19 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCiVTdFIAkSyVxhs_3JuNPLzWNENvg-nwY',
-    appId: '1:301783896705:android:d1134e3624f2c5d94fb380',
-    messagingSenderId: '301783896705',
-    projectId: 'upark-uofu-2024',
-    storageBucket: 'upark-uofu-2024.appspot.com',
+    apiKey: 'AIzaSyDxhS0803vGrP5OQHvBybelze83I3L1Uw8',
+    appId: '1:199484007072:android:ab13727b5eb8a210281fc5',
+    messagingSenderId: '199484007072',
+    projectId: 'upark-capstone',
+    storageBucket: 'upark-capstone.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDKGZWpssSLsyxYk9PSGCAOBqegdufHXXE',
-    appId: '1:301783896705:ios:20a81855ba5f916b4fb380',
-    messagingSenderId: '301783896705',
-    projectId: 'upark-uofu-2024',
-    storageBucket: 'upark-uofu-2024.appspot.com',
+    apiKey: 'AIzaSyACzm7DXi-xHIAioMiXPfgO8n_Ff3w8fi4',
+    appId: '1:199484007072:ios:1684a87df66b1530281fc5',
+    messagingSenderId: '199484007072',
+    projectId: 'upark-capstone',
+    storageBucket: 'upark-capstone.appspot.com',
     iosBundleId: 'com.example.upark.RunnerTests',
   );
 }

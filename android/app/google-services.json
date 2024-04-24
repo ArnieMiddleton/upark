@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "301783896705",
-    "project_id": "upark-uofu-2024",
-    "storage_bucket": "upark-uofu-2024.appspot.com"
+    "project_number": "199484007072",
+    "project_id": "upark-capstone",
+    "storage_bucket": "upark-capstone.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:301783896705:android:d1134e3624f2c5d94fb380",
+        "mobilesdk_app_id": "1:199484007072:android:ab13727b5eb8a210281fc5",
         "android_client_info": {
           "package_name": "com.example.upark"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCiVTdFIAkSyVxhs_3JuNPLzWNENvg-nwY"
+          "current_key": "AIzaSyDxhS0803vGrP5OQHvBybelze83I3L1Uw8"
         }
       ],
       "services": {
