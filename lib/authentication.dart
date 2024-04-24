@@ -53,7 +53,7 @@ class AuthenticationPage extends StatelessWidget {
                 ],
               ),
           '/profile': (context) => const ProfileScreen(),
-          '/settings': (context) => const SettingsPage(),
+          '/settings': (context) => SettingsPage(Campus.getFromApi()),
           '/home': (context) => HomePage(Campus.getFromApi()),
         });
   }

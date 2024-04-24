@@ -1,18 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:upark/authentication.dart';
+import 'package:upark/campus.dart';
 import 'settings_pages/notifications.dart';
 import 'settings_pages/permits.dart';
 
 class SettingsPage extends StatefulWidget {
-  const SettingsPage({super.key});
+  final Future<Campus> campus;
+  const SettingsPage(this.campus, {super.key});
 
   @override
   SettingsPageState createState() => SettingsPageState();
 }
 
 class SettingsPageState extends State<SettingsPage> {
-  bool isColorBlindModeEnabled = false;
+  late Future<Campus> campus = widget.campus;
 
   @override
   Widget build(BuildContext context) {
@@ -91,15 +93,23 @@ class SettingsPageState extends State<SettingsPage> {
       children: [
         CupertinoFormRow(
           prefix: const Text('ColorBlind Mode'),
-          child: CupertinoSwitch(
-            value: isColorBlindModeEnabled,
-            onChanged: (bool value) {
-              setState(() {
-                isColorBlindModeEnabled = value;
-              });
+          child: FutureBuilder<Campus>(
+            future: campus,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                var campusData = snapshot.data!;
+                return CupertinoSwitch(
+                    value: campusData.user.colorblind,
+                    onChanged: (bool value) {
+                      campusData.user.setColorblind(value);
+                      setState(() {});
+                    });
+              } else {
+                return const CupertinoActivityIndicator();
+              }
             },
           ),
-        ),
+        )
       ],
     );
   }

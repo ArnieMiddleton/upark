@@ -11,4 +11,5 @@ class ApiConstants {
   static String distancesByLotEndpoint = '$distancesEndpoint/lot';
   static String distancesByBuildingEndpoint = '$distancesEndpoint/building';
   static String distancesByBothEndpoint = '$distancesEndpoint/both';
+  static String setUserColorblindEndpoint = '/user/setColorblind';
 }

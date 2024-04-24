@@ -177,6 +177,11 @@ class AppUser {
         "id": id,
         "name": name,
       };
+
+  void setColorblind(bool value) {
+    colorblind = value;
+    updateUserColorblind(this);
+  }
 }
 
 class Report {

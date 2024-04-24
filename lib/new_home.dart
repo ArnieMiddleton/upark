@@ -29,7 +29,7 @@ class HomePage extends StatelessWidget {
                         iconSize: 30.0,
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const SettingsPage()));
+                              builder: (context) => SettingsPage(campus)));
                         }),
                     IconButton(
                         icon: const Icon(Icons.info_outline),

@@ -224,3 +224,22 @@ Future<List<dynamic>> fetchDistances(
     throw Exception('Failed to load distances');
   }
 }
+
+void updateUserColorblind(AppUser user) async {
+  var response = await http.put(
+    Uri.parse('${ApiConstants.baseUrl}${ApiConstants.setUserColorblindEndpoint}'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, dynamic>{
+      'colorblind': user.colorblind ? 1 : 0,
+      'id': user.id,
+    }),
+  );
+
+  if (response.statusCode == 200 || response.statusCode == 201) {
+    log("Updated user: ${response.body}");
+  } else {
+    throw Exception('Failed to update user');
+  }
+}
