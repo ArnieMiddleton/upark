@@ -17,26 +17,6 @@ class SettingsPageState extends State<SettingsPage> {
   late Future<Campus> campus = widget.campus;
 
   @override
-  void initState() {
-    super.initState();
-    _loadColorBlindMode();
-  }
-
-  _setColorBlindMode(bool value) async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setBool('colorBlindMode', value);
-  }
-
-  // Load ColorBlind Mode state from SharedPreferences
-  _loadColorBlindMode() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      // Use 'getBool' to load the value, default to false if not set
-      isColorBlindModeEnabled = prefs.getBool('colorBlindMode') ?? false;
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: const CupertinoNavigationBar(
