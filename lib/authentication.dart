@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart' hide EmailAuthProvider;
 import 'package:flutter/cupertino.dart';
 import 'package:upark/campus.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
+import 'package:upark/components/color_scheme.dart';
 import 'package:upark/new_home.dart';
 import 'package:flutter/material.dart';
 import 'package:upark/settings.dart';
@@ -13,6 +14,10 @@ class AuthenticationPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final providers = [EmailAuthProvider()];
     return MaterialApp(
+        theme: ThemeData(
+          colorScheme: UtahColorScheme.colorScheme,
+          useMaterial3: true,
+        ),
         initialRoute:
             FirebaseAuth.instance.currentUser == null ? '/login' : '/home',
         routes: {
