@@ -77,9 +77,10 @@ class HistogramScreenState extends State<HistogramScreen> {
         day: day,
         predictions: List.generate(
             12,
-            (index) => (TimeOfDay(hour: index + 8, minute: 0), Random().nextDouble())
-        )
-    );
+            (index) => (
+                  TimeOfDay(hour: index + 8, minute: 0),
+                  Random().nextDouble()
+                )));
   }
 
   @override
@@ -126,7 +127,8 @@ class HistogramScreenState extends State<HistogramScreen> {
                       IconButton(
                           icon: const Icon(Icons.arrow_forward_outlined),
                           onPressed: () {
-                            widget.mapState.openMapAppToLot(data.lot); // May need to be updated if bugs occur
+                            widget.mapState.openMapAppToLot(data
+                                .lot); // May need to be updated if bugs occur
                           })
                     ]),
                 body: SfCartesianChart(
@@ -155,7 +157,6 @@ class HistogramScreenState extends State<HistogramScreen> {
             return Text('Error: ${snapshot.error}');
           } else {
             return const CircularProgressIndicator();
-            // TODO: Add a loading spinner or message
           }
         });
   }

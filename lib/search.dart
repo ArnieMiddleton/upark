@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:fuzzy/fuzzy.dart';
+import 'package:upark/bottom_info.dart';
 import 'package:upark/campus.dart';
 import 'package:upark/components/color_scheme.dart';
 import 'package:upark/map.dart';
@@ -91,9 +92,6 @@ class SearchBarDelegate extends SearchDelegate {
         if (snapshot.hasData) {
           final campusData = snapshot.data!;
           final buildings = getSearchedBuildings(campusData, query);
-          print(
-              "Searched buildings: ${buildings.map((b) => '${b.name} (${b.code})').join('\n')}");
-
           return ListView.builder(
             controller: ScrollController(),
             itemExtent: 45,
@@ -121,8 +119,8 @@ class SearchBarDelegate extends SearchDelegate {
                   // Close the search bar
                   close(context, building);
 
-                  // Show the bottom shee with the building's info
-                  mapState.showBuildingInfo(building, buildingParkingLots);
+                  // Show the bottom sheet with the building's info
+                  showBuildingClosestLots(context, building, mapState);
                 },
               );
             },

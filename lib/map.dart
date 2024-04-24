@@ -43,16 +43,16 @@ class MapPageState extends State<MapPage> with WidgetsBindingObserver {
   static Color lotMarkerColor(double fullness, bool colorblind) {
     if (colorblind) {
       return gradientColor(
-          colors: UtahColorScheme.lotColorsColorblind,
-          value: fullness,
-          // stops: [0.0, 0.7, 1.0]
-        );
+        colors: UtahColorScheme.lotColorsColorblind,
+        value: fullness,
+        // stops: [0.0, 0.7, 1.0]
+      );
     } else {
       return gradientColor(
-          colors: UtahColorScheme.lotColors,
-          value: fullness,
-          // stops: [0.0, 0.7, 1.0]
-        );
+        colors: UtahColorScheme.lotColors,
+        value: fullness,
+        // stops: [0.0, 0.7, 1.0]
+      );
     }
   }
 
@@ -103,7 +103,7 @@ class MapPageState extends State<MapPage> with WidgetsBindingObserver {
   /// indicating whether the map application was successfully opened.
   Future<bool> openMapAppToLot(Lot lot) async {
     Uri googleMapsUrl = Uri.parse(
-        "https://www.google.com/maps/dir/?api=1&destination=${lot.latitude},${lot.longitude}");
+        "https://www.google.com/maps/search/?api=1&query=${lot.latitude},${lot.longitude}");
     Uri appleMapsUrl = Uri.parse(
         "https://maps.apple.com/?daddr=${lot.latitude},${lot.longitude}");
     Uri geoUri = Uri.parse("geo:${lot.latitude},${lot.longitude}");
@@ -113,13 +113,15 @@ class MapPageState extends State<MapPage> with WidgetsBindingObserver {
         ? (Platform.isIOS ? appleMapsUrl : googleMapsUrl)
         : geoUri; // Default to geoUri if not on iOS or Android
 
-    // Attempt to open via the geoUri first, then fallback to the mapUrl
+    // Attempt to open via the mapUrl first, then fallback to the geoUri
     try {
       navigated = true;
-      if (await canLaunchUrl(geoUri)) {
-        await launchUrl(geoUri);
-      } else {
+      selectedLot = lot;
+      try {
         await launchUrl(mapUrl);
+      } catch (e) {
+        log("Error opening map app: $e", name: "MapPageState");
+        await launchUrl(geoUri);
       }
     } catch (e) {
       log("Error opening map app: $e", name: "MapPageState");
@@ -135,7 +137,7 @@ class MapPageState extends State<MapPage> with WidgetsBindingObserver {
   /// indicating whether the map application was successfully opened.
   Future<bool> openMapAppToBuilding(Building building) async {
     Uri googleMapsUrl = Uri.parse(
-        "https://www.google.com/maps/dir/?api=1&destination=${selectedLot.latitude},${selectedLot.longitude}");
+        "https://www.google.com/maps/search/?api=1&query=${selectedLot.latitude},${selectedLot.longitude}");
     Uri appleMapsUrl = Uri.parse(
         "https://maps.apple.com/?daddr=${selectedLot.latitude},${selectedLot.longitude}");
     Uri geoUri =
@@ -155,13 +157,14 @@ class MapPageState extends State<MapPage> with WidgetsBindingObserver {
         ? (Platform.isIOS ? appleMapsUrl : googleMapsUrl)
         : geoUri; // Default to geoUri if not on iOS or Android
 
-    // Attempt to open via the geoUri first, then fallback to the mapUrl
+    // Attempt to open via the mapUrl first, then fallback to the geoUri
     try {
       navigated = true;
-      if (await canLaunchUrl(geoUri)) {
-        await launchUrl(geoUri);
-      } else {
+      try {
         await launchUrl(mapUrl);
+      } catch (e) {
+        log("Error opening map app: $e", name: "MapPageState");
+        await launchUrl(geoUri);
       }
     } catch (e) {
       log("Error opening map app: $e", name: "MapPageState");
@@ -177,7 +180,7 @@ class MapPageState extends State<MapPage> with WidgetsBindingObserver {
   /// indicating whether the map application was successfully opened.
   Future<bool> openMapAppToLatLng(LatLng location) async {
     Uri googleMapsUrl = Uri.parse(
-        "https://www.google.com/maps/dir/?api=1&destination=${location.latitude},${location.longitude}");
+        "https://www.google.com/maps/search/?api=1&query=${location.latitude},${location.longitude}");
     Uri appleMapsUrl = Uri.parse(
         "https://maps.apple.com/?daddr=${location.latitude},${location.longitude}");
     Uri geoUri = Uri.parse("geo:${location.latitude},${location.longitude}");
@@ -187,13 +190,14 @@ class MapPageState extends State<MapPage> with WidgetsBindingObserver {
         ? (Platform.isIOS ? appleMapsUrl : googleMapsUrl)
         : geoUri; // Default to geoUri if not on iOS or Android
 
-    // Attempt to open via the geoUri first, then fallback to the mapUrl
+    // Attempt to open via the mapUrl first, then fallback to the geoUri
     try {
       navigated = true;
-      if (await canLaunchUrl(geoUri)) {
-        await launchUrl(geoUri);
-      } else {
+      try {
         await launchUrl(mapUrl);
+      } catch (e) {
+        log("Error opening map app: $e", name: "MapPageState");
+        await launchUrl(geoUri);
       }
     } catch (e) {
       log("Error opening map app: $e", name: "MapPageState");
@@ -236,21 +240,20 @@ class MapPageState extends State<MapPage> with WidgetsBindingObserver {
                         children: [
                           RichText(
                             text: TextSpan(
-                              text: 'Stalls: ',
-                              style: const TextStyle(
-                                color: UtahColorScheme.onBackground,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              children: <TextSpan>[
-                                TextSpan(
-                                  text: '${lot.stallCount}',
-                                  style: const TextStyle(
-                                    color: UtahColorScheme.onBackground,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                                )
-                              ]
-                            ),
+                                text: 'Stalls: ',
+                                style: const TextStyle(
+                                  color: UtahColorScheme.onBackground,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    text: '${lot.stallCount}',
+                                    style: const TextStyle(
+                                      color: UtahColorScheme.onBackground,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                                  )
+                                ]),
                           ),
                           RichText(
                             text: TextSpan(
@@ -261,7 +264,8 @@ class MapPageState extends State<MapPage> with WidgetsBindingObserver {
                                 ),
                                 children: <TextSpan>[
                                   TextSpan(
-                                    text: '${(lot.carCount / lot.stallCount * 100).floor()}%',
+                                    text:
+                                        '${(lot.carCount / lot.stallCount * 100).floor()}%',
                                     style: const TextStyle(
                                       color: UtahColorScheme.onBackground,
                                       fontWeight: FontWeight.normal,
@@ -272,13 +276,13 @@ class MapPageState extends State<MapPage> with WidgetsBindingObserver {
                         ],
                       ),
                       Container(
-                        padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                        child: Column(
-                          children: [
-                            const Text(
-                              'Permit Types',
-                              style: TextStyle(color: UtahColorScheme.onBackground, fontWeight: FontWeight.bold, fontSize: 16)
-                            ),
+                          padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                          child: Column(children: [
+                            const Text('Permit Types',
+                                style: TextStyle(
+                                    color: UtahColorScheme.onBackground,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16)),
                             const Divider(
                               color: UtahColorScheme.onBackground,
                               thickness: 1.5,
@@ -286,52 +290,52 @@ class MapPageState extends State<MapPage> with WidgetsBindingObserver {
                               endIndent: 10,
                             ),
                             Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                ...lot.stalls.map((stall) => stall.name).map((stallName) => Text(stallName))
-                              ]
-                            )
-                          ]
-                        )
-                      )
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  ...lot.stalls
+                                      .map((stall) => stall.name)
+                                      .map((stallName) => Text(stallName))
+                                ])
+                          ]))
                     ],
                   ),
                   actions: [
                     TextButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(UtahColorScheme.primary),
-                        foregroundColor: MaterialStateProperty.all(UtahColorScheme.onPrimary),
-                      ),
-                      child: const Text('Navigate'),
-                      onPressed: () {
-                        navigated = true;
-                        openMapAppToLot(selectedLot);
-                        Navigator.of(context).pop(); // Close Dialog
-                      }
-                    ),
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              UtahColorScheme.primary),
+                          foregroundColor: MaterialStateProperty.all(
+                              UtahColorScheme.onPrimary),
+                        ),
+                        child: const Text('Navigate'),
+                        onPressed: () {
+                          navigated = true;
+                          openMapAppToLot(selectedLot);
+                          Navigator.of(context).pop(); // Close Dialog
+                        }),
                     TextButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                            UtahColorScheme.primary),
-                        foregroundColor: MaterialStateProperty.all(
-                            UtahColorScheme.onPrimary),
-                      ),
-                      child: const Text('Fullness Survey'),
-                      onPressed: () {
-                        Navigator.of(context).pop(); // Close Dialog
-                        Navigator.of(context).push(
-                          // Open Survey
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return ParkingLotSurveyPage(
-                                  selectedLot: selectedLot, campusFuture: campus);
-                            },
-                          ),
-                        );
-                      }
-                    )
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              UtahColorScheme.primary),
+                          foregroundColor: MaterialStateProperty.all(
+                              UtahColorScheme.onPrimary),
+                        ),
+                        child: const Text('Fullness Survey'),
+                        onPressed: () {
+                          Navigator.of(context).pop(); // Close Dialog
+                          Navigator.of(context).push(
+                            // Open Survey
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return ParkingLotSurveyPage(
+                                    selectedLot: selectedLot,
+                                    campusFuture: campus);
+                              },
+                            ),
+                          );
+                        })
                   ]);
             },
           );
@@ -360,41 +364,6 @@ class MapPageState extends State<MapPage> with WidgetsBindingObserver {
       markers.add(marker);
     }
     return markers;
-  }
-
-  /// Shows the information for a building and its parking lots.
-  ///
-  /// This method takes a [Building] object and a list of [Lot] objects as parameters.
-  /// It displays a modal bottom sheet with information about the building and its parking lots.
-  void showBuildingInfo(Building building, List<Lot> buildingParkingLots) {
-    showModalBottomSheet(
-        context: currentContext,
-        isScrollControlled: true,
-        builder: (context) {
-          return DraggableScrollableSheet(
-              initialChildSize: 0.3,
-              minChildSize: 0.2,
-              maxChildSize: 0.6,
-              expand: false, // TODO: Maybe change this to true
-              builder: (context, scrollController) {
-                return Container(
-                    decoration: const BoxDecoration(
-                        color: UtahColorScheme.background,
-                        borderRadius:
-                            BorderRadius.vertical(top: Radius.circular(18)),
-                        boxShadow: [
-                          BoxShadow(
-                              blurRadius: 10, color: UtahColorScheme.onSurface)
-                        ]),
-                    child: const Column(
-                      children: [
-                        // TODO: Add building info
-                        SizedBox(child: Text("Building Info Sized Box")),
-                        Expanded(child: Text("Building Info Expanded"))
-                      ],
-                    ));
-              });
-        });
   }
 
   @override
@@ -459,7 +428,8 @@ class MapPageState extends State<MapPage> with WidgetsBindingObserver {
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) {
-            return ParkingLotSurveyPage(selectedLot: selectedLot, campusFuture: campus);
+            return ParkingLotSurveyPage(
+                selectedLot: selectedLot, campusFuture: campus);
           },
         ),
       );

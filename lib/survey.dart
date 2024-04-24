@@ -22,13 +22,10 @@ class ParkingLotSurveyPageState extends State<ParkingLotSurveyPage> {
   String? chosenOption;
   Map<String, double> surveyOptions = {
     'Full': 1.0,
-    'Almost Full': 0.9,
-    'A few spots': 0.8,
-    'Some Spots': 0.6,
-    'Plenty of Spots': 0.4,
-    'Almost Empty': 0.2,
-    'Empty': 0.0,
-    'Unknown': -1.0,
+    'Almost Full': 0.85,
+    'Moderately Full': 0.7,
+    'Some Spots': 0.5,
+    'Plenty of Spots': 0.2,
   };
 
   Future<Response?> submitSurvey(BuildContext context, Lot chosenLot,

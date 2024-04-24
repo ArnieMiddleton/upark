@@ -229,21 +229,23 @@ class Campus {
   AppUser user; // = AppUser(userId: '');
   List<Lot> lots; // = [];
   List<Building> buildings; // = [];
-  Map<Building, Map<Lot, double>> buildingToLotDistances =
+  Map<Building, Map<Lot, double>>? buildingToLotDistances =
       {}; // Building -> Lot -> Distance in meters
-  Map<Building, List<(Lot lot, double distance)>> buildingToClosestLots =
+  Map<Building, List<(Lot lot, double distance)>>? buildingToClosestLots =
       {}; // Building -> List of sorted closest lots and their distances in meters
   // TODO: Add changing of units
-  var unit = LengthUnit.Meter;
+  static LengthUnit unit = LengthUnit.Meter;
 
   Campus({
     required this.name,
     required this.user,
     required this.lots,
     required this.buildings,
+    this.buildingToClosestLots,
+    this.buildingToLotDistances,
   });
 
-  Map<Building, Map<Lot, double>> calculateDistances(
+  static Map<Building, Map<Lot, double>> calculateDistances(
       List<Building> buildings, List<Lot> lots) {
     Map<Building, Map<Lot, double>> distances = {};
     Distance distance = const Distance();
@@ -257,11 +259,11 @@ class Campus {
       }
       distances[building] = buildingDistances;
     }
-    buildingToLotDistances = distances;
+    // buildingToLotDistances = distances;
     return distances;
   }
 
-  Map<Building, List<(Lot lot, double distance)>> calculateClosestLots(
+  static Map<Building, List<(Lot lot, double distance)>> calculateClosestLots(
       Map<Building, Map<Lot, double>> distances) {
     Map<Building, List<(Lot lot, double distance)>> closestLots = {};
     for (var building in distances.keys) {
@@ -273,7 +275,7 @@ class Campus {
       buildingClosestLots.sort((a, b) => a.$2.compareTo(b.$2));
       closestLots[building] = buildingClosestLots;
     }
-    buildingToClosestLots = closestLots;
+    // buildingToClosestLots = closestLots;
     return closestLots;
   }
 
@@ -301,11 +303,17 @@ class Campus {
       log('Failed to fetch user with error: $e');
     }
 
+    Map<Building, Map<Lot, double>> newBuildingToLotDistances =
+        calculateDistances(newBuildings, newLots);
+    Map<Building, List<(Lot lot, double distance)>> newBuildingToClosestLots = calculateClosestLots(newBuildingToLotDistances);
+
     return Campus(
       name: "University of Utah",
       user: newUser,
       lots: newLots,
       buildings: newBuildings,
+      buildingToClosestLots: newBuildingToClosestLots,
+      buildingToLotDistances: newBuildingToLotDistances,
     );
   }
 }
