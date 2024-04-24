@@ -269,7 +269,6 @@ class Campus {
         newUser = await fetchUserFromId(authUser.uid);
       }
     } catch (e) {
-      print('Failed to fetch user with error: $e');
       log('Failed to fetch user with error: $e');
     }
     // try {

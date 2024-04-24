@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:fuzzy/fuzzy.dart';
 import 'package:upark/bottom_info.dart';
 import 'package:upark/campus.dart';
@@ -98,8 +97,6 @@ class SearchBarDelegate extends SearchDelegate {
             itemCount: buildings.length,
             itemBuilder: (context, index) {
               final building = buildings[index];
-              List<Lot> buildingParkingLots =
-                  []; // TODO: Get building parking lots by location
               return ListTile(
                 dense: true,
                 isThreeLine: false,

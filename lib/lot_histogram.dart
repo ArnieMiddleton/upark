@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:upark/campus.dart';
+import 'package:upark/components/color_scheme.dart';
 import 'package:upark/map.dart';
 
 class HistogramScreen extends StatefulWidget {
@@ -100,7 +101,10 @@ class HistogramScreenState extends State<HistogramScreen> {
             var data = snapshot.data!;
             return Scaffold(
                 appBar: AppBar(
-                    title: Text('Availability Prediction for ${data.lot.name}'),
+                    title: Text('Availability Prediction for:\n${data.lot.name} Parking Lot', textAlign: TextAlign.center),
+                    titleTextStyle: const TextStyle(
+                        color: UtahColorScheme.onBackground,
+                        fontSize: 16),
                     leading: IconButton(
                       icon: const Icon(Icons.close),
                       onPressed: () =>
@@ -121,7 +125,7 @@ class HistogramScreenState extends State<HistogramScreen> {
                             return DropdownMenuItem<String>(
                               value: day.toShortString(),
                               child: Text(day
-                                  .toString()), // May need to change to day.toShortString() depending on the display
+                                  .toShortString()), // May need to change to day.toShortString() depending on the display
                             );
                           }).toList()),
                       IconButton(
@@ -132,27 +136,30 @@ class HistogramScreenState extends State<HistogramScreen> {
                           })
                     ]),
                 body: SfCartesianChart(
-                    // Configure the axes and series as needed
-                    primaryXAxis: const CategoryAxis(
-                      name: 'Time',
-                      title: AxisTitle(text: 'Time'),
-                    ),
-                    primaryYAxis: const NumericAxis(
-                      name: 'Occupancy',
-                      title: AxisTitle(text: 'Occupancy'),
-                      minimum: 0,
-                      maximum: 100,
-                    ),
-                    series: <ColumnSeries<(TimeOfDay, double), String>>[
-                      ColumnSeries<(TimeOfDay, double), String>(
-                        dataSource: data.predictions,
-                        xValueMapper: (pred, _) => pred.$1.format(
-                            context), // Formats according to the user's locale
-                        yValueMapper: (pred, _) => (pred.$2 * 100)
-                            .floor()
-                            .toInt(), // Convert to percentage
-                      )
-                    ]));
+                  // Configure the axes and series as needed
+                  primaryXAxis: const CategoryAxis(
+                    name: 'Time',
+                    title: AxisTitle(text: 'Time'),
+                  ),
+                  primaryYAxis: const NumericAxis(
+                    name: 'Occupancy',
+                    title: AxisTitle(text: 'Occupancy'),
+                    minimum: 0,
+                    maximum: 100,
+                  ),
+                  series: <ColumnSeries<(TimeOfDay, double), String>>[
+                    ColumnSeries<(TimeOfDay, double), String>(
+                      color: UtahColorScheme.primary,
+                      dataSource: data.predictions,
+                      xValueMapper: (pred, _) => pred.$1.format(
+                          context), // Formats according to the user's locale
+                      yValueMapper: (pred, _) => (pred.$2 * 100)
+                          .floor()
+                          .toInt(), // Convert to percentage
+                    )
+                  ]
+                )
+            );
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {

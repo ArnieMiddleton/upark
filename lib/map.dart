@@ -349,9 +349,6 @@ class MapPageState extends State<MapPage> with WidgetsBindingObserver {
   /// as input and returns a list of [Marker] objects. Each marker represents a parking lot
   /// on the campus. The [markerWidget] is used as the child widget for each marker.
   List<Marker> markersFromCampus(Campus campus, MapController mapController) {
-    print("Generating markers from campus data");
-    print(
-        "User data: {name: ${campus.user.name}, colorblind: ${campus.user.colorblind}, id: ${campus.user.id}}");
     List<Marker> newMarkers = [];
     for (var lot in campus.lots) {
       Marker marker = Marker(
@@ -394,7 +391,6 @@ class MapPageState extends State<MapPage> with WidgetsBindingObserver {
               error: snapshot.error, name: "MapPageState.build");
           return Center(child: Text('Error: ${snapshot.error}'));
         }
-        // TODO: Show something while loading
         return const Center(child: CircularProgressIndicator());
       },
     );

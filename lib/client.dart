@@ -30,7 +30,7 @@ Future<List<Lot>> fetchLots({int maxRetries = 5}) async {
     log('Failed to fetch lots $retryCount times with response: ${response.body}. Attempting again...');
   }
   if (response.statusCode == 200) {
-    print("Fetched lots: ${response.contentLength} bytes");
+    // print("Fetched lots: ${response.contentLength} bytes");
     return lotsFromJson(response.body);
   } else {
     throw Exception('Failed to load lots');
@@ -55,7 +55,7 @@ Future<List<Building>> fetchBuildings({int maxRetries = 5}) async {
     log('Failed to fetch lots $retryCount times with response: ${response.body}. Attempting again...');
   }
   if (response.statusCode == 200) {
-    print("Fetched buildings: ${response.contentLength} bytes");
+    // print("Fetched buildings: ${response.contentLength} bytes");
     return buildingsFromJson(response.body);
   } else {
     throw Exception('Failed to load lots');
@@ -80,7 +80,7 @@ Future<List<Lot>> fetchReports({int maxRetries = 5}) async {
     log('Failed to fetch reports $retryCount times with response: ${response.body}. Attempting again...');
   }
   if (response.statusCode == 200) {
-    print("Fetched reports: ${response.contentLength} bytes");
+    // print("Fetched reports: ${response.contentLength} bytes");
     return lotsFromJson(response.body);
   } else {
     throw Exception('Failed to load lots');
@@ -94,15 +94,15 @@ String reportToJson(Report data, AppUser user) =>
 
 Future<Response> postReport(Report report, AppUser user) async {
   var reportJson = reportToJson(report, user);
-  print("Posting report: $reportJson");
+  // print("Posting report: $reportJson");
   var response = await http.post(postReportUri,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: reportJson);
-  print("Report Response: ${response.body}");
+  // print("Report Response: ${response.body}");
   if (response.statusCode == 201 || response.statusCode == 200) {
-    print("Posted report: ${response.body}");
+    // print("Posted report: ${response.body}");
     return response;
   } else {
     throw Exception('Failed to post report');
@@ -127,7 +127,7 @@ Future<AppUser> fetchUserFromId(String userId, {int maxRetries = 5}) async {
     log('Failed to fetch users $retryCount times with response: ${response.body}. Attempting again...');
   }
   if (response.statusCode == 200) {
-    print("Fetched user data: ${response.body}");
+    // print("Fetched user data: ${response.body}");
     return userFromJson(response.body);
   } else {
     throw Exception('Failed to load user');
@@ -182,7 +182,7 @@ Future<List<dynamic>> fetchDistances(
 
 
   if (response.statusCode == 200) {
-    print("Fetched distances: ${response.contentLength} bytes");
+    // print("Fetched distances: ${response.contentLength} bytes");
     var responseJson = json.decode(response.body);
 
     switch (fetchType) {
