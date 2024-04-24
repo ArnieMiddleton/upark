@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:http/http.dart';
-import 'constants.dart';
+import 'components/constants.dart';
 import 'package:upark/campus.dart';
 import 'package:http/http.dart' as http;
 

@@ -112,35 +112,6 @@ void showBuildingClosestLots(
 
 // void showBuildingInfo(
 //     BuildContext context, Building building, MapPageState mapState) {
-//   var campus = mapState.campus;
-//   showModalBottomSheet(
-//       context: context,
-//       isScrollControlled: true,
-//       builder: (context) {
-//         return DraggableScrollableSheet(
-//             initialChildSize: 0.3,
-//             minChildSize: 0.2,
-//             maxChildSize: 0.6,
-//             expand: false,
-//             builder: (context, scrollController) {
-//               return Container(
-//                   decoration: const BoxDecoration(
-//                       color: UtahColorScheme.background,
-//                       borderRadius:
-//                           BorderRadius.vertical(top: Radius.circular(18)),
-//                       boxShadow: [
-//                         BoxShadow(
-//                             blurRadius: 10, color: UtahColorScheme.onSurface)
-//                       ]),
-//                   child: const Column(
-//                     children: [
-//                       // TODO: Add building info
-//                       SizedBox(child: Text("Building Info Sized Box")),
-//                       Expanded(child: Text("Building Info Expanded"))
-//                     ],
-//                   ));
-//             });
-//       });
 // }
 
 void showLotHistogram(BuildContext context, Lot lot, MapPageState mapState) {

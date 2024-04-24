@@ -1,9 +1,8 @@
 import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:upark/firebase_options.dart';
+import 'package:upark/assets/firebase_options.dart';
 import 'package:upark/components/color_scheme.dart';
 import 'package:upark/authentication.dart';
 

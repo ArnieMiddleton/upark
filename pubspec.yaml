@@ -80,7 +80,6 @@ flutter:
     - lib/images/Parking-Lot-Occupancy.png
     - lib/images/moqup_3.jpg
     - lib/images/googlemaps.jpg
-    - lib/assets/distances.json
     - lib/assets/predictions.json
   #   - images/a_dot_ham.jpeg
 

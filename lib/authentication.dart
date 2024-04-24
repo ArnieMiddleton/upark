@@ -3,9 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:upark/campus.dart';
 import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:upark/components/color_scheme.dart';
-import 'package:upark/new_home.dart';
+import 'package:upark/home.dart';
 import 'package:flutter/material.dart';
-import 'package:upark/settings.dart';
+import 'package:upark/settings_pages/settings.dart';
 
 class AuthenticationPage extends StatelessWidget {
   const AuthenticationPage({super.key});
@@ -98,7 +98,6 @@ class AccountPage extends StatelessWidget {
           );
         }),
         AuthStateChangeAction((context, user) {
-          // var state = AuthState.of(context);
           // TODO: Complete this implementation
         }),
         AccountDeletedAction((context, user) {

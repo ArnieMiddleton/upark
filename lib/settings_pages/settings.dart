@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:upark/authentication.dart';
 import 'package:upark/campus.dart';
-import 'settings_pages/notifications.dart';
-import 'settings_pages/permits.dart';
+import 'package:upark/settings_pages/notifications.dart';
+import 'package:upark/settings_pages/permits.dart';
 
 class SettingsPage extends StatefulWidget {
   final Future<Campus> campus;
