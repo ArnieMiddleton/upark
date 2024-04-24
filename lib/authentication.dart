@@ -12,7 +12,9 @@ class AuthenticationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final providers = [EmailAuthProvider()];
+    final providers = [
+      EmailAuthProvider(),
+    ];
     return MaterialApp(
         theme: ThemeData(
           colorScheme: UtahColorScheme.colorScheme,
@@ -42,11 +44,27 @@ class AuthenticationPage extends StatelessWidget {
                   );
                 },
                 footerBuilder: (context, action) {
-                  return Text(
-                      "UPark Capstone Project WIP${action == AuthAction.signIn ? '' : '\nYour email will not be share with anyone!'}",
-                      textAlign: TextAlign.center);
+                  return Column(children: [
+                    const Divider(),
+                    TextButton(
+                        onPressed: () {
+                          FirebaseAuth.instance.signInAnonymously();
+                          Navigator.pushReplacementNamed(context, '/home');
+                        },
+                        child: Text("Sign in Anonymously",
+                            style: TextStyle(
+                                color: Theme.of(context).colorScheme.primary))),
+                    Text(
+                        "UPark Capstone Project${action == AuthAction.signIn ? '' : '\nYour email will not be share with anyone!'}",
+                        textAlign: TextAlign.center)
+                  ]);
                 },
                 actions: [
+                  AuthStateChangeAction<AuthState>((context, state) {
+                    if (state is AccountDeletedAction) {
+                      Navigator.pushReplacementNamed(context, '/login');
+                    }
+                  }),
                   AuthStateChangeAction<SignedIn>((context, state) {
                     Navigator.pushReplacementNamed(context, '/home');
                   }),
@@ -84,7 +102,6 @@ class AccountPage extends StatelessWidget {
           // TODO: Complete this implementation
         }),
         AccountDeletedAction((context, user) {
-          // TODO: Delete user from database
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (context) => const AuthenticationPage()),
             (Route<dynamic> route) => false,

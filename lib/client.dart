@@ -134,9 +134,32 @@ Future<AppUser> fetchUserFromId(String userId, {int maxRetries = 5}) async {
   }
 }
 
+// Create a new user
+Future<AppUser> createUser(AppUser user) async {
+  var response = await http.post(
+    Uri.parse('${ApiConstants.baseUrl}${ApiConstants.userAddEndpoint}'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: jsonEncode(<String, dynamic>{
+      'id': user.id,
+      'name': user.name,
+    }),
+  );
+
+  if (response.statusCode == 200 || response.statusCode == 201) {
+    // print("Created user: ${response.body}");
+    return userFromJson(response.body);
+  } else {
+    throw Exception('Failed to create user');
+  }
+}
+
 // Distances
 
-Future<List<(Lot lot, int distance)>> fetchLotDistancesByCampusAndBuilding(Future<Campus> campus, Building building, {int limit = 5}) async {
+Future<List<(Lot lot, int distance)>> fetchLotDistancesByCampusAndBuilding(
+    Future<Campus> campus, Building building,
+    {int limit = 5}) async {
   var distances = await fetchDistancesByBuilding(building, limit: limit);
   var fetchedCampus = await campus;
   List<(Lot lot, int distance)> lotDistances = [];
@@ -148,7 +171,9 @@ Future<List<(Lot lot, int distance)>> fetchLotDistancesByCampusAndBuilding(Futur
   return lotDistances;
 }
 
-Future<List<(int lotId, int distance)>> fetchDistancesByBuilding(Building building, {int limit = 5}) async {
+Future<List<(int lotId, int distance)>> fetchDistancesByBuilding(
+    Building building,
+    {int limit = 5}) async {
   var dynamicDistances = await fetchDistances(building: building, limit: limit);
   List<(int lotId, int distance)> distances = [];
   for (var dist in dynamicDistances) {
@@ -179,7 +204,6 @@ Future<List<dynamic>> fetchDistances(
     uri = Uri.parse(ApiConstants.baseUrl + ApiConstants.distancesEndpoint);
   }
   var response = await http.get(uri);
-
 
   if (response.statusCode == 200) {
     // print("Fetched distances: ${response.contentLength} bytes");
@@ -227,7 +251,8 @@ Future<List<dynamic>> fetchDistances(
 
 void updateUserColorblind(AppUser user) async {
   var response = await http.put(
-    Uri.parse('${ApiConstants.baseUrl}${ApiConstants.setUserColorblindEndpoint}'),
+    Uri.parse(
+        '${ApiConstants.baseUrl}${ApiConstants.setUserColorblindEndpoint}'),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -240,6 +265,7 @@ void updateUserColorblind(AppUser user) async {
   if (response.statusCode == 200 || response.statusCode == 201) {
     log("Updated user: ${response.body}");
   } else {
+    print(response.body);
     throw Exception('Failed to update user');
   }
 }

@@ -243,21 +243,18 @@ class Campus {
   AppUser user;
   List<Lot> lots;
   List<Building> buildings;
-  // Map<Building, List<(Lot, int)>> buildingClosestLots = {};
 
   Campus({
     required this.name,
     required this.user,
     required this.lots,
     required this.buildings,
-    // required this.buildingClosestLots,
   });
 
   static Future<Campus> getFromApi() async {
     List<Lot> newLots = [];
     List<Building> newBuildings = [];
     AppUser newUser = AppUser(id: '');
-    // Map<Building, List<(Lot, int)>> newBuildingClosestLots = {};
     try {
       newLots = await fetchLots();
     } catch (e) {
@@ -271,31 +268,28 @@ class Campus {
     try {
       var authUser = FirebaseAuth.instance.currentUser;
       if (authUser != null) {
-        newUser = await fetchUserFromId(authUser.uid);
+        newUser = await fetchUserFromId(authUser.uid, maxRetries: 1);
       }
     } catch (e) {
       log('Failed to fetch user with error: $e');
+      try {
+        var authUser = FirebaseAuth.instance.currentUser;
+        if (authUser != null) {
+          newUser.id = authUser.uid;
+          newUser.name = authUser.displayName ?? '';
+          newUser.email = authUser.email ?? '';
+          newUser = await createUser(newUser);
+        }
+      } catch (e) {
+        log('Failed to create user with error: $e');
+      }
     }
-    // try {
-    //   for (var building in newBuildings) {
-    //     var closestDistances = await fetchDistancesByBuilding(building);
-    //     List<(Lot, int)> closestLots = [];
-    //     for (var lotIdDistTuple in closestDistances) {
-    //       var lot = newLots.firstWhere((lot) => lot.id == lotIdDistTuple.$1);
-    //       closestLots.add((lot, lotIdDistTuple.$2));
-    //     }
-    //     newBuildingClosestLots[building] = closestLots;
-    //   }
-    // } catch (e) {
-    //   print('Failed to fetch closest lots with error: $e');
-    //   log('Failed to fetch closest lots with error: $e');
-    // }
+
     return Campus(
       name: "University of Utah",
       user: newUser,
       lots: newLots,
       buildings: newBuildings,
-      // buildingClosestLots: newBuildingClosestLots,
     );
   }
 
@@ -306,7 +300,6 @@ class Campus {
       user = newCampus.user;
       lots = newCampus.lots;
       buildings = newCampus.buildings;
-      // buildingClosestLots = newCampus.buildingClosestLots;
     } catch (e) {
       log('Failed to update campus with error: $e');
       success = false;
