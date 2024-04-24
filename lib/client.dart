@@ -6,7 +6,8 @@ import 'package:upark/campus.dart';
 import 'package:http/http.dart' as http;
 
 var lotsUri = Uri.parse(ApiConstants.baseUrl + ApiConstants.lotsEndpoint);
-var buildingsUri = Uri.parse(ApiConstants.baseUrl + ApiConstants.buildingsEndpoint);
+var buildingsUri =
+    Uri.parse(ApiConstants.baseUrl + ApiConstants.buildingsEndpoint);
 var reportsUri = Uri.parse(ApiConstants.baseUrl + ApiConstants.reportsEndpoint);
 var postReportUri =
     Uri.parse(ApiConstants.baseUrl + ApiConstants.postReportEndpoint);
@@ -130,5 +131,96 @@ Future<AppUser> fetchUserFromId(String userId, {int maxRetries = 5}) async {
     return userFromJson(response.body);
   } else {
     throw Exception('Failed to load user');
+  }
+}
+
+// Distances
+
+Future<List<(Lot lot, int distance)>> fetchLotDistancesByCampusAndBuilding(Future<Campus> campus, Building building) async {
+  var distances = await fetchDistancesByBuilding(building);
+  var fetchedCampus = await campus;
+  List<(Lot lot, int distance)> lotDistances = [];
+  for (var dist in distances) {
+    var lot = fetchedCampus.lots.firstWhere((lot) => lot.id == dist.$1);
+    var distance = (lot, dist.$2);
+    lotDistances.add(distance);
+  }
+  return lotDistances;
+}
+
+Future<List<(int lotId, int distance)>> fetchDistancesByBuilding(Building building) async {
+  var dynamicDistances = await fetchDistances(building: building);
+  List<(int lotId, int distance)> distances = [];
+  for (var dist in dynamicDistances) {
+    var distance = (dist.$1 as int, dist.$2 as int);
+    distances.add(distance);
+  }
+  return distances;
+}
+
+Future<List<dynamic>> fetchDistances(
+    {int limit = 5, Lot? lot, Building? building}) async {
+  Uri uri;
+  String fetchType = '';
+  if (lot != null && building != null) {
+    fetchType = 'both';
+    uri = Uri.parse(
+        '${ApiConstants.baseUrl}${ApiConstants.distancesByBothEndpoint}/${building.id}/${lot.id}');
+  } else if (lot != null) {
+    fetchType = 'lot';
+    uri = Uri.parse(
+        '${ApiConstants.baseUrl}${ApiConstants.distancesByLotEndpoint}/${lot.id}/$limit');
+  } else if (building != null) {
+    fetchType = 'building';
+    uri = Uri.parse(
+        '${ApiConstants.baseUrl}${ApiConstants.distancesByBuildingEndpoint}/${building.id}/$limit');
+  } else {
+    fetchType = 'all';
+    uri = Uri.parse(ApiConstants.baseUrl + ApiConstants.distancesEndpoint);
+  }
+  var response = await http.get(uri);
+
+
+  if (response.statusCode == 200) {
+    print("Fetched distances: ${response.contentLength} bytes");
+    var responseJson = json.decode(response.body);
+
+    switch (fetchType) {
+      case 'lot':
+        List<(int buildingId, int distance)> distances = [];
+        for (var bld in responseJson) {
+          var distance = (
+            bld['id'] as int,
+            bld['distance'] as int,
+          );
+          distances.add(distance);
+        }
+        return distances;
+      case 'building':
+        List<(int lotId, int distance)> distances = [];
+        for (var lot in responseJson) {
+          var distance = (
+            lot['id'] as int,
+            lot['distance'] as int,
+          );
+          distances.add(distance);
+        }
+        return distances;
+      case 'both' || 'all':
+        List<(int lotId, int buildingId, int distance)> distances = [];
+        for (var dist in responseJson) {
+          var distance = (
+            dist['lot_id'] as int,
+            dist['building_id'] as int,
+            dist['distance'] as int,
+          );
+          distances.add(distance);
+        }
+        return distances;
+      default:
+        throw Exception('Failed to load distances');
+    }
+  } else {
+    throw Exception('Failed to load distances');
   }
 }

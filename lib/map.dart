@@ -352,7 +352,7 @@ class MapPageState extends State<MapPage> with WidgetsBindingObserver {
     print("Generating markers from campus data");
     print(
         "User data: {name: ${campus.user.name}, colorblind: ${campus.user.colorblind}, id: ${campus.user.id}}");
-    List<Marker> markers = [];
+    List<Marker> newMarkers = [];
     for (var lot in campus.lots) {
       Marker marker = Marker(
         width: 30,
@@ -361,9 +361,9 @@ class MapPageState extends State<MapPage> with WidgetsBindingObserver {
         alignment: Alignment.topCenter,
         child: markerChild(lot, campus.user.colorblind),
       );
-      markers.add(marker);
+      newMarkers.add(marker);
     }
-    return markers;
+    return newMarkers;
   }
 
   @override
@@ -405,11 +405,15 @@ class MapPageState extends State<MapPage> with WidgetsBindingObserver {
     super.initState();
     currentMapStateInstance = this;
     currentLocation = mapInitLocation;
-    // campus = Campus.getFromApi();
+    campus = Campus.getFromApi();
     WidgetsBinding.instance.addObserver(this);
-    markerUpdateTimer = Timer.periodic(const Duration(seconds: 5), (timer) {
-      campus = Campus.getFromApi();
-    });
+    campus.then((cmps) => {
+          markerUpdateTimer =
+              Timer.periodic(const Duration(seconds: 5), (timer) {
+            cmps.updateCampusFromApi();
+            setState(() {});
+          }),
+        }); // Update campus data every 5 seconds
   }
 
   @override
@@ -422,6 +426,8 @@ class MapPageState extends State<MapPage> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
+
+    setState(() {});
 
     if (state == AppLifecycleState.resumed && navigated) {
       navigated = false;

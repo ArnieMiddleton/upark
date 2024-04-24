@@ -1,13 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:upark/campus.dart';
+import 'package:upark/client.dart';
 import 'package:upark/components/color_scheme.dart';
 import 'package:upark/lot_histogram.dart';
 import 'package:upark/map.dart';
 
 void showBuildingClosestLots(
     BuildContext context, Building building, MapPageState mapState) {
-  var campus = mapState.campus;
+  Future<Campus> campus = mapState.campus;
+  Future<List<(Lot lot, int distance)>> closestLots = fetchLotDistancesByCampusAndBuilding(campus, building);
 
   showModalBottomSheet(
       context: context,
@@ -17,7 +19,7 @@ void showBuildingClosestLots(
             initialChildSize: 0.3,
             minChildSize: 0.2,
             maxChildSize: 0.6,
-            expand: false, // TODO: Maybe change this to true
+            expand: false,
             builder: (context, scrollController) {
               return Container(
                   decoration: const BoxDecoration(
@@ -45,35 +47,24 @@ void showBuildingClosestLots(
                         ),
                       ),
                       Expanded(
-                          child: FutureBuilder<Campus>(
-                              future: campus,
+                          child: FutureBuilder<List<(Lot lot, int distance)>>(
+                              future: closestLots,
                               builder: (context, snapshot) {
                                 if (snapshot.hasData) {
-                                  var campusData = snapshot.data!;
-                                  campusData.buildingToLotDistances ??=
-                                      Campus.calculateDistances(
-                                          campusData.buildings,
-                                          campusData.lots);
-                                  campusData.buildingToClosestLots ??=
-                                      Campus.calculateClosestLots(
-                                          campusData.buildingToLotDistances!);
-                                  var closestLots = campusData
-                                      .buildingToClosestLots![building];
-                                  closestLots ??= [];
-                                  closestLots.sort((lot1, lot2) =>
-                                      lot1.$2.compareTo(lot2.$2));
+                                  var closestLots = snapshot.data!;
                                   return ListView.builder(
                                       controller: scrollController,
                                       itemCount: closestLots.length,
                                       itemBuilder: (context, index) {
-                                        var lot = closestLots![index].$1;
+                                        var lot = closestLots[index].$1;
                                         var distance = closestLots[index].$2;
                                         return ListTile(
                                             title: Text(lot.name),
-                                            subtitle: Text(
-                                                '${distance.toStringAsFixed(0)} meters away'),
+                                            subtitle:
+                                                Text('$distance meters away'),
                                             onTap: () {
-                                              showLotHistogram(context, lot, mapState);
+                                              showLotHistogram(
+                                                  context, lot, mapState);
                                             });
                                       });
                                 } else if (snapshot.hasError) {

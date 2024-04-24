@@ -7,4 +7,8 @@ class ApiConstants {
   static String postReportEndpoint = '/report';
   static String buildingsEndpoint = '/buildings';
   static String userEndpoint = '/users';
+  static String distancesEndpoint = '/distances';
+  static String distancesByLotEndpoint = '$distancesEndpoint/lot';
+  static String distancesByBuildingEndpoint = '$distancesEndpoint/building';
+  static String distancesByBothEndpoint = '$distancesEndpoint/both';
 }

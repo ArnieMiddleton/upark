@@ -183,8 +183,17 @@ class Report {
   int? id;
   double? latitude;
   double? longitude;
-  LatLng get location => LatLng(latitude!, longitude!);
-  set location(LatLng location) {
+  LatLng? get location => latitude == null
+      ? null
+      : longitude == null
+          ? null
+          : LatLng(latitude!, longitude!);
+  set location(LatLng? location) {
+    if (location == null) {
+      latitude = null;
+      longitude = null;
+      return;
+    }
     latitude = location.latitude;
     longitude = location.longitude;
   }
@@ -226,63 +235,24 @@ class Report {
 
 class Campus {
   String name = "University of Utah";
-  AppUser user; // = AppUser(userId: '');
-  List<Lot> lots; // = [];
-  List<Building> buildings; // = [];
-  Map<Building, Map<Lot, double>>? buildingToLotDistances =
-      {}; // Building -> Lot -> Distance in meters
-  Map<Building, List<(Lot lot, double distance)>>? buildingToClosestLots =
-      {}; // Building -> List of sorted closest lots and their distances in meters
-  // TODO: Add changing of units
-  static LengthUnit unit = LengthUnit.Meter;
+  AppUser user;
+  List<Lot> lots;
+  List<Building> buildings;
+  // Map<Building, List<(Lot, int)>> buildingClosestLots = {};
 
   Campus({
     required this.name,
     required this.user,
     required this.lots,
     required this.buildings,
-    this.buildingToClosestLots,
-    this.buildingToLotDistances,
+    // required this.buildingClosestLots,
   });
-
-  static Map<Building, Map<Lot, double>> calculateDistances(
-      List<Building> buildings, List<Lot> lots) {
-    Map<Building, Map<Lot, double>> distances = {};
-    Distance distance = const Distance();
-
-    for (var building in buildings) {
-      Map<Lot, double> buildingDistances = {};
-      for (var lot in lots) {
-        var distanceBetween =
-            distance.as(unit, building.location, lot.location);
-        buildingDistances[lot] = distanceBetween;
-      }
-      distances[building] = buildingDistances;
-    }
-    // buildingToLotDistances = distances;
-    return distances;
-  }
-
-  static Map<Building, List<(Lot lot, double distance)>> calculateClosestLots(
-      Map<Building, Map<Lot, double>> distances) {
-    Map<Building, List<(Lot lot, double distance)>> closestLots = {};
-    for (var building in distances.keys) {
-      var buildingDistancesMap = distances[building]!;
-      List<(Lot lot, double distance)> buildingClosestLots = [];
-      for (var lot in buildingDistancesMap.keys) {
-        buildingClosestLots.add((lot, buildingDistancesMap[lot]!));
-      }
-      buildingClosestLots.sort((a, b) => a.$2.compareTo(b.$2));
-      closestLots[building] = buildingClosestLots;
-    }
-    // buildingToClosestLots = closestLots;
-    return closestLots;
-  }
 
   static Future<Campus> getFromApi() async {
     List<Lot> newLots = [];
     List<Building> newBuildings = [];
     AppUser newUser = AppUser(id: '');
+    // Map<Building, List<(Lot, int)>> newBuildingClosestLots = {};
     try {
       newLots = await fetchLots();
     } catch (e) {
@@ -302,18 +272,41 @@ class Campus {
       print('Failed to fetch user with error: $e');
       log('Failed to fetch user with error: $e');
     }
-
-    Map<Building, Map<Lot, double>> newBuildingToLotDistances =
-        calculateDistances(newBuildings, newLots);
-    Map<Building, List<(Lot lot, double distance)>> newBuildingToClosestLots = calculateClosestLots(newBuildingToLotDistances);
-
+    // try {
+    //   for (var building in newBuildings) {
+    //     var closestDistances = await fetchDistancesByBuilding(building);
+    //     List<(Lot, int)> closestLots = [];
+    //     for (var lotIdDistTuple in closestDistances) {
+    //       var lot = newLots.firstWhere((lot) => lot.id == lotIdDistTuple.$1);
+    //       closestLots.add((lot, lotIdDistTuple.$2));
+    //     }
+    //     newBuildingClosestLots[building] = closestLots;
+    //   }
+    // } catch (e) {
+    //   print('Failed to fetch closest lots with error: $e');
+    //   log('Failed to fetch closest lots with error: $e');
+    // }
     return Campus(
       name: "University of Utah",
       user: newUser,
       lots: newLots,
       buildings: newBuildings,
-      buildingToClosestLots: newBuildingToClosestLots,
-      buildingToLotDistances: newBuildingToLotDistances,
+      // buildingClosestLots: newBuildingClosestLots,
     );
+  }
+
+  Future<bool> updateCampusFromApi() async {
+    bool success = true;
+    try {
+      Campus newCampus = await Campus.getFromApi();
+      user = newCampus.user;
+      lots = newCampus.lots;
+      buildings = newCampus.buildings;
+      // buildingClosestLots = newCampus.buildingClosestLots;
+    } catch (e) {
+      log('Failed to update campus with error: $e');
+      success = false;
+    }
+    return success;
   }
 }
