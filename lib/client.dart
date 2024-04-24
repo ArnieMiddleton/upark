@@ -136,8 +136,8 @@ Future<AppUser> fetchUserFromId(String userId, {int maxRetries = 5}) async {
 
 // Distances
 
-Future<List<(Lot lot, int distance)>> fetchLotDistancesByCampusAndBuilding(Future<Campus> campus, Building building) async {
-  var distances = await fetchDistancesByBuilding(building);
+Future<List<(Lot lot, int distance)>> fetchLotDistancesByCampusAndBuilding(Future<Campus> campus, Building building, {int limit = 5}) async {
+  var distances = await fetchDistancesByBuilding(building, limit: limit);
   var fetchedCampus = await campus;
   List<(Lot lot, int distance)> lotDistances = [];
   for (var dist in distances) {
@@ -148,8 +148,8 @@ Future<List<(Lot lot, int distance)>> fetchLotDistancesByCampusAndBuilding(Futur
   return lotDistances;
 }
 
-Future<List<(int lotId, int distance)>> fetchDistancesByBuilding(Building building) async {
-  var dynamicDistances = await fetchDistances(building: building);
+Future<List<(int lotId, int distance)>> fetchDistancesByBuilding(Building building, {int limit = 5}) async {
+  var dynamicDistances = await fetchDistances(building: building, limit: limit);
   List<(int lotId, int distance)> distances = [];
   for (var dist in dynamicDistances) {
     var distance = (dist.$1 as int, dist.$2 as int);

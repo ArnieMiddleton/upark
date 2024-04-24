@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:upark/campus.dart';
 import 'package:upark/client.dart';
@@ -9,7 +8,7 @@ import 'package:upark/map.dart';
 void showBuildingClosestLots(
     BuildContext context, Building building, MapPageState mapState) {
   Future<Campus> campus = mapState.campus;
-  Future<List<(Lot lot, int distance)>> closestLots = fetchLotDistancesByCampusAndBuilding(campus, building);
+  Future<List<(Lot lot, int distance)>> closestLots = fetchLotDistancesByCampusAndBuilding(campus, building, limit: 10);
 
   showModalBottomSheet(
       context: context,
@@ -46,6 +45,22 @@ void showBuildingClosestLots(
                           ),
                         ),
                       ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Closest Parking Lots to ${building.name}',
+                          style: const TextStyle(
+                              color: UtahColorScheme.primary, fontSize: 16, fontWeight: FontWeight.bold),
+                          softWrap: true,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      const Divider(
+                        color: UtahColorScheme.onBackground,
+                        thickness: 1,
+                      ),
                       Expanded(
                           child: FutureBuilder<List<(Lot lot, int distance)>>(
                               future: closestLots,
@@ -54,14 +69,18 @@ void showBuildingClosestLots(
                                   var closestLots = snapshot.data!;
                                   return ListView.builder(
                                       controller: scrollController,
+                                      padding: const EdgeInsets.only(bottom: 8), // Ensure that the last item is not partially hidden
+                                      itemExtent: 50,
                                       itemCount: closestLots.length,
                                       itemBuilder: (context, index) {
                                         var lot = closestLots[index].$1;
                                         var distance = closestLots[index].$2;
                                         return ListTile(
-                                            title: Text(lot.name),
+                                            title: Text('${lot.name} Parking Lot'),
                                             subtitle:
-                                                Text('$distance meters away'),
+                                                Text('$distance meters away from building'),
+                                            trailing: const Icon(Icons.local_parking, color: UtahColorScheme.primary),
+                                            leading: Text('${index + 1}', style: const TextStyle(color: UtahColorScheme.primary, fontWeight: FontWeight.bold, fontSize: 16), textAlign: TextAlign.center,),
                                             onTap: () {
                                               showLotHistogram(
                                                   context, lot, mapState);
